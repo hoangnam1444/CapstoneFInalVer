@@ -204,25 +204,12 @@ namespace Entities
                     .HasColumnType("date")
                     .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.CreatedUser)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
                 entity.Property(e => e.DeletedDate).HasColumnType("date");
-
-                entity.Property(e => e.DeletedUser)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
 
                 entity.Property(e => e.Email)
                     .IsRequired()
                     .HasMaxLength(100)
                     .IsUnicode(false);
-
-                entity.Property(e => e.FirstName)
-                    .IsRequired()
-                    .HasMaxLength(100);
 
                 entity.Property(e => e.FullName)
                     .IsRequired()
@@ -250,10 +237,6 @@ namespace Entities
                     .IsRequired()
                     .HasDefaultValueSql("('0')");
 
-                entity.Property(e => e.LastName)
-                    .IsRequired()
-                    .HasMaxLength(100);
-
                 entity.Property(e => e.PhoneNumber)
                     .HasMaxLength(50)
                     .IsUnicode(false);
@@ -261,10 +244,6 @@ namespace Entities
                 entity.Property(e => e.RoleId).HasColumnName("RoleID");
 
                 entity.Property(e => e.UpdatedDate).HasColumnType("date");
-
-                entity.Property(e => e.UpdatedUser)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
 
                 entity.Property(e => e.UserName).HasMaxLength(60);
 
@@ -284,17 +263,7 @@ namespace Entities
 
                 entity.Property(e => e.RoleId).HasColumnName("RoleID");
 
-                entity.Property(e => e.DeletedDate).HasColumnType("date");
-
-                entity.Property(e => e.DeletedUser)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.IsDeleted)
-                    .IsRequired()
-                    .HasDefaultValueSql("('0')");
-
-                entity.Property(e => e.RoleNane)
+                entity.Property(e => e.RoleName)
                     .IsRequired()
                     .HasMaxLength(50);
             });

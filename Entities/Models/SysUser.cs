@@ -18,8 +18,6 @@ namespace Entities.Models
 
         public int UserId { get; set; }
         public string FullName { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
         public bool? Gender { get; set; }
         public string PhoneNumber { get; set; }
         public DateTime? BirthDay { get; set; }
@@ -32,14 +30,13 @@ namespace Entities.Models
         public float Gpa10 { get; set; }
         public float Gpa11 { get; set; }
         public float Gpa12 { get; set; }
-        public string CreatedUser { get; set; }
+        public int? AdminIdUpdate { get; set; }
         public DateTime CreatedDate { get; set; }
-        public string UpdatedUser { get; set; }
         public DateTime? UpdatedDate { get; set; }
         public bool? IsDeleted { get; set; }
         public DateTime? DeletedDate { get; set; }
-        public string DeletedUser { get; set; }
 
+        public virtual SysUser UpdateAdmin { get; set; }
         public virtual SysUserRole Role { get; set; }
         public virtual ICollection<TestResults> TestResults { get; set; }
         public virtual ICollection<UserLearningPath> UserLearningPath { get; set; }

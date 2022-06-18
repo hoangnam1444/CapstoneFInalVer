@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Entities.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220615170115_init database")]
-    partial class initdatabase
+    [Migration("20220618063440_rolenane to rolename")]
+    partial class rolenanetorolename
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -205,6 +205,9 @@ namespace Entities.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("AdminIdUpdate")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("BirthDay")
                         .HasColumnType("date");
 
@@ -213,30 +216,14 @@ namespace Entities.Migrations
                         .HasColumnType("date")
                         .HasDefaultValueSql("(getdate())");
 
-                    b.Property<string>("CreatedUser")
-                        .IsRequired()
-                        .HasColumnType("varchar(50)")
-                        .HasMaxLength(50)
-                        .IsUnicode(false);
-
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("date");
-
-                    b.Property<string>("DeletedUser")
-                        .HasColumnType("varchar(50)")
-                        .HasMaxLength(50)
-                        .IsUnicode(false);
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("varchar(100)")
                         .HasMaxLength(100)
                         .IsUnicode(false);
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
 
                     b.Property<string>("FullName")
                         .IsRequired()
@@ -281,11 +268,6 @@ namespace Entities.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValueSql("('0')");
 
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
-
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("varchar(50)")
                         .HasMaxLength(50)
@@ -295,13 +277,11 @@ namespace Entities.Migrations
                         .HasColumnName("RoleID")
                         .HasColumnType("int");
 
+                    b.Property<int?>("UpdateAdminUserId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("date");
-
-                    b.Property<string>("UpdatedUser")
-                        .HasColumnType("varchar(50)")
-                        .HasMaxLength(50)
-                        .IsUnicode(false);
 
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(60)")
@@ -311,6 +291,8 @@ namespace Entities.Migrations
                         .HasName("PK_SYSTEM_USER");
 
                     b.HasIndex("RoleId");
+
+                    b.HasIndex("UpdateAdminUserId");
 
                     b.ToTable("Sys_User");
                 });
@@ -323,21 +305,7 @@ namespace Entities.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("date");
-
-                    b.Property<string>("DeletedUser")
-                        .HasColumnType("varchar(50)")
-                        .HasMaxLength(50)
-                        .IsUnicode(false);
-
-                    b.Property<bool?>("IsDeleted")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValueSql("('0')");
-
-                    b.Property<string>("RoleNane")
+                    b.Property<string>("RoleName")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
@@ -672,6 +640,10 @@ namespace Entities.Migrations
                         .HasForeignKey("RoleId")
                         .HasConstraintName("FKSys_User142060")
                         .IsRequired();
+
+                    b.HasOne("Entities.Models.SysUser", "UpdateAdmin")
+                        .WithMany()
+                        .HasForeignKey("UpdateAdminUserId");
                 });
 
             modelBuilder.Entity("Entities.Models.TestAnswers", b =>

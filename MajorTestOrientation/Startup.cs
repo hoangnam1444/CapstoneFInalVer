@@ -1,3 +1,5 @@
+using Contracts.HandleServices;
+using Contracts.Repositories;
 using Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -5,6 +7,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
+using Repositories.HandleServices;
+using Repositories.Repositories;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace MajorTestOrientation
 {
@@ -33,7 +39,21 @@ namespace MajorTestOrientation
             services.AddDbContext<DataContext>(opt =>
             opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            //repository manager
+            services.AddScoped<IRepositoryManager, RepositoryManager>();
+
+            //firebase services
+            services.AddScoped<IFirebaseService, FirebaseServices>();
+
+
             services.AddControllers();
+
+            //swagger
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MajorTestOrientation", Version = "v1" });
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,6 +63,9 @@ namespace MajorTestOrientation
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ToyWorldSystem v1"));
 
             app.UseHttpsRedirection();
             app.UseCors("CorsPolicy");

@@ -15,10 +15,7 @@ namespace Entities.Models
         }
 
         public int RoleId { get; set; }
-        public string RoleNane { get; set; }
-        public bool? IsDeleted { get; set; }
-        public DateTime? DeletedDate { get; set; }
-        public string DeletedUser { get; set; }
+        public string RoleName { get; set; }
 
         public virtual ICollection<SysUser> SysUser { get; set; }
     }
