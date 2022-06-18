@@ -27,5 +27,10 @@ namespace Repositories.Repositories
                 RoleId = account.RoleId
             };
         }
+
+        public async Task<SysUser> GetToUpdateGrade(int id)
+        {
+            return await FindByCondition(x => x.UserId == id, false).FirstOrDefaultAsync();
+        }
     }
 }
