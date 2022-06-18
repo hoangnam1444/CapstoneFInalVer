@@ -32,7 +32,7 @@ namespace Repositories.HandleServices
             }
             catch (Exception ex)
             {
-                return new FirebaseInfo { Email = ex.Message };
+                return new FirebaseInfo { Email = "Get email from token error: "+ex.Message };
             }
         }
 

@@ -45,6 +45,8 @@ namespace MajorTestOrientation
             //firebase services
             services.AddScoped<IFirebaseService, FirebaseServices>();
 
+            //jwt services
+            services.AddScoped<IJwtServices, JwtServices>();
 
             services.AddControllers();
 

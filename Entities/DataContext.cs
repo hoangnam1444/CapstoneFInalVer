@@ -216,7 +216,6 @@ namespace Entities
                     .HasMaxLength(200);
 
                 entity.Property(e => e.Gender)
-                    .IsRequired()
                     .HasDefaultValueSql("('0')");
 
                 entity.Property(e => e.Gpa10).HasColumnName("GPA10");

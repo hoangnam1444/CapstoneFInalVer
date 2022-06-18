@@ -58,7 +58,9 @@ namespace MajorTestOrientation.Controllers
                     CreatedDate = System.DateTime.UtcNow,
                     UpdatedDate = System.DateTime.UtcNow,
                     IsLocked = false,
-                    IsDeleted = false
+                    IsDeleted = false,
+                    FullName = firebaseProfile.UserName,
+                    
                 };
                 _repository.SysUser.Create(new_account);
                 await _repository.SaveAsync();
