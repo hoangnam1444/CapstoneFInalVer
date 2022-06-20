@@ -63,7 +63,6 @@ namespace MajorTestOrientation.Controllers
                     IsLocked = false,
                     IsDeleted = false,
                     FullName = firebaseProfile.UserName,
-
                 };
                 _repository.SysUser.Create(new_account);
                 await _repository.SaveAsync();
