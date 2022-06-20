@@ -25,6 +25,7 @@ namespace Entities
         public virtual DbSet<MajorRefPersonality> MajorRefPersonality { get; set; }
         public virtual DbSet<Majors> Majors { get; set; }
         public virtual DbSet<SysUser> SysUser { get; set; }
+        public virtual DbSet<SecurityCode> SecurityCode { get; set; }
         public virtual DbSet<SysUserRole> SysUserRole { get; set; }
         public virtual DbSet<TestAnswers> TestAnswers { get; set; }
         public virtual DbSet<TestDeclarations> TestDeclarations { get; set; }
@@ -251,6 +252,13 @@ namespace Entities
                     .HasForeignKey(d => d.RoleId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKSys_User142060");
+            });
+
+            modelBuilder.Entity<SecurityCode>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.ToTable("SECURITY_CODE");
             });
 
             modelBuilder.Entity<SysUserRole>(entity =>

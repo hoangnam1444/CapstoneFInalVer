@@ -13,6 +13,13 @@ namespace Repositories.Repositories
         {
         }
 
+        public async Task AvtivateAccount(int userId)
+        {
+            var user = await FindByCondition(x => x.UserId == userId, true).FirstOrDefaultAsync();
+            user.IsLocked = false;
+            Update(user);
+        }
+
         public async Task<AfterLoginInfo> GetAccountByGmail(string email)
         {
             var account = await FindByCondition(x => x.Email.Equals(email) && x.IsDeleted == false && x.IsLocked == false, false).FirstOrDefaultAsync();
