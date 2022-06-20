@@ -94,7 +94,6 @@ namespace MajorTestOrientation
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MajorTestOrientation", Version = "v1" });
 
-
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
@@ -147,6 +146,7 @@ namespace MajorTestOrientation
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
