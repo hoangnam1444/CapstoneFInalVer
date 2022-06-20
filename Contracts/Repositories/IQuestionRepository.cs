@@ -1,10 +1,14 @@
-﻿using Entities.Models;
+﻿using Entities.DTOs;
+using Entities.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Contracts.Repositories
 {
     public interface IQuestionRepository
     {
-        Task<TestQuestions> GetMBTIQuestion(int index);
+        Task<List<int>> GetAllMbtiId();
+        Task<TestQuestions> GetMBTIQuestion(int id);
+        Task<List<HollandQuestion>> GetHollandTest();
     }
 }
