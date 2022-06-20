@@ -22,7 +22,7 @@ namespace Repositories.Repositories
 
         public async Task<AfterLoginInfo> GetAccountByGmail(string email)
         {
-            var account = await FindByCondition(x => x.Email.Equals(email) && x.IsDeleted == false && x.IsLocked == false, false).FirstOrDefaultAsync();
+            var account = await FindByCondition(x => x.Email.Equals(email) && x.IsDeleted == false, false).FirstOrDefaultAsync();
             if (account == null) return null;
             return new AfterLoginInfo
             {
