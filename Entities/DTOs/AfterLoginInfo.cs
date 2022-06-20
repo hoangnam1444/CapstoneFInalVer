@@ -9,5 +9,6 @@
         public string Token { get; set; }
         public bool HasGrade { get; set; }
         public int RoleId { get; set; }
+        public string SecurityCode { get; set; }
     }
 }

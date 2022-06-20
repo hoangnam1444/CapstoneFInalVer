@@ -8,6 +8,7 @@ namespace Contracts.Repositories
     {
         Task<AfterLoginInfo> GetAccountByGmail(string email);
         Task<SysUser> GetToUpdateGrade(int id);
+        Task AvtivateAccount(int userId);
         void Create(SysUser sysUser);
         void Update(SysUser sysUser);
     }

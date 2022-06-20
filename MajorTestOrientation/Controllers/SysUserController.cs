@@ -60,7 +60,7 @@ namespace MajorTestOrientation.Controllers
                     RoleId = 1,
                     CreatedDate = System.DateTime.UtcNow,
                     UpdatedDate = System.DateTime.UtcNow,
-                    IsLocked = false,
+                    IsLocked = true,
                     IsDeleted = false,
                     FullName = firebaseProfile.UserName,
                 };
@@ -70,11 +70,49 @@ namespace MajorTestOrientation.Controllers
                 account = await _repository.SysUser.GetAccountByGmail(firebaseProfile.Email);
             }
             account.Token = _jwtServices.CreateToken(account.RoleId, account.Id);
+
+            if (!account.HasGrade)
+            {
+                var newCode = _repository.SecurityCode.Create(account.Id);
+                await _repository.SaveAsync();
+                account.SecurityCode = newCode.Code;
+            }
+
             return Ok(account);
         }
         #endregion
 
+        #region Activate account
+        /// <summary>
+        /// Avtivate account by security code
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("activate")]
+        public async Task<IActionResult> ActiveAccount(ActivateAccount info)
+        {
+            var userId = _userAccessor.GetAccountId();
+            var isActivated = await _repository.SecurityCode.ActivatedCode(info.sCode, userId);
+            if (!isActivated)
+            {
+                throw new ErrorDetails(HttpStatusCode.BadRequest, "Invalid security code");
+            }
+            else
+            {
+                await _repository.SysUser.AvtivateAccount(userId);
+                await _repository.SaveAsync();
+            }
+            return Ok("Save changes success");
+        }
+        #endregion
+
         #region Update grade and GPA
+        /// <summary>
+        /// Update gpa and grade after first login
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
         [HttpPut]
         [Route("grade_and_gpa")]
         public async Task<IActionResult> UpdateGradeAndGPA(UpdateGradeAndGpa info)

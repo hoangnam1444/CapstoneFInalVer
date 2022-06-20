@@ -8,6 +8,9 @@ namespace Contracts.Repositories
     public interface IRepositoryManager
     {
         ISysUserRepository SysUser { get; }
+        ISecurityCodeRepository SecurityCode { get; }
+        IQuestionRepository Question { get; }
+        IAnswerRepository Answer { get; }
         Task SaveAsync();
     }
 }
