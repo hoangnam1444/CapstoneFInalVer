@@ -2,6 +2,7 @@
 using Entities;
 using Entities.DTOs;
 using Entities.Models;
+using Entities.RequestFeature;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
@@ -33,6 +34,11 @@ namespace Repositories.Repositories
                 Username = account.UserName,
                 RoleId = account.RoleId
             };
+        }
+
+        public async Task<SysUser> GetAccountByUnPw(AdminLogin info)
+        {
+            return await FindByCondition(x => x.Email == info.Email && x.Password == info.Password, false).FirstOrDefaultAsync();
         }
 
         public async Task<SysUser> GetToUpdateGrade(int id)

@@ -35,6 +35,7 @@ namespace Entities.Models
         public DateTime? UpdatedDate { get; set; }
         public bool? IsDeleted { get; set; }
         public DateTime? DeletedDate { get; set; }
+        public string Password { get; set; }
 
         public virtual SysUser UpdateAdmin { get; set; }
         public virtual SysUserRole Role { get; set; }

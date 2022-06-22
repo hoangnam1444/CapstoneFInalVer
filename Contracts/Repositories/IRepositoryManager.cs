@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Contracts.Repositories
 {
@@ -11,6 +8,8 @@ namespace Contracts.Repositories
         ISecurityCodeRepository SecurityCode { get; }
         IQuestionRepository Question { get; }
         IAnswerRepository Answer { get; }
+        ITestResultRepository TestResult { get; }
+        ITestDeclarationRepository Test { get; }
         Task SaveAsync();
     }
 }

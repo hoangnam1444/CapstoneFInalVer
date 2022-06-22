@@ -61,6 +61,9 @@ namespace MajorTestOrientation
             services.AddHttpContextAccessor();
             services.AddScoped<IUserAccessor, UserAccessor>();
 
+            //Hasing password
+            services.AddScoped<IHasingServices, HasingServices>();
+
             //Add verify jwt services
             var tokenValidationParams = new TokenValidationParameters
             {
