@@ -18,13 +18,16 @@ namespace MajorTestOrientation.Controllers
         private readonly IFirebaseService _firebase;
         private readonly IJwtServices _jwtServices;
         private readonly IUserAccessor _userAccessor;
+        private readonly IHasingServices _hasing;
 
-        public SysUserController(IRepositoryManager repository, IFirebaseService firebase, IJwtServices jwtServices, IUserAccessor userAccessor)
+        public SysUserController(IRepositoryManager repository, IFirebaseService firebase, IJwtServices jwtServices, IUserAccessor userAccessor,
+            IHasingServices hasing)
         {
             _repository = repository;
             _firebase = firebase;
             _jwtServices = jwtServices;
             _userAccessor = userAccessor;
+            _hasing = hasing;
         }
 
 
@@ -82,6 +85,35 @@ namespace MajorTestOrientation.Controllers
         }
         #endregion
 
+        #region Login by username and password
+        /// <summary>
+        /// Use for admin login
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("admin_login")]
+        public async Task<IActionResult> LoginByUnPw(AdminLogin info)
+        {
+            info.Password = _hasing.EncriptSHA256(info.Password);
+            var account = await _repository.SysUser.GetAccountByUnPw(info);
+            if (account == null)
+            {
+                throw new ErrorDetails(HttpStatusCode.Unauthorized);
+            }
+            var result = new AdminInfo
+            {
+                Email = account.Email,
+                FullName = account.FullName,
+                Id = account.UserId,
+                Image = account.ImagePath,
+                Token = _jwtServices.CreateToken(account.RoleId, account.UserId)
+            };
+            return Ok(result);
+        }
+        #endregion
+
         #region Activate account
         /// <summary>
         /// Avtivate account by security code
@@ -125,13 +157,14 @@ namespace MajorTestOrientation.Controllers
             }
             else if (info.GPA11 == null)
             {
-                if(grade != 10)
+                if (grade != 10)
                 {
                     throw new ErrorDetails(HttpStatusCode.BadRequest, "GPA of grade 11 can't null");
                 }
-            }else if (info.GPA12 == null)
+            }
+            else if (info.GPA12 == null)
             {
-                if(grade == 12)
+                if (grade == 12)
                 {
                     throw new ErrorDetails(HttpStatusCode.BadRequest, "GPA of grade 12 can't null");
                 }

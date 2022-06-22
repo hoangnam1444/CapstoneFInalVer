@@ -1,5 +1,7 @@
-﻿using Contracts.Repositories;
+﻿using Contracts.HandleServices;
+using Contracts.Repositories;
 using Entities.DTOs;
+using Entities.RequestFeature;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -10,10 +12,12 @@ namespace MajorTestOrientation.Controllers
     public class QuestionController : ControllerBase
     {
         private readonly IRepositoryManager _repository;
+        private readonly IUserAccessor _userAccessor;
 
-        public QuestionController(IRepositoryManager repository)
+        public QuestionController(IRepositoryManager repository, IUserAccessor userAccessor)
         {
             _repository = repository;
+            _userAccessor = userAccessor;
         }
 
         #region Get MBTI test questionIdList
@@ -62,6 +66,49 @@ namespace MajorTestOrientation.Controllers
         {
             var result = await _repository.Question.GetHollandTest();
             return Ok(result);
+        }
+        #endregion
+
+        #region Update question
+        /// <summary>
+        /// Update question (Role: Admin)
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="question_id"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("{question_id}")]
+        public async Task<IActionResult> UpdateQuestion(UpdateQuestion info, int question_id)
+        {
+            var role = _userAccessor.GetAccountRole();
+            if (role != 2)
+            {
+                throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, "Don't have permission");
+            }
+
+            if (info.TestId > 0)
+            {
+                var test = _repository.Test.GetById(info.TestId);
+                if (test == null) throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, "Invalid test id");
+            }
+            if (info.QuestionContent != string.Empty && info.QuestionContent != null)
+            {
+                if (info.QuestionContent.Length > 500)
+                    throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, "Over length of question content");
+            }
+            if (info.OrderIndex > 0)
+            {
+                var maxIndex = await _repository.Question.GetMaxIndex(question_id);
+                if (info.OrderIndex > maxIndex)
+                {
+                    throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, string.Format($"Order index must be from 0 to {0}", maxIndex));
+                }
+            }
+
+            await _repository.Question.Update(question_id, info);
+            await _repository.SaveAsync();
+
+            return Ok("Save changes success");
         }
         #endregion
     }

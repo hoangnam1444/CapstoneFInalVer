@@ -15,6 +15,8 @@ namespace Repositories.Repositories
         private ISecurityCodeRepository _sCode;
         private IQuestionRepository _question;
         private IAnswerRepository _answer;
+        private ITestResultRepository _result;
+        private ITestDeclarationRepository _test;
         private readonly DataContext _context;
 
         public ISysUserRepository SysUser
@@ -62,6 +64,30 @@ namespace Repositories.Repositories
                     _answer = new AnswerRepository(_context);
                 }
                 return _answer;
+            }
+        }
+
+        public ITestResultRepository TestResult
+        {
+            get
+            {
+                if(_result == null)
+                {
+                    _result = new TestResultRepository(_context);
+                }
+                return _result;
+            }
+        }
+
+        public ITestDeclarationRepository Test
+        {
+            get
+            {
+                if(_test == null)
+                {
+                    _test = new TestDeclarationRepository(_context);
+                }
+                return _test;
             }
         }
 

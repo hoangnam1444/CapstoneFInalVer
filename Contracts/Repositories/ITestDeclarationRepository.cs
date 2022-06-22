@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace Contracts.Repositories
 {
-    public interface IAnswerRepository
+    public interface ITestDeclarationRepository
     {
-        Task<List<AnswerInTest>> GetMbtiAnswer(int questionId);
-        Task<TestAnswers> GetAnswerById(int id);
+        Task<TestDeclarations> GetById(int id);
+        Task<List<TestToUpdateQuestion>> GetAllTest();
     }
 }
