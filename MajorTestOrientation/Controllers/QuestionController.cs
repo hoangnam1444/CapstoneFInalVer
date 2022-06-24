@@ -69,6 +69,16 @@ namespace MajorTestOrientation.Controllers
         }
         #endregion
 
+        #region Get question by test id
+        [HttpGet]
+        [Route("{test_id}")]
+        public async Task<IActionResult> GetByTestId(int test_id)
+        {
+            var result = await _repository.Question.GetByTestId(test_id);
+            return Ok(result);
+        }
+        #endregion
+
         #region Update question
         /// <summary>
         /// Update question (Role: Admin)

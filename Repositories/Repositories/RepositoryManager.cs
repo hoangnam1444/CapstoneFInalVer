@@ -17,6 +17,7 @@ namespace Repositories.Repositories
         private IAnswerRepository _answer;
         private ITestResultRepository _result;
         private ITestDeclarationRepository _test;
+        private ITestTypeRepository _type;
         private readonly DataContext _context;
 
         public ISysUserRepository SysUser
@@ -88,6 +89,18 @@ namespace Repositories.Repositories
                     _test = new TestDeclarationRepository(_context);
                 }
                 return _test;
+            }
+        }
+
+        public ITestTypeRepository TestType
+        {
+            get
+            {
+                if(_type == null)
+                {
+                    _type = new TestTypeRepository(_context);
+                }
+                return _type;
             }
         }
 
