@@ -14,5 +14,6 @@ namespace Contracts.Repositories
         Task<List<HollandQuestion>> GetHollandTest();
         Task<int> GetMaxIndex(int id);
         Task Update(int id, UpdateQuestion info);
+        Task<List<QuestionOfTest>> GetByTestId(int test_id);
     }
 }

@@ -24,6 +24,13 @@ namespace Repositories.Repositories
             return result;
         }
 
+        public async Task<List<QuestionOfTest>> GetByTestId(int test_id)
+        {
+            var question = await FindByCondition(x => x.TestId == test_id, false).ToListAsync();
+            return question.Select(x => new QuestionOfTest { OrderIndex = x.OrderIndex, QuestionContent = x.QuestionContent, QuestionId = x.QuestionId })
+                .ToList();
+        }
+
         public async Task<List<HollandQuestion>> GetHollandTest()
         {
             var questions = await FindByCondition(x => x.TestId == 2, false).ToListAsync();

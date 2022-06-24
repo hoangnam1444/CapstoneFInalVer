@@ -10,6 +10,7 @@ namespace Contracts.Repositories
         IAnswerRepository Answer { get; }
         ITestResultRepository TestResult { get; }
         ITestDeclarationRepository Test { get; }
+        ITestTypeRepository TestType { get; }
         Task SaveAsync();
     }
 }

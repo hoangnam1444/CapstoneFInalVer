@@ -2,6 +2,7 @@
 using Entities;
 using Entities.DTOs;
 using Entities.Models;
+using Entities.RequestFeature;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,26 @@ namespace Repositories.Repositories
         public async Task<TestDeclarations> GetById(int id)
         {
             return await FindByCondition(x => x.TestId == id, false).FirstOrDefaultAsync();
+        }
+
+        public async Task<List<TestToUpdateQuestion>> GetByType(int type_id)
+        {
+            var test = await FindByCondition(x => x.TestTypeId == type_id, false).ToListAsync();
+            return test.Select(x => new TestToUpdateQuestion { Id = x.TestId, TestDescript = x.TestDescrip }).ToList();
+        }
+
+        public async Task Update(int test_id, UpdateTest info)
+        {
+            var test = await FindByCondition(x => x.TestId == test_id, true).FirstOrDefaultAsync();
+            if(test != null)
+            {
+                if(info.TypeId > 0)
+                {
+                    test.TestTypeId = info.TypeId;
+                }
+                test.TestDescrip = info.TestDescript;
+                Update(test);
+            }
         }
     }
 }

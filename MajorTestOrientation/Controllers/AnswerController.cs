@@ -1,6 +1,8 @@
 ﻿using Contracts.HandleServices;
 using Contracts.Repositories;
+using Entities.DTOs;
 using Entities.Models;
+using Entities.RequestFeature;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -47,6 +49,40 @@ namespace MajorTestOrientation.Controllers
             });
             await _repository.SaveAsync();
 
+            return Ok("Save changes success");
+        }
+        #endregion
+
+        #region Get answer by question id
+        [HttpGet]
+        [Route("question/{question_id}")]
+        public async Task<IActionResult> GetByQuestionId(int question_id)
+        {
+            var result = await _repository.Answer.GetByQuestionId(question_id);
+            return Ok(result);
+        }
+        #endregion
+
+        #region Update answer
+        [HttpPut]
+        [Route("{answer_id}")]
+        public async Task<IActionResult> UpdateAnswer(int answer_id, UpdateAnswer info)
+        {
+            var role = _userAccessor.GetAccountRole();
+            if (role != 2) throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, "Don't have permission");
+
+            if(info.QuestionId > 0)
+            {
+                var question = await _repository.Question.GetMBTIQuestion(info.QuestionId);
+                if (question == null) throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, "Invalid question");
+            }
+            if(info.Point < 0)
+            {
+                throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, "Invalid point");
+            }
+
+            await _repository.Answer.Update(answer_id, info);
+            await _repository.SaveAsync();
             return Ok("Save changes success");
         }
         #endregion
