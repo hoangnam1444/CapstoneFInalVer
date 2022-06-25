@@ -22,6 +22,36 @@ namespace MajorTestOrientation.Controllers
             _userAccessor = userAccessor;
         }
 
+        #region add answer
+        [HttpPost]
+        [Route("question/{question_id}")]
+        public async Task<IActionResult> AddAnswer(NewAnswer info, int question_id)
+        {
+            var role = _userAccessor.GetAccountRole();
+            if (role != 2)
+            {
+                throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, "Don't have permission");
+            }
+            var ques = _repository.Question.GetQuestionById(question_id);
+            if (ques == null) throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, "Invalid question");
+            var pers = _repository.PersonalityGroup.GetById(info.PersonalityGroupId);
+            if (pers == null) throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, "Invalid personality group");
+
+            _repository.Answer.Create(new TestAnswers
+            {
+                AnswerContent = info.AnswerContent,
+                IsDeleted = false,
+                OrderIndex = info.OrderIndex,
+                PersonalityGroupId = info.PersonalityGroupId,
+                Point = info.Point,
+                QuestionId = question_id
+            });
+            await _repository.SaveAsync();
+
+            return Ok("Save changes success");
+        }
+        #endregion
+
         #region Save result from student
         /// <summary>
         /// Call to saving the test answer
@@ -71,12 +101,12 @@ namespace MajorTestOrientation.Controllers
             var role = _userAccessor.GetAccountRole();
             if (role != 2) throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, "Don't have permission");
 
-            if(info.QuestionId > 0)
+            if (info.QuestionId > 0)
             {
                 var question = await _repository.Question.GetMBTIQuestion(info.QuestionId);
                 if (question == null) throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, "Invalid question");
             }
-            if(info.Point < 0)
+            if (info.Point < 0)
             {
                 throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, "Invalid point");
             }

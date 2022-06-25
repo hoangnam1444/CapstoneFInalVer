@@ -1,6 +1,7 @@
 ﻿using Contracts.HandleServices;
 using Contracts.Repositories;
 using Entities.DTOs;
+using Entities.Models;
 using Entities.RequestFeature;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -19,6 +20,31 @@ namespace MajorTestOrientation.Controllers
             _repository = repository;
             _userAccessor = userAccessor;
         }
+
+        #region Create test question
+        [HttpPost]
+        [Route("{test_id}")]
+        public async Task<IActionResult> CreateQuestion(CreateQuestion info, int test_id)
+        {
+            var role = _userAccessor.GetAccountRole();
+            if(role != 2)
+            {
+                throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, "Don't have permission");
+            }
+
+            var test = await _repository.Test.GetById(test_id);
+            if (test == null) throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, "Invalid test");
+
+            _repository.Question.Create(new TestQuestions
+            {
+                IsDeleted = false,
+                QuestionContent = info.QuestionContent,
+                TestId = test_id
+            });
+            await _repository.SaveAsync();
+            return Ok("Save changes success");
+        }
+        #endregion
 
         #region Get MBTI test questionIdList
         /// <summary>

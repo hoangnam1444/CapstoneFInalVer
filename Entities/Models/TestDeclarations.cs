@@ -19,7 +19,6 @@ namespace Entities.Models
         public string TestDescrip { get; set; }
         public int TestTypeId { get; set; }
         public DateTime CreatedDate { get; set; }
-        public string CreatedUser { get; set; }
         public bool? IsActive { get; set; }
         public bool? IsDeleted { get; set; }
 
