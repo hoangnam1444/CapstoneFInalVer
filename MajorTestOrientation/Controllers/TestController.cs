@@ -1,6 +1,7 @@
 ﻿using Contracts.HandleServices;
 using Contracts.Repositories;
 using Entities.DTOs;
+using Entities.Models;
 using Entities.RequestFeature;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -19,6 +20,34 @@ namespace MajorTestOrientation.Controllers
             _repository = repository;
             _userAccessor = userAccessor;
         }
+
+        #region Create test test
+        [HttpPost]
+        [Route("{type_id}")]
+        public async Task<IActionResult> CreateTest(CreateTest info, int type_id)
+        {
+            var role = _userAccessor.GetAccountRole();
+            if (role != 2)
+            {
+                throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, "Don't have permission");
+            }
+
+            var type = await _repository.TestType.GetById(type_id);
+            if (type == null) throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, "Invalid test type");
+
+            _repository.Test.Create(new TestDeclarations
+            {
+                TestDescrip = info.TestDescrip,
+                TestTypeId = type_id,
+                CreatedDate = System.DateTime.UtcNow,
+                IsActive = true,
+                IsDeleted = false
+            });
+            await _repository.SaveAsync();
+
+            return Ok("Save changes success");
+        }
+        #endregion
 
         #region Get test for update question
         /// <summary>

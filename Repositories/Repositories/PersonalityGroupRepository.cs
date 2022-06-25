@@ -28,6 +28,11 @@ namespace Repositories.Repositories
             }).ToList();
         }
 
+        public async Task<TestPersonalityGroups> GetById(int id)
+        {
+            return await FindByCondition(x => x.PersonalityGroupId == id && x.IsDeleted == false, false).FirstOrDefaultAsync();
+        }
+
         public async Task Update(int pgroup_id, UpdatePGroup info)
         {
             var pGroup = await FindByCondition(x => x.PersonalityGroupId == pgroup_id, true).FirstOrDefaultAsync();
