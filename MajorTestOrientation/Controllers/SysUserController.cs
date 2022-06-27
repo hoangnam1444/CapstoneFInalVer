@@ -78,7 +78,7 @@ namespace MajorTestOrientation.Controllers
             {
                 var newCode = _repository.SecurityCode.Create(account.Id);
                 await _repository.SaveAsync();
-                //await _userAccessor.SendEmail(account.Fullname, firebaseProfile.Email, newCode.Code);
+                _userAccessor.SendEmail(account.Fullname, firebaseProfile.Email, newCode.Code);
             }
 
             return Ok(account);
