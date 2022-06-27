@@ -106,6 +106,21 @@ namespace MajorTestOrientation.Controllers
         }
         #endregion
 
+        #region Get personality result
+        [HttpGet]
+        [Route("p_group/{test_id}")]
+        public async Task<IActionResult> GetPersonalityGroupResult(int test_id)
+        {
+            var testResult = await _repository.TestResult.GetForPGroupResult(test_id, _userAccessor.GetAccountId());
+
+            var pGroupPoint = await _repository.Answer.GetPGroupResult(testResult);
+
+            pGroupPoint = await _repository.PersonalityGroup.GetName(pGroupPoint);
+
+            return Ok(pGroupPoint);
+        }
+        #endregion
+
         #region Update test
         [HttpPut]
         [Route("{test_id}")]

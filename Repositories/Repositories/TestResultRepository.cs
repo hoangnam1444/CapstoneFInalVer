@@ -2,6 +2,7 @@
 using Entities;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Repositories.Repositories
@@ -11,6 +12,11 @@ namespace Repositories.Repositories
         public TestResultRepository(DataContext context) : base(context)
         {
 
+        }
+
+        public async Task<List<TestResults>> GetForPGroupResult(int test_id, int userId)
+        {
+            return await FindByCondition(x => x.TestId == test_id && x.UserId == userId && x.IsLast == true, false).ToListAsync();
         }
 
         public async Task UpdateLastAnswer(int answerId, int userId)

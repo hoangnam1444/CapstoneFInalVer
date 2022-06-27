@@ -48,6 +48,20 @@ namespace Repositories.Repositories
             return result;
         }
 
+        public async Task<List<PerGroup>> GetPGroupResult(List<TestResults> testResult)
+        {
+            var answersId = testResult.Select(x => x.AnswerId).ToList();
+
+            var answer = await FindByCondition(x => answersId.Contains(x.AnswerId), false).GroupBy(x => x.PersonalityGroupId)
+                .Select(x => new PerGroup
+                {
+                    AveragePoint = x.Average(y => y.Point),
+                    Id = x.Key
+                }).ToListAsync();
+
+            return answer;
+        }
+
         public async Task Update(int answer_id, UpdateAnswer info)
         {
             var answer = await FindByCondition(x => x.AnswerId == answer_id, true).FirstOrDefaultAsync();
