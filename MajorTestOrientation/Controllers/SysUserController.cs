@@ -78,7 +78,7 @@ namespace MajorTestOrientation.Controllers
             {
                 var newCode = _repository.SecurityCode.Create(account.Id);
                 await _repository.SaveAsync();
-                account.SecurityCode = newCode.Code;
+                //await _userAccessor.SendEmail(account.Fullname, firebaseProfile.Email, newCode.Code);
             }
 
             return Ok(account);
@@ -110,6 +110,9 @@ namespace MajorTestOrientation.Controllers
                 Image = account.ImagePath,
                 Token = _jwtServices.CreateToken(account.RoleId, account.UserId)
             };
+
+            await _userAccessor.SendEmail("vinhle", "vinhle2311@gmail.com", "anh vinh dep trai");
+
             return Ok(result);
         }
         #endregion
