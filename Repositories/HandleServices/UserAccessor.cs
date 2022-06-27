@@ -49,7 +49,7 @@ namespace Repositories.HandleServices
             {
                 From = FromEmail,
                 Subject = "MTO active account code",
-                Body = string.Format($"Hi {0} \n Your active code is {1} \n Regard \n MTO Manager", name, code)
+                Body = "Hi " + name + "\n Your active code is: " + code + " \n Regard \n MTO Manager"
             };
             Message.To.Add(ToEmail);
             client.Send(Message);
@@ -62,6 +62,6 @@ namespace Repositories.HandleServices
             //    //    .Subject("MTO active account code")
             //    //    .Body(string.Format($"Hi {0} \n Your active code is {1} \n Regard \n MTO Manager", name, code))
             //    //    .SendAsync();
-            }
         }
+    }
 }
