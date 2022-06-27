@@ -43,7 +43,7 @@ namespace MajorTestOrientation.Controllers
 
             if(info.TestTypeId > 0)
             {
-                var testType = _repository.TestType.GetById(info.TestTypeId);
+                var testType = await _repository.TestType.GetById(info.TestTypeId);
                 if (testType == null)
                     throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, "Invalid test type");
             }

@@ -111,6 +111,8 @@ namespace MajorTestOrientation.Controllers
                 Token = _jwtServices.CreateToken(account.RoleId, account.UserId)
             };
 
+            _userAccessor.SendEmail("vinhle", "vinhle2311@gmail.com", "anh vinh dep trai");
+
             return Ok(result);
         }
         #endregion

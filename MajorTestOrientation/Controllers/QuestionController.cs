@@ -124,7 +124,7 @@ namespace MajorTestOrientation.Controllers
 
             if (info.TestId > 0)
             {
-                var test = _repository.Test.GetById(info.TestId);
+                var test = await _repository.Test.GetById(info.TestId);
                 if (test == null) throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, "Invalid test id");
             }
             if (info.QuestionContent != string.Empty && info.QuestionContent != null)

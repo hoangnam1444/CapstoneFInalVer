@@ -9,6 +9,6 @@ namespace Contracts.HandleServices
     {
         int GetAccountId();
         int GetAccountRole();
-        //Task SendEmail(string name, string toEmail, string code);
+        void SendEmail(string name, string toEmail, string code);
     }
 }
