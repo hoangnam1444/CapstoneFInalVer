@@ -32,9 +32,9 @@ namespace MajorTestOrientation.Controllers
             {
                 throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, "Don't have permission");
             }
-            var ques = _repository.Question.GetQuestionById(question_id);
+            var ques = await _repository.Question.GetQuestionById(question_id);
             if (ques == null) throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, "Invalid question");
-            var pers = _repository.PersonalityGroup.GetById(info.PersonalityGroupId);
+            var pers = await _repository.PersonalityGroup.GetById(info.PersonalityGroupId);
             if (pers == null) throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, "Invalid personality group");
 
             _repository.Answer.Create(new TestAnswers
