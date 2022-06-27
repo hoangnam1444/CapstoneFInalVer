@@ -53,15 +53,6 @@ namespace Repositories.HandleServices
             };
             Message.To.Add(ToEmail);
             client.Send(Message);
-
-            //    //Email.DefaultSender = sender;
-
-            //    //var email = await Email
-            //    //    .From("mtomanager@gmail.com")
-            //    //    .To(toEmail)
-            //    //    .Subject("MTO active account code")
-            //    //    .Body(string.Format($"Hi {0} \n Your active code is {1} \n Regard \n MTO Manager", name, code))
-            //    //    .SendAsync();
         }
     }
 }
