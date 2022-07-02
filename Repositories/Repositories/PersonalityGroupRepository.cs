@@ -17,10 +17,10 @@ namespace Repositories.Repositories
 
         }
 
-        public async Task<List<PerGroupReturn>> GetAllPGroup()
+        public async Task<List<PerGroupResult>> GetAllPGroup()
         {
             var pGroups = await FindByCondition(x => x.IsDeleted == false, false).ToListAsync();
-            return pGroups.Select(x => new PerGroupReturn
+            return pGroups.Select(x => new PerGroupResult
             {
                 PersonalityGroupId = x.PersonalityGroupId,
                 PersonalityGroupName = x.PersonalityGroupName,

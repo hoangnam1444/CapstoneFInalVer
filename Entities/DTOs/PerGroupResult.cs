@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Entities.DTOs
 {
-    public class PerGroupReturn
+    public class PerGroupResult
     {
         public int PersonalityGroupId { get; set; }
         public string PersonalityGroupName { get; set; }

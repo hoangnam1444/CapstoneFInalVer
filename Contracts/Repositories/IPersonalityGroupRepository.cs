@@ -8,7 +8,7 @@ namespace Contracts.Repositories
 {
     public interface IPersonalityGroupRepository
     {
-        Task<List<PerGroupReturn>> GetAllPGroup();
+        Task<List<PerGroupResult>> GetAllPGroup();
         Task Update(int pgroup_id, UpdatePGroup info);
         Task<TestPersonalityGroups> GetById(int id);
         Task<List<PerGroup>> GetName(List<PerGroup> pGroupPoint);
