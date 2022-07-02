@@ -126,7 +126,7 @@ namespace MajorTestOrientation.Controllers
         public async Task<IActionResult> ActiveAccount(ActivateAccount info)
         {
             var userId = _userAccessor.GetAccountId();
-            var isActivated = await _repository.SecurityCode.ActivatedCode(info.otp, userId);
+            var isActivated = await _repository.SecurityCode.ActivatedCode(info.Otp, userId);
             if (!isActivated)
             {
                 throw new ErrorDetails(HttpStatusCode.BadRequest, "Invalid security code");
