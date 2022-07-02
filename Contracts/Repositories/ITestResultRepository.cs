@@ -9,5 +9,6 @@ namespace Contracts.Repositories
         void Create(TestResults testResults);
         Task<List<TestResults>> GetForPGroupResult(int test_id, int userId);
         Task UpdateLastAnswer(int answerId, int userId);
+        Task CreateResult(TestResults testResults);
     }
 }

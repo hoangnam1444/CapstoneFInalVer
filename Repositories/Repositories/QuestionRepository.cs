@@ -31,6 +31,11 @@ namespace Repositories.Repositories
                 .ToList();
         }
 
+        public async Task<List<int>> GetForSavingAnswer(int test_id)
+        {
+            return await FindByCondition(x => x.TestId == test_id, false).Select(x => x.QuestionId).ToListAsync();
+        }
+
         public async Task<List<HollandQuestion>> GetHollandTest()
         {
             var questions = await FindByCondition(x => x.TestId == 2, false).ToListAsync();

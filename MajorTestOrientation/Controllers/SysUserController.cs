@@ -119,14 +119,14 @@ namespace MajorTestOrientation.Controllers
         /// <summary>
         /// Avtivate account by security code
         /// </summary>
-        /// <param name="sCode"></param>
+        /// <param name="info"></param>
         /// <returns></returns>
         [HttpPut]
         [Route("activate")]
-        public async Task<IActionResult> ActiveAccount([FromBody]string sCode)
+        public async Task<IActionResult> ActiveAccount(ActivateAccount info)
         {
             var userId = _userAccessor.GetAccountId();
-            var isActivated = await _repository.SecurityCode.ActivatedCode(sCode, userId);
+            var isActivated = await _repository.SecurityCode.ActivatedCode(info.Otp, userId);
             if (!isActivated)
             {
                 throw new ErrorDetails(HttpStatusCode.BadRequest, "Invalid security code");
