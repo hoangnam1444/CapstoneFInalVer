@@ -5,6 +5,7 @@ using Entities.Models;
 using Entities.RequestFeature;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MajorTestOrientation.Controllers
@@ -54,29 +55,38 @@ namespace MajorTestOrientation.Controllers
 
         #region Save result from student
         /// <summary>
-        /// Call to saving the test answer
+        /// Saving answer of test
         /// </summary>
-        /// <param name="answer_id"></param>
+        /// <param name="test_id">Id of test have answer</param>
+        /// <param name="AnswerId"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("result/{answer_id}")]
-        public async Task<IActionResult> AddResult(int answer_id)
+        [Route("result/{test_id}")]
+        public async Task<IActionResult> AddResult(int test_id, List<int> AnswerId)
         {
             var userId = _userAccessor.GetAccountId();
+            var questionsId = await _repository.Question.GetForSavingAnswer(test_id);
 
-            var answer = await _repository.Answer.GetAnswerById(answer_id);
-            var question = await _repository.Question.GetQuestionById(answer.QuestionId);
-
-            await _repository.TestResult.UpdateLastAnswer(answer_id, userId);
-            _repository.TestResult.Create(new TestResults
+            foreach(var ansId in AnswerId)
             {
-                IsLast = true,
-                QuestionId = question.QuestionId,
-                AnswerId = answer.AnswerId,
-                TestId = question.TestId,
-                UserId = userId,
-                CreatedDate = DateTime.UtcNow
-            });
+                var answer = await _repository.Answer.GetAnswerById(ansId);
+                if (!questionsId.Contains(answer.QuestionId))
+                {
+                    throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, string.Format($"Answer id: {0} isn't belong to this test", ansId));
+                }
+                else
+                {
+                    await _repository.TestResult.CreateResult(new TestResults
+                    {
+                        AnswerId = ansId,
+                        CreatedDate = DateTime.UtcNow,
+                        IsLast = true,
+                        QuestionId = answer.QuestionId,
+                        TestId = test_id,
+                        UserId = userId
+                    });
+                }
+            }
             await _repository.SaveAsync();
 
             return Ok("Save changes success");

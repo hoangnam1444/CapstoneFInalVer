@@ -14,6 +14,25 @@ namespace Repositories.Repositories
 
         }
 
+        public async Task CreateResult(TestResults testResults)
+        {
+            var savedResult = await FindByCondition(x => x.AnswerId == testResults.AnswerId
+            && x.TestId == testResults.TestId
+            && x.QuestionId == testResults.QuestionId
+            && x.UserId == testResults.UserId, true).ToListAsync();
+
+            if(savedResult != null && savedResult.Count > 0)
+            {
+                foreach(var result in savedResult)
+                {
+                    result.IsLast = false;
+                    Update(result);
+                }
+            }
+
+            Create(testResults);
+        }
+
         public async Task<List<TestResults>> GetForPGroupResult(int test_id, int userId)
         {
             return await FindByCondition(x => x.TestId == test_id && x.UserId == userId && x.IsLast == true, false).ToListAsync();

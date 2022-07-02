@@ -16,5 +16,6 @@ namespace Contracts.Repositories
         Task Update(int id, UpdateQuestion info);
         Task<List<QuestionOfTest>> GetByTestId(int test_id);
         void Create(TestQuestions question);
+        Task<List<int>> GetForSavingAnswer(int test_id);
     }
 }
