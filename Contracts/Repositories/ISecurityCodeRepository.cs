@@ -5,7 +5,7 @@ namespace Contracts.Repositories
 {
     public interface ISecurityCodeRepository
     {
-        SecurityCode Create(int userId);
+        Task<SecurityCode> Create(int userId);
         Task<bool> ActivatedCode(string code, int userId);
     }
 }

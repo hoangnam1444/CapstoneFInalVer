@@ -19,6 +19,7 @@ namespace Repositories.Repositories
         private ITestDeclarationRepository _test;
         private ITestTypeRepository _type;
         private IPersonalityGroupRepository _pGroup;
+        private IMajorPGroupRepository _pGroupMajor;
         private readonly DataContext _context;
 
         public ISysUserRepository SysUser
@@ -114,6 +115,18 @@ namespace Repositories.Repositories
                     _pGroup = new PersonalityGroupRepository(_context);
                 }
                 return _pGroup;
+            }
+        }
+
+        public IMajorPGroupRepository MajorPgroup
+        {
+            get
+            {
+                if(_pGroupMajor == null)
+                {
+                    _pGroupMajor = new MajorPGroupRepository(_context);
+                }
+                return _pGroupMajor;
             }
         }
 

@@ -76,7 +76,7 @@ namespace MajorTestOrientation.Controllers
 
             if (!account.HasGrade)
             {
-                var newCode = _repository.SecurityCode.Create(account.Id);
+                var newCode = await _repository.SecurityCode.Create(account.Id);
                 await _repository.SaveAsync();
                 _userAccessor.SendEmail(account.Fullname, firebaseProfile.Email, newCode.Code);
             }

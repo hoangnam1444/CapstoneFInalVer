@@ -4,6 +4,7 @@ using Entities.DTOs;
 using Entities.Models;
 using Entities.RequestFeature;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MajorTestOrientation.Controllers
@@ -108,7 +109,7 @@ namespace MajorTestOrientation.Controllers
 
         #region Get personality result
         [HttpGet]
-        [Route("p_group/{test_id}")]
+        [Route("result/{test_id}")]
         public async Task<IActionResult> GetPersonalityGroupResult(int test_id)
         {
             var testResult = await _repository.TestResult.GetForPGroupResult(test_id, _userAccessor.GetAccountId());
@@ -123,6 +124,28 @@ namespace MajorTestOrientation.Controllers
             pGroupPoint = await _repository.PersonalityGroup.GetName(pGroupPoint);
 
             return Ok(pGroupPoint);
+        }
+        #endregion
+
+        #region Get major result
+        [HttpGet]
+        [Route("{test_id}/major")]
+        public async Task<IActionResult> GetMajorResult(int test_id)
+        {
+            var userId = _userAccessor.GetAccountId();
+
+            var testResult = await _repository.TestResult.GetForPGroupResult(test_id, _userAccessor.GetAccountId());
+
+            if (testResult.Count == 0 || testResult == null)
+            {
+                throw new ErrorDetails(System.Net.HttpStatusCode.NotFound, "Don't have any result");
+            }
+
+            var pGroupPoint = await _repository.Answer.GetPGroupResult(testResult);
+
+            var result = (List<MajorResult>)await _repository.MajorPgroup.GetMajorResult(pGroupPoint);
+
+            return Ok(result);
         }
         #endregion
 

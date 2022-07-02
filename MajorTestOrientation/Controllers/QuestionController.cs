@@ -91,6 +91,7 @@ namespace MajorTestOrientation.Controllers
         public async Task<IActionResult> GetHollandTest()
         {
             var result = await _repository.Question.GetHollandTest();
+            result = await _repository.Answer.GetAnswerById(result);
             return Ok(result);
         }
         #endregion

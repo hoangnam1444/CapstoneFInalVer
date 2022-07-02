@@ -22,6 +22,22 @@ namespace Repositories.Repositories
             return await FindByCondition(x => x.AnswerId == id, false).FirstOrDefaultAsync();
         }
 
+        public async Task<List<HollandQuestion>> GetAnswerById(List<HollandQuestion> info)
+        {
+            var result = new List<HollandQuestion>();
+            foreach(var question in info)
+            {
+                var answer = await FindByCondition(x => x.QuestionId == question.Id, false).ToListAsync();
+                question.Answers = answer.Select(x => new AnswerInTest
+                {
+                    Id = x.AnswerId,
+                    Content = x.AnswerContent
+                }).ToList();
+                result.Add(question);
+            }
+            return result;
+        }
+
         public async Task<List<AnswerOfQuestion>> GetByQuestionId(int question_id)
         {
             var answers = await FindByCondition(x => x.QuestionId == question_id && x.IsDeleted == false, false).ToListAsync();
