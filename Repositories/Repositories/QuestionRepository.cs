@@ -1,5 +1,6 @@
 ﻿using Contracts.Repositories;
 using Entities;
+using Entities.DataTransferObject;
 using Entities.DTOs;
 using Entities.Models;
 using Entities.RequestFeature;
@@ -24,11 +25,20 @@ namespace Repositories.Repositories
             return result;
         }
 
-        public async Task<List<QuestionOfTest>> GetByTestId(int test_id)
+        public async Task<Pagination<QuestionOfTest>> GetByTestId(int test_id, PagingParameters param)
         {
-            var question = await FindByCondition(x => x.TestId == test_id, false).ToListAsync();
-            return question.Select(x => new QuestionOfTest { OrderIndex = x.OrderIndex, QuestionContent = x.QuestionContent, QuestionId = x.QuestionId })
-                .ToList();
+            var question = await FindByCondition(x => x.TestId == test_id, false)
+                .Skip((param.PageNumber - 1) * param.PageSize)
+                .Take(param.PageSize)
+                .ToListAsync();
+            return new Pagination<QuestionOfTest>
+            {
+                Count = await FindByCondition(x => x.TestId == test_id, false).CountAsync(),
+                Data = question.Select(x => new QuestionOfTest { OrderIndex = x.OrderIndex, QuestionContent = x.QuestionContent, QuestionId = x.QuestionId })
+                .ToList(),
+                PageSize = param.PageSize,
+                PageNumber = param.PageNumber
+            };   
         }
 
         public async Task<List<int>> GetForSavingAnswer(int test_id)

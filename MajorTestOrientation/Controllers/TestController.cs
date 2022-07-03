@@ -57,14 +57,14 @@ namespace MajorTestOrientation.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("All")]
-        public async Task<IActionResult> GetTestToUpdateQuestion()
+        public async Task<IActionResult> GetTestToUpdateQuestion(PagingParameters param)
         {
             var role = _userAccessor.GetAccountRole();
             if (role != 2)
             {
                 throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, "Don't have permission");
             }
-            var result = await _repository.Test.GetAllTest();
+            var result = await _repository.Test.GetAllTest(param);
 
             return Ok(result);
         }
