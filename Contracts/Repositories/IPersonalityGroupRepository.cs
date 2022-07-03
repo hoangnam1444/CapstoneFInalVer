@@ -1,4 +1,5 @@
-﻿using Entities.DTOs;
+﻿using Entities.DataTransferObject;
+using Entities.DTOs;
 using Entities.Models;
 using Entities.RequestFeature;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ namespace Contracts.Repositories
 {
     public interface IPersonalityGroupRepository
     {
-        Task<List<PerGroupResult>> GetAllPGroup();
+        Task<Pagination<PerGroupResult>> GetAllPGroup(PagingParameters param);
         Task Update(int pgroup_id, UpdatePGroup info);
         Task<TestPersonalityGroups> GetById(int id);
         Task<List<PerGroup>> GetName(List<PerGroup> pGroupPoint);

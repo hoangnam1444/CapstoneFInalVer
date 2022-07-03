@@ -26,9 +26,9 @@ namespace MajorTestOrientation.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetAllGroups()
+        public async Task<IActionResult> GetAllGroups([FromQuery] PagingParameters param)
         {
-            var result = await _repository.PersonalityGroup.GetAllPGroup();
+            var result = await _repository.PersonalityGroup.GetAllPGroup(param);
             return Ok(result);
         }
         #endregion
@@ -41,7 +41,7 @@ namespace MajorTestOrientation.Controllers
             var role = _userAccessor.GetAccountRole();
             if (role != 2) throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, "Not enough permission");
 
-            if(info.TestTypeId > 0)
+            if (info.TestTypeId > 0)
             {
                 var testType = await _repository.TestType.GetById(info.TestTypeId);
                 if (testType == null)

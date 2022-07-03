@@ -1,4 +1,5 @@
-﻿using Entities.DTOs;
+﻿using Entities.DataTransferObject;
+using Entities.DTOs;
 using Entities.Models;
 using Entities.RequestFeature;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace Contracts.Repositories
         Task<List<HollandQuestion>> GetHollandTest();
         Task<int> GetMaxIndex(int id);
         Task Update(int id, UpdateQuestion info);
-        Task<List<QuestionOfTest>> GetByTestId(int test_id);
+        Task<Pagination<QuestionOfTest>> GetByTestId(int test_id, PagingParameters param);
         void Create(TestQuestions question);
         Task<List<int>> GetForSavingAnswer(int test_id);
     }

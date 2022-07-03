@@ -1,5 +1,6 @@
 ﻿using Contracts.Repositories;
 using Entities;
+using Entities.DataTransferObject;
 using Entities.DTOs;
 using Entities.Models;
 using Entities.RequestFeature;
@@ -17,15 +18,25 @@ namespace Repositories.Repositories
 
         }
 
-        public async Task<List<PerGroupResult>> GetAllPGroup()
+        public async Task<Pagination<PerGroupResult>> GetAllPGroup(PagingParameters param)
         {
-            var pGroups = await FindByCondition(x => x.IsDeleted == false, false).ToListAsync();
-            return pGroups.Select(x => new PerGroupResult
+            var pGroups = await FindByCondition(x => x.IsDeleted == false, false)
+                .Skip((param.PageNumber - 1) * param.PageSize)
+                .Take(param.PageSize)
+                .ToListAsync();
+
+            return new Pagination<PerGroupResult>
             {
-                PersonalityGroupId = x.PersonalityGroupId,
-                PersonalityGroupName = x.PersonalityGroupName,
-                TestTypeId = x.TestTypeId
-            }).ToList();
+                Count = await FindByCondition(x => x.IsDeleted == false, false).CountAsync(),
+                Data = pGroups.Select(x => new PerGroupResult
+                {
+                    PersonalityGroupId = x.PersonalityGroupId,
+                    PersonalityGroupName = x.PersonalityGroupName,
+                    TestTypeId = x.TestTypeId
+                }).ToList(),
+                PageNumber = param.PageNumber,
+                PageSize = param.PageSize
+            };
         }
 
         public async Task<TestPersonalityGroups> GetById(int id)
@@ -36,7 +47,7 @@ namespace Repositories.Repositories
         public async Task<List<PerGroup>> GetName(List<PerGroup> pGroupPoint)
         {
             var result = new List<PerGroup>();
-            foreach(var group in pGroupPoint)
+            foreach (var group in pGroupPoint)
             {
                 group.Name = await FindByCondition(x => x.PersonalityGroupId == group.Id, false).Select(x => x.PersonalityGroupName).FirstOrDefaultAsync();
                 result.Add(group);
@@ -48,11 +59,11 @@ namespace Repositories.Repositories
         {
             var pGroup = await FindByCondition(x => x.PersonalityGroupId == pgroup_id, true).FirstOrDefaultAsync();
 
-            if(info.TestTypeId > 0)
+            if (info.TestTypeId > 0)
             {
                 pGroup.TestTypeId = info.TestTypeId;
             }
-            if(info.PersonalityGroupName != string.Empty && info.PersonalityGroupName != null)
+            if (info.PersonalityGroupName != string.Empty && info.PersonalityGroupName != null)
             {
                 pGroup.PersonalityGroupName = info.PersonalityGroupName;
             }

@@ -1,5 +1,6 @@
 ﻿using Contracts.Repositories;
 using Entities;
+using Entities.DataTransferObject;
 using Entities.DTOs;
 using Entities.Models;
 using Entities.RequestFeature;
@@ -16,11 +17,20 @@ namespace Repositories.Repositories
         {
         }
 
-        public async Task<List<TestToUpdateQuestion>> GetAllTest()
+        public async Task<Pagination<TestToUpdateQuestion>> GetAllTest(PagingParameters param)
         {
-            var allTest = await FindAll(false).ToListAsync();
+            var allTest = await FindAll(false)
+                .Skip((param.PageNumber - 1) * param.PageSize)
+                .Take(param.PageSize)
+                .ToListAsync();
 
-            return allTest.Select(x => new TestToUpdateQuestion { Id = x.TestId, TestDescript = x.TestDescrip }).ToList();
+            return new Pagination<TestToUpdateQuestion>
+            {
+                Count = await FindAll(false).CountAsync(),
+                Data = allTest.Select(x => new TestToUpdateQuestion { Id = x.TestId, TestDescript = x.TestDescrip }).ToList(),
+                PageNumber = param.PageNumber,
+                PageSize = param.PageSize
+            };
         }
 
         public async Task<TestDeclarations> GetById(int id)
@@ -37,9 +47,9 @@ namespace Repositories.Repositories
         public async Task Update(int test_id, UpdateTest info)
         {
             var test = await FindByCondition(x => x.TestId == test_id, true).FirstOrDefaultAsync();
-            if(test != null)
+            if (test != null)
             {
-                if(info.TypeId > 0)
+                if (info.TypeId > 0)
                 {
                     test.TestTypeId = info.TypeId;
                 }
