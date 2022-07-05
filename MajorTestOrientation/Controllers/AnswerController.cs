@@ -58,16 +58,16 @@ namespace MajorTestOrientation.Controllers
         /// Saving answer of test
         /// </summary>
         /// <param name="test_id">Id of test have answer</param>
-        /// <param name="AnswerId"></param>
+        /// <param name="answersId"></param>
         /// <returns></returns>
         [HttpPost]
         [Route("result/{test_id}")]
-        public async Task<IActionResult> AddResult(int test_id, List<int> AnswerId)
+        public async Task<IActionResult> AddResult(int test_id, SaveResult answersId)
         {
             var userId = _userAccessor.GetAccountId();
             var questionsId = await _repository.Question.GetForSavingAnswer(test_id);
 
-            foreach(var ansId in AnswerId)
+            foreach(var ansId in answersId.ListAnswerId)
             {
                 var answer = await _repository.Answer.GetAnswerById(ansId);
                 if (!questionsId.Contains(answer.QuestionId))

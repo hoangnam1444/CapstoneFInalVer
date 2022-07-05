@@ -57,7 +57,7 @@ namespace MajorTestOrientation.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("All")]
-        public async Task<IActionResult> GetTestToUpdateQuestion(PagingParameters param)
+        public async Task<IActionResult> GetTestToUpdateQuestion([FromQuery]PagingParameters param)
         {
             var role = _userAccessor.GetAccountRole();
             if (role != 2)
