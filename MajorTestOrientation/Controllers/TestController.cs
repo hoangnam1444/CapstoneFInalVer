@@ -23,6 +23,12 @@ namespace MajorTestOrientation.Controllers
         }
 
         #region Create test test
+        /// <summary>
+        /// Role: Admin (create test)
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="type_id"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("{type_id}")]
         public async Task<IActionResult> CreateTest(CreateTest info, int type_id)
@@ -52,7 +58,7 @@ namespace MajorTestOrientation.Controllers
 
         #region Get test for update question
         /// <summary>
-        /// Show all test when admin UPDATE QUESTION (role: Admin)
+        /// Role: Admin (Get all test)
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -72,7 +78,7 @@ namespace MajorTestOrientation.Controllers
 
         #region Get type of test
         /// <summary>
-        /// Get all type of test
+        /// Role: Admin (Get all type of test)
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -85,6 +91,12 @@ namespace MajorTestOrientation.Controllers
         #endregion
 
         #region Update type of test
+        /// <summary>
+        /// Role: Admin (update type of test)
+        /// </summary>
+        /// <param name="type_id"></param>
+        /// <param name="info"></param>
+        /// <returns></returns>
         [HttpPut]
         [Route("type/{type_id}")]
         public async Task<IActionResult> UpdateTypeOfTest(int type_id, UpdateType info)
@@ -98,6 +110,11 @@ namespace MajorTestOrientation.Controllers
         #endregion
 
         #region Get by type id
+        /// <summary>
+        /// Role: All (get test by its type)
+        /// </summary>
+        /// <param name="type_id"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("type/{type_id}")]
         public async Task<IActionResult> GetByTypeOfTest(int type_id)
@@ -108,6 +125,11 @@ namespace MajorTestOrientation.Controllers
         #endregion
 
         #region Get personality result
+        /// <summary>
+        /// Role: Student (get personality group result)
+        /// </summary>
+        /// <param name="test_id"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("result/{test_id}")]
         public async Task<IActionResult> GetPersonalityGroupResult(int test_id)
@@ -119,7 +141,7 @@ namespace MajorTestOrientation.Controllers
                 throw new ErrorDetails(System.Net.HttpStatusCode.NotFound, "Don't have any result");
             }
 
-            var pGroupPoint = await _repository.Answer.GetPGroupResult(testResult);
+            var pGroupPoint = await _repository.AnswerPGroup.GetPGroupResult(testResult);
 
             pGroupPoint = await _repository.PersonalityGroup.GetName(pGroupPoint);
 
@@ -128,6 +150,11 @@ namespace MajorTestOrientation.Controllers
         #endregion
 
         #region Get major result
+        /// <summary>
+        /// Role: Student (get major result)
+        /// </summary>
+        /// <param name="test_id"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("{test_id}/major")]
         public async Task<IActionResult> GetMajorResult(int test_id)
@@ -141,7 +168,7 @@ namespace MajorTestOrientation.Controllers
                 throw new ErrorDetails(System.Net.HttpStatusCode.NotFound, "Don't have any result");
             }
 
-            var pGroupPoint = await _repository.Answer.GetPGroupResult(testResult);
+            var pGroupPoint = await _repository.AnswerPGroup.GetPGroupResult(testResult);
 
             var result = (List<MajorResult>)await _repository.MajorPgroup.GetMajorResult(pGroupPoint);
 
@@ -150,6 +177,12 @@ namespace MajorTestOrientation.Controllers
         #endregion
 
         #region Update test
+        /// <summary>
+        /// Role: Admin (update test declaration)
+        /// </summary>
+        /// <param name="test_id"></param>
+        /// <param name="info"></param>
+        /// <returns></returns>
         [HttpPut]
         [Route("{test_id}")]
         public async Task<IActionResult> UpdateTest(int test_id, UpdateTest info)

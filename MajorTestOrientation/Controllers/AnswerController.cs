@@ -24,6 +24,12 @@ namespace MajorTestOrientation.Controllers
         }
 
         #region add answer
+        /// <summary>
+        /// Role: Admin (For adding answer to test)
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="question_id"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("question/{question_id}")]
         public async Task<IActionResult> AddAnswer(NewAnswer info, int question_id)
@@ -43,8 +49,6 @@ namespace MajorTestOrientation.Controllers
                 AnswerContent = info.AnswerContent,
                 IsDeleted = false,
                 OrderIndex = info.OrderIndex,
-                PersonalityGroupId = info.PersonalityGroupId,
-                Point = info.Point,
                 QuestionId = question_id
             });
             await _repository.SaveAsync();
@@ -55,7 +59,7 @@ namespace MajorTestOrientation.Controllers
 
         #region Save result from student
         /// <summary>
-        /// Saving answer of test
+        /// Role: student (Saving list result)
         /// </summary>
         /// <param name="test_id">Id of test have answer</param>
         /// <param name="answersId"></param>
@@ -94,6 +98,11 @@ namespace MajorTestOrientation.Controllers
         #endregion
 
         #region Get answer by question id
+        /// <summary>
+        /// Role: All (Admin to update answer, student for get answer of test)
+        /// </summary>
+        /// <param name="question_id"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("question/{question_id}")]
         public async Task<IActionResult> GetByQuestionId(int question_id)
@@ -104,6 +113,12 @@ namespace MajorTestOrientation.Controllers
         #endregion
 
         #region Update answer
+        /// <summary>
+        /// Role: Admin (Update answer by id)
+        /// </summary>
+        /// <param name="answer_id"></param>
+        /// <param name="info"></param>
+        /// <returns></returns>
         [HttpPut]
         [Route("{answer_id}")]
         public async Task<IActionResult> UpdateAnswer(int answer_id, UpdateAnswer info)
@@ -115,10 +130,6 @@ namespace MajorTestOrientation.Controllers
             {
                 var question = await _repository.Question.GetMBTIQuestion(info.QuestionId);
                 if (question == null) throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, "Invalid question");
-            }
-            if (info.Point < 0)
-            {
-                throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, "Invalid point");
             }
 
             await _repository.Answer.Update(answer_id, info);

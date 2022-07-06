@@ -20,6 +20,7 @@ namespace Repositories.Repositories
         private ITestTypeRepository _type;
         private IPersonalityGroupRepository _pGroup;
         private IMajorPGroupRepository _pGroupMajor;
+        private IPgroupAnswerRepository _pGroupAnswer;
         private readonly DataContext _context;
 
         public ISysUserRepository SysUser
@@ -127,6 +128,18 @@ namespace Repositories.Repositories
                     _pGroupMajor = new MajorPGroupRepository(_context);
                 }
                 return _pGroupMajor;
+            }
+        }
+
+        public IPgroupAnswerRepository AnswerPGroup
+        {
+            get
+            {
+                if(_pGroupAnswer == null)
+                {
+                    _pGroupAnswer = new PgroupAnswerRepository(_context);
+                }
+                return _pGroupAnswer;
             }
         }
 

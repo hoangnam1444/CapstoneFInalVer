@@ -22,6 +22,12 @@ namespace MajorTestOrientation.Controllers
         }
 
         #region Create test question
+        /// <summary>
+        /// Role: Admin (add new question to test)
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="test_id"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("{test_id}")]
         public async Task<IActionResult> CreateQuestion(CreateQuestion info, int test_id)
@@ -48,7 +54,7 @@ namespace MajorTestOrientation.Controllers
 
         #region Get MBTI test questionIdList
         /// <summary>
-        /// Get all id of mbti question
+        /// Role: student (Get all id of mbti question)
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -62,7 +68,7 @@ namespace MajorTestOrientation.Controllers
 
         #region Get MBTI test question
         /// <summary>
-        /// Get mbti question
+        /// Role: Student (Get mbti question)
         /// </summary>
         /// <param name="id">index of question</param>
         /// <returns></returns>
@@ -83,7 +89,7 @@ namespace MajorTestOrientation.Controllers
 
         #region Get Holland test
         /// <summary>
-        /// Get all holland question
+        /// Role: Student (Get all holland question)
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -97,6 +103,12 @@ namespace MajorTestOrientation.Controllers
         #endregion
 
         #region Get question by test id
+        /// <summary>
+        /// Role: Admin (Get question by test id)
+        /// </summary>
+        /// <param name="param"></param>
+        /// <param name="test_id"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("{test_id}")]
         public async Task<IActionResult> GetByTestId([FromQuery]PagingParameters param, int test_id)
@@ -108,7 +120,7 @@ namespace MajorTestOrientation.Controllers
 
         #region Update question
         /// <summary>
-        /// Update question (Role: Admin)
+        /// Role: Admin (update question)
         /// </summary>
         /// <param name="info"></param>
         /// <param name="question_id"></param>
