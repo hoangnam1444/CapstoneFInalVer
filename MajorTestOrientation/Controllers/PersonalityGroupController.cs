@@ -22,7 +22,7 @@ namespace MajorTestOrientation.Controllers
 
         #region Get all p group
         /// <summary>
-        /// Get all personality group
+        /// Role: Admin (Get all personality group)
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -34,6 +34,12 @@ namespace MajorTestOrientation.Controllers
         #endregion
 
         #region Update personality group
+        /// <summary>
+        /// Role: Admin (Update personality group information)
+        /// </summary>
+        /// <param name="pgroup_id"></param>
+        /// <param name="info"></param>
+        /// <returns></returns>
         [HttpPut]
         [Route("{pgroup_id}")]
         public async Task<IActionResult> UpdatePGroup(int pgroup_id, UpdatePGroup info)

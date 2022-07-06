@@ -25,7 +25,7 @@ namespace Repositories.Repositories
         public async Task<List<HollandQuestion>> GetAnswerById(List<HollandQuestion> info)
         {
             var result = new List<HollandQuestion>();
-            foreach(var question in info)
+            foreach (var question in info)
             {
                 var answer = await FindByCondition(x => x.QuestionId == question.Id, false).ToListAsync();
                 question.Answers = answer.Select(x => new AnswerInTest
@@ -46,8 +46,6 @@ namespace Repositories.Repositories
                 AnswerContent = x.AnswerContent,
                 AnswerId = x.AnswerId,
                 OrderIndex = x.OrderIndex,
-                PersonalityGroupId = x.PersonalityGroupId,
-                Point = x.Point
             }).ToList();
         }
 
@@ -64,42 +62,20 @@ namespace Repositories.Repositories
             return result;
         }
 
-        public async Task<List<PerGroup>> GetPGroupResult(List<TestResults> testResult)
-        {
-            var answersId = testResult.Select(x => x.AnswerId).ToList();
-
-            var answer = await FindByCondition(x => answersId.Contains(x.AnswerId), false).GroupBy(x => x.PersonalityGroupId)
-                .Select(x => new PerGroup
-                {
-                    AveragePoint = x.Average(y => y.Point),
-                    Id = x.Key
-                }).ToListAsync();
-
-            return answer;
-        }
-
         public async Task Update(int answer_id, UpdateAnswer info)
         {
             var answer = await FindByCondition(x => x.AnswerId == answer_id, true).FirstOrDefaultAsync();
-            if(answer != null)
+            if (answer != null)
             {
-                if(info.AnswerContent != null && info.AnswerContent != string.Empty)
+                if (info.AnswerContent != null && info.AnswerContent != string.Empty)
                 {
                     answer.AnswerContent = info.AnswerContent;
                 }
-                if(info.PersonalityGroupId > 0)
-                {
-                    answer.PersonalityGroupId = info.PersonalityGroupId;
-                }
-                if(info.Point > 0)
-                {
-                    answer.Point = info.Point;
-                }
-                if(info.QuestionId > 0)
+                if (info.QuestionId > 0)
                 {
                     answer.QuestionId = info.QuestionId;
                 }
-                if(info.OrderIndex > 0)
+                if (info.OrderIndex > 0)
                 {
                     answer.OrderIndex = info.OrderIndex;
                 }

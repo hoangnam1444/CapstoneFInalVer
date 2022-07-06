@@ -12,16 +12,17 @@ namespace Entities.Models
         public TestPersonalityGroups()
         {
             MajorRefPersonality = new HashSet<MajorRefPersonality>();
-            TestAnswers = new HashSet<TestAnswers>();
+            PGroupAnswers = new HashSet<AnswersPGroups>();
         }
 
         public int PersonalityGroupId { get; set; }
         public string PersonalityGroupName { get; set; }
+        public string Description { get; set; }
         public int TestTypeId { get; set; }
         public bool? IsDeleted { get; set; }
 
         public virtual TestTypes TestType { get; set; }
         public virtual ICollection<MajorRefPersonality> MajorRefPersonality { get; set; }
-        public virtual ICollection<TestAnswers> TestAnswers { get; set; }
+        public virtual ICollection<AnswersPGroups> PGroupAnswers { get; set; }
     }
 }

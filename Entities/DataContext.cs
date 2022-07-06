@@ -28,6 +28,7 @@ namespace Entities
         public virtual DbSet<SecurityCode> SecurityCode { get; set; }
         public virtual DbSet<SysUserRole> SysUserRole { get; set; }
         public virtual DbSet<TestAnswers> TestAnswers { get; set; }
+        public virtual DbSet<AnswersPGroups> AnswersPerGroups { get; set; }
         public virtual DbSet<TestDeclarations> TestDeclarations { get; set; }
         public virtual DbSet<TestPersonalityGroups> TestPersonalityGroups { get; set; }
         public virtual DbSet<TestQuestions> TestQuestions { get; set; }
@@ -292,21 +293,26 @@ namespace Entities
                     .IsRequired()
                     .HasDefaultValueSql("('0')");
 
-                entity.Property(e => e.PersonalityGroupId).HasColumnName("PersonalityGroupID");
-
                 entity.Property(e => e.QuestionId).HasColumnName("QuestionID");
-
-                entity.HasOne(d => d.PersonalityGroup)
-                    .WithMany(p => p.TestAnswers)
-                    .HasForeignKey(d => d.PersonalityGroupId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FKTest_Answe19835");
 
                 entity.HasOne(d => d.Question)
                     .WithMany(p => p.TestAnswers)
                     .HasForeignKey(d => d.QuestionId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKTest_Answe601746");
+            });
+
+            modelBuilder.Entity<AnswersPGroups>(entity =>
+            {
+                entity.HasOne(d => d.Answer)
+                .WithMany(p => p.AnswerPGroups)
+                .HasForeignKey(d => d.AnswerId)
+                .HasConstraintName("FKAnswer_PGroup");
+
+                entity.HasOne(d => d.PGroup)
+                .WithMany(p => p.PGroupAnswers)
+                .HasForeignKey(d => d.PGroupId)
+                .HasConstraintName("FKPGroup_Answer");
             });
 
             modelBuilder.Entity<TestDeclarations>(entity =>

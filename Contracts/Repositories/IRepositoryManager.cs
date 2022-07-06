@@ -13,6 +13,7 @@ namespace Contracts.Repositories
         ITestTypeRepository TestType { get; }
         IPersonalityGroupRepository PersonalityGroup { get; }
         IMajorPGroupRepository MajorPgroup { get; }
+        IPgroupAnswerRepository AnswerPGroup { get; }
         Task SaveAsync();
     }
 }

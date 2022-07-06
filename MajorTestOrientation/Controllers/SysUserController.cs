@@ -33,7 +33,7 @@ namespace MajorTestOrientation.Controllers
 
         #region Login by gg mail
         /// <summary>
-        /// Login by gmail
+        /// Role: Student (Login by gmail)
         /// </summary>
         /// <param name="firebaseToken"></param>
         /// <returns></returns>
@@ -87,7 +87,7 @@ namespace MajorTestOrientation.Controllers
 
         #region Login by username and password
         /// <summary>
-        /// Use for admin login
+        /// Role: Admin (Use for admin login)
         /// </summary>
         /// <param name="info"></param>
         /// <returns></returns>
@@ -117,7 +117,7 @@ namespace MajorTestOrientation.Controllers
 
         #region Activate account
         /// <summary>
-        /// Avtivate account by security code
+        /// Role: Student (Activate account by security code)
         /// </summary>
         /// <param name="info"></param>
         /// <returns></returns>
@@ -142,7 +142,7 @@ namespace MajorTestOrientation.Controllers
 
         #region Update grade and GPA
         /// <summary>
-        /// Update gpa and grade after first login
+        /// Role: Student (Update gpa and grade after first login)
         /// </summary>
         /// <param name="info"></param>
         /// <returns></returns>
