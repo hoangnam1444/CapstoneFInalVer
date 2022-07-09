@@ -1,0 +1,13 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Entities.DTOs
+{
+    public class AdminUpdateInfo
+    {
+        public int AdminId { get; set; }
+        public string Name { get; set; }
+        public string ImagePath { get; set; }
+    }
+}
