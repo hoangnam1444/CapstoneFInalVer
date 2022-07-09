@@ -184,5 +184,43 @@ namespace MajorTestOrientation.Controllers
         }
         #endregion
 
+        #region Get all sys user
+        /// <summary>
+        /// Role: Admin (get all sys_user)
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> GetAllUser()
+        {
+            var role = _userAccessor.GetAccountRole();
+            if (role != 2)
+                throw new ErrorDetails(HttpStatusCode.BadRequest, "Don't have permission");
+
+            var result = await _repository.SysUser.GetAllSysUser();
+
+            return Ok(result);
+        }
+        #endregion
+
+        #region Get user detail
+        /// <summary>
+        /// Role: Admin (Get user detail)
+        /// </summary>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("{user_id}/detail")]
+        public async Task<IActionResult> GetUserDetail(int user_id)
+        {
+            var role = _userAccessor.GetAccountRole();
+            if (role != 2)
+                throw new ErrorDetails(HttpStatusCode.BadRequest, "Don't have permission");
+
+            var result = await _repository.SysUser.GetUserDetail(user_id);
+
+            return Ok(result);
+        }
+        #endregion
+
     }
 }
