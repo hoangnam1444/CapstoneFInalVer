@@ -13,5 +13,6 @@ namespace Contracts.Repositories
         Task Update(int pgroup_id, UpdatePGroup info);
         Task<TestPersonalityGroups> GetById(int id);
         Task<List<PerGroup>> GetName(List<PerGroup> pGroupPoint);
+        Task<PGroupDetail> GetDetailById(int id);
     }
 }

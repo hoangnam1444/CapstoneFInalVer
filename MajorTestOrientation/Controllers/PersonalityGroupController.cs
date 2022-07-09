@@ -59,5 +59,23 @@ namespace MajorTestOrientation.Controllers
             return Ok("Save changes success");
         }
         #endregion
+
+        #region Get detail by id
+        /// <summary>
+        /// Role: User (Get personality group detail)
+        /// </summary>
+        /// <param name="pgroup_id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("{pgroup_id}/detail")]
+        public async Task<IActionResult> GetDetailPerGroup(int pgroup_id)
+        {
+            var result = await _repository.PersonalityGroup.GetDetailById(pgroup_id);
+
+            if (result == null) throw new ErrorDetails(System.Net.HttpStatusCode.NotFound, "Invalid Id or this group is deleted");
+
+            return Ok(result);
+        }
+        #endregion
     }
 }

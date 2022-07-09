@@ -44,6 +44,20 @@ namespace Repositories.Repositories
             return await FindByCondition(x => x.PersonalityGroupId == id && x.IsDeleted == false, false).FirstOrDefaultAsync();
         }
 
+        public async Task<PGroupDetail> GetDetailById(int id)
+        {
+            var pGroup = await FindByCondition(x => x.PersonalityGroupId == id && x.IsDeleted == false, false).FirstOrDefaultAsync();
+
+            if (pGroup == null) return null;
+
+            return new PGroupDetail
+            {
+                Description = pGroup.Description,
+                Id = pGroup.PersonalityGroupId,
+                Name = pGroup.PersonalityGroupName
+            };
+        }
+
         public async Task<List<PerGroup>> GetName(List<PerGroup> pGroupPoint)
         {
             var result = new List<PerGroup>();
