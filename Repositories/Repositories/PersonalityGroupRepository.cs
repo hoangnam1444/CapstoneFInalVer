@@ -63,7 +63,9 @@ namespace Repositories.Repositories
             var result = new List<PerGroup>();
             foreach (var group in pGroupPoint)
             {
-                group.Name = await FindByCondition(x => x.PersonalityGroupId == group.Id, false).Select(x => x.PersonalityGroupName).FirstOrDefaultAsync();
+                var pGroup = await FindByCondition(x => x.PersonalityGroupId == group.Id, false).FirstOrDefaultAsync();
+                group.Name = pGroup.PersonalityGroupName;
+                group.Description = pGroup.Description;
                 result.Add(group);
             }
             return result;
