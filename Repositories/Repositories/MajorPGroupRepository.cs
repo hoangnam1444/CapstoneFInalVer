@@ -17,6 +17,21 @@ namespace Repositories.Repositories
         {
         }
 
+        public async Task<List<MajorResult>> GetByGroupId(int group_id)
+        {
+            var majors = await FindByCondition(x => x.PersonalityGroupId == group_id, false)
+                .Include(x => x.Major)
+                .Select(x => new MajorResult
+                {
+                    MajorId = x.MajorId,
+                    Description = x.Major.MajorDetail,
+                    MajorName = x.Major.MajorName
+                })
+                .ToListAsync();
+
+            return majors;
+        }
+
         public async Task<List<MajorResult>> GetMajorResult(List<PerGroup> pGroupPoint)
         {
             var result = new List<MajorResult>();
@@ -30,7 +45,8 @@ namespace Repositories.Repositories
                     result = major.Select(x => new MajorResult
                     {
                         MajorId = x.MajorId,
-                        MajorName = x.Major.MajorName
+                        MajorName = x.Major.MajorName,
+                        Description = x.Major.MajorDetail
                     }).ToList();
                 }
             }

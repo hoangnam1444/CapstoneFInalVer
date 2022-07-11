@@ -8,5 +8,6 @@ namespace Entities.DTOs
     {
         public int MajorId { get; set; }
         public string MajorName { get; set; }
+        public string Description { get; set; } 
     }
 }
