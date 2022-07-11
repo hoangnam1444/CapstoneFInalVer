@@ -7,5 +7,6 @@ namespace Contracts.Repositories
     public interface IMajorPGroupRepository
     {
         Task<List<MajorResult>> GetMajorResult(List<PerGroup> pGroupPoint);
+        Task<List<MajorResult>> GetByGroupId(int group_id);
     }
 }

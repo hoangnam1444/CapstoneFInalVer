@@ -19,6 +19,7 @@ namespace Entities.Models
 
         public int MajorId { get; set; }
         public string MajorName { get; set; }
+        public string MajorDetail { get; set; }
         public bool? IsDeleted { get; set; }
 
         public virtual ICollection<CollegeRefMajor> CollegeRefMajor { get; set; }
