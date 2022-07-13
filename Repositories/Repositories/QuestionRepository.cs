@@ -22,6 +22,7 @@ namespace Repositories.Repositories
         {
             var questions = await FindByCondition(x => x.TestId == 1, false).OrderBy(x => x.OrderIndex).ToListAsync();
             var result = questions.Select(x => x.QuestionId).ToList();
+            result.Sort();
             return result;
         }
 
