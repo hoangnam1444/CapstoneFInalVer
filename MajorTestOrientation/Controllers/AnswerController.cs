@@ -112,6 +112,22 @@ namespace MajorTestOrientation.Controllers
         }
         #endregion
 
+        #region Get answer detail
+        /// <summary>
+        /// Role: Admin (get answer after update)
+        /// </summary>
+        /// <param name="answer_id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("{answer_id}/detail")]
+        public async Task<IActionResult> GetQuestionDetail(int answer_id)
+        {
+            var result = await _repository.Answer.GetDetail(answer_id);
+
+            return Ok(result);
+        }
+        #endregion
+
         #region Update answer
         /// <summary>
         /// Role: Admin (Update answer by id)

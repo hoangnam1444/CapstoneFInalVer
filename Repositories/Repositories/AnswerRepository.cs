@@ -49,6 +49,18 @@ namespace Repositories.Repositories
             }).ToList();
         }
 
+        public async Task<AnswerOfQuestion> GetDetail(int answer_id)
+        {
+            var answer = await FindByCondition(x => x.AnswerId == answer_id, false).FirstOrDefaultAsync();
+
+            return new AnswerOfQuestion
+            {
+                AnswerId = answer.AnswerId,
+                AnswerContent = answer.AnswerContent,
+                OrderIndex = answer.OrderIndex
+            };
+        }
+
         public async Task<List<AnswerInTest>> GetMbtiAnswer(int questionId)
         {
             var answers = await FindByCondition(x => x.QuestionId == questionId, false).ToListAsync();
