@@ -3,6 +3,7 @@ using Contracts.Repositories;
 using Entities.DTOs;
 using Entities.Models;
 using Entities.RequestFeature;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -58,6 +59,7 @@ namespace MajorTestOrientation.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [AllowAnonymous]
         [Route("all_mbti_id")]
         public async Task<IActionResult> GetAllMbtiQuestionId()
         {
