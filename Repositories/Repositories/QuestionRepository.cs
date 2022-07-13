@@ -41,6 +41,18 @@ namespace Repositories.Repositories
             };   
         }
 
+        public async Task<QuestionOfTest> GetDetail(int question_id)
+        {
+            var question = await FindByCondition(x => x.QuestionId == question_id, false).FirstOrDefaultAsync();
+
+            return new QuestionOfTest
+            {
+                QuestionId = question.QuestionId,
+                OrderIndex = question.OrderIndex,
+                QuestionContent = question.QuestionContent
+            };
+        }
+
         public async Task<List<int>> GetForSavingAnswer(int test_id)
         {
             return await FindByCondition(x => x.TestId == test_id, false).Select(x => x.QuestionId).ToListAsync();
