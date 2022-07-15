@@ -16,5 +16,6 @@ namespace Contracts.Repositories
         Task AvtivateAccount(int userId);
         void Create(SysUser sysUser);
         void Update(SysUser sysUser);
+        Task<SysUser> GetById(int userId);
     }
 }

@@ -3,7 +3,6 @@ using Contracts.Repositories;
 using Entities.DTOs;
 using Entities.Models;
 using Entities.RequestFeature;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -59,7 +58,6 @@ namespace MajorTestOrientation.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [AllowAnonymous]
         [Route("all_mbti_id")]
         public async Task<IActionResult> GetAllMbtiQuestionId()
         {
@@ -116,22 +114,6 @@ namespace MajorTestOrientation.Controllers
         public async Task<IActionResult> GetByTestId([FromQuery]PagingParameters param, int test_id)
         {
             var result = await _repository.Question.GetByTestId(test_id, param);
-            return Ok(result);
-        }
-        #endregion
-
-        #region Get question detail
-        /// <summary>
-        /// Role: Admin (get question after update)
-        /// </summary>
-        /// <param name="question_id"></param>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("{question_id}/detail")]
-        public async Task<IActionResult> GetQuestionDetail(int question_id)
-        {
-            var result = await _repository.Question.GetDetail(question_id);
-
             return Ok(result);
         }
         #endregion

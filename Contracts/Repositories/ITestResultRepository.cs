@@ -10,5 +10,6 @@ namespace Contracts.Repositories
         Task<List<TestResults>> GetForPGroupResult(int test_id, int userId);
         Task UpdateLastAnswer(int answerId, int userId);
         Task CreateResult(TestResults testResults);
+        Task<List<int>> GetAllLastRecord();
     }
 }

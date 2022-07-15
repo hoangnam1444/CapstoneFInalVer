@@ -176,6 +176,33 @@ namespace MajorTestOrientation.Controllers
         }
         #endregion
 
+        #region Statistic personality group
+        /// <summary>
+        /// Role: Admin (Statistic personality group base on answer user submit)
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("personality_gorup/statistic")]
+        public async Task<IActionResult> StatisticPGroupResult()
+        {
+            var role = _userAccessor.GetAccountRole();
+            if (role != 2) throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, "Don't have permission");
+
+            var answersId = await _repository.TestResult.GetAllLastRecord();
+
+            var result = await _repository.AnswerPGroup.GetStatistic(answersId);
+
+            result = await _repository.PersonalityGroup.GetInfo(result);
+
+            result.Sort(delegate(PGroupStatistic x, PGroupStatistic y) 
+            {
+                return x.AvgPoint > y.AvgPoint ? -1 : x.AvgPoint == y.AvgPoint ? 0 : 1;
+            });
+
+            return Ok(result);
+        }
+        #endregion
+
         #region Update test
         /// <summary>
         /// Role: Admin (update test declaration)

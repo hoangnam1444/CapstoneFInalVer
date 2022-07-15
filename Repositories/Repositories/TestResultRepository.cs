@@ -3,6 +3,7 @@ using Entities;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Repositories.Repositories
@@ -31,6 +32,11 @@ namespace Repositories.Repositories
             }
 
             Create(testResults);
+        }
+
+        public async Task<List<int>> GetAllLastRecord()
+        {
+            return await FindByCondition(x => x.IsLast == true, false).Select(x => x.AnswerId).ToListAsync();
         }
 
         public async Task<List<TestResults>> GetForPGroupResult(int test_id, int userId)

@@ -14,6 +14,5 @@ namespace Contracts.Repositories
         Task Update(int answer_id, UpdateAnswer info);
         void Create(TestAnswers answer);
         Task<List<HollandQuestion>> GetAnswerById(List<HollandQuestion> result);
-        Task<AnswerOfQuestion> GetDetail(int answer_id);
     }
 }

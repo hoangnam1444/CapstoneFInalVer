@@ -58,6 +58,22 @@ namespace Repositories.Repositories
             };
         }
 
+        public async Task<List<PGroupStatistic>> GetInfo(List<PGroupStatistic> input)
+        {
+            var result = new List<PGroupStatistic>();
+
+            foreach(var item in input)
+            {
+                var pGroup = await FindByCondition(x => x.PersonalityGroupId == item.GroupId, false).FirstOrDefaultAsync();
+
+                item.GroupName = pGroup.PersonalityGroupName;
+                item.Description = pGroup.Description;
+
+                result.Add(item);
+            }
+            return result;
+        }
+
         public async Task<List<PerGroup>> GetName(List<PerGroup> pGroupPoint)
         {
             var result = new List<PerGroup>();

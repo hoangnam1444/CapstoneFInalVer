@@ -10,5 +10,6 @@ namespace Contracts.Repositories
     public interface IPgroupAnswerRepository
     {
         Task<List<PerGroup>> GetPGroupResult(List<TestResults> testResult);
+        Task<List<PGroupStatistic>> GetStatistic(List<int> answerIds);
     }
 }
