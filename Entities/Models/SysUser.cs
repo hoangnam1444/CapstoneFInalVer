@@ -14,6 +14,8 @@ namespace Entities.Models
             TestResults = new HashSet<TestResults>();
             UserLearningPath = new HashSet<UserLearningPath>();
             VcGuidance = new HashSet<VcGuidance>();
+            SubjectGroups = new HashSet<UserSubjectGroup>();
+            Subjects = new HashSet<UserSubject>();
         }
 
         public int UserId { get; set; }
@@ -42,5 +44,7 @@ namespace Entities.Models
         public virtual ICollection<TestResults> TestResults { get; set; }
         public virtual ICollection<UserLearningPath> UserLearningPath { get; set; }
         public virtual ICollection<VcGuidance> VcGuidance { get; set; }
+        public virtual ICollection<UserSubjectGroup> SubjectGroups { get; set; }
+        public virtual ICollection<UserSubject> Subjects { get; set; }
     }
 }

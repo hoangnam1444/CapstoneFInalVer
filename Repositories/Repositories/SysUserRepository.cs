@@ -63,6 +63,11 @@ namespace Repositories.Repositories
             return result;
         }
 
+        public async Task<SysUser> GetById(int userId)
+        {
+            return await FindByCondition(x => x.UserId == userId, false).FirstOrDefaultAsync();
+        }
+
         public async Task<SysUser> GetToUpdateGrade(int id)
         {
             return await FindByCondition(x => x.UserId == id, false).FirstOrDefaultAsync();

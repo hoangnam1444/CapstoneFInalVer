@@ -37,6 +37,13 @@ namespace Entities
         public virtual DbSet<UserLearningPath> UserLearningPath { get; set; }
         public virtual DbSet<VcGuidance> VcGuidance { get; set; }
 
+        public virtual DbSet<MajorSubjectGroup> MajorSubjectGroup { get; set; }
+        public virtual DbSet<Subject> Subject { get; set; }
+        public virtual DbSet<SubjectGroup> SubjectGroup { get; set; }
+        public virtual DbSet<SubjectGroupSubject> SubjectGroupSubject { get; set; }
+        public virtual DbSet<UserSubject> UserSubject { get; set; }
+        public virtual DbSet<UserSubjectGroup> UserSubjectGroups { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -47,6 +54,82 @@ namespace Entities
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<MajorSubjectGroup>(entity =>
+            {
+                entity.HasKey(e => new { e.MajorId, e.SubjectGroupId });
+
+                entity.ToTable("Major_SubjectGroup");
+
+                entity.HasOne(d => d.Major)
+                    .WithMany(p => p.SubjectGroups)
+                    .HasForeignKey(d => d.MajorId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FKMajor_SubjectGroup_Major");
+
+                entity.HasOne(d => d.SubjectGroup)
+                    .WithMany(p => p.Majors)
+                    .HasForeignKey(d => d.SubjectGroupId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FKMajor_SubjectGroup_SubjectGroup");
+            });
+
+            modelBuilder.Entity<SubjectGroupSubject>(entity =>
+            {
+                entity.HasKey(e => new { e.GroupSubjectId, e.SubjectId });
+
+                entity.ToTable("Subject_SubjectGroup");
+
+                entity.HasOne(d => d.SubjectGroup)
+                    .WithMany(p => p.Subjects)
+                    .HasForeignKey(d => d.GroupSubjectId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FKSubject_SubjectGroup_SubjectGroup");
+
+                entity.HasOne(d => d.Subject)
+                    .WithMany(p => p.SubjectGroups)
+                    .HasForeignKey(d => d.SubjectId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FKSubject_SubjectGroup_Subject");
+            });
+
+            modelBuilder.Entity<UserSubject>(entity =>
+            {
+                entity.HasKey(e => new { e.UserId, e.SubjectId });
+
+                entity.ToTable("Subject_User");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Subjects)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FKSubject_User_User");
+
+                entity.HasOne(d => d.Subject)
+                    .WithMany(p => p.Users)
+                    .HasForeignKey(d => d.SubjectId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FKSubject_User_Subject");
+            });
+
+            modelBuilder.Entity<UserSubjectGroup>(entity =>
+            {
+                entity.HasKey(e => new { e.UserId, e.SubjectGroupId });
+
+                entity.ToTable("SubjectGroup_User");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.SubjectGroups)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FKSubjectGroup_User_User");
+
+                entity.HasOne(d => d.SubjectGroup)
+                    .WithMany(p => p.Users)
+                    .HasForeignKey(d => d.SubjectGroupId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FKSubjectGroup_User_Subject");
+            });
+
             modelBuilder.Entity<CollegeRefMajor>(entity =>
             {
                 entity.HasKey(e => new { e.MajorId, e.CollegeId })
@@ -88,13 +171,10 @@ namespace Entities
 
                 entity.Property(e => e.CollegeTypeId).HasColumnName("CollegeTypeID");
 
-                entity.Property(e => e.FromGpa).HasColumnName("FromGPA");
-
                 entity.Property(e => e.IsDeleted)
                     .IsRequired()
                     .HasDefaultValueSql("('0')");
 
-                entity.Property(e => e.ToGpa).HasColumnName("ToGPA");
             });
 
             modelBuilder.Entity<LearningPathDetails>(entity =>

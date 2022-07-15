@@ -18,6 +18,5 @@ namespace Contracts.Repositories
         Task<Pagination<QuestionOfTest>> GetByTestId(int test_id, PagingParameters param);
         void Create(TestQuestions question);
         Task<List<int>> GetForSavingAnswer(int test_id);
-        Task<QuestionOfTest> GetDetail(int question_id);
     }
 }

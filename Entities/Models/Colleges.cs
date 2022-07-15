@@ -17,8 +17,6 @@ namespace Entities.Models
 
         public int CollegeId { get; set; }
         public string CollegeName { get; set; }
-        public float ToGpa { get; set; }
-        public float FromGpa { get; set; }
         public bool? IsDeleted { get; set; }
         public int CollegeTypeId { get; set; }
 

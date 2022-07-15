@@ -222,5 +222,27 @@ namespace MajorTestOrientation.Controllers
         }
         #endregion
 
+        #region Disale/Enable user
+        /// <summary>
+        /// Role: Admin (Disable/Enable user)
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        [HttpPut]
+        public async Task<IActionResult> DisableEnableUser(DisEnUser info)
+        {
+            var role = _userAccessor.GetAccountRole();
+            if (role != 2)
+                throw new ErrorDetails(HttpStatusCode.BadRequest, "Don't have permission");
+            var user = await _repository.SysUser.GetById(info.UserId);
+            if (user == null) throw new ErrorDetails(HttpStatusCode.BadRequest, "Invalid user id");
+
+            user.IsLocked = info.EnbDisable;
+            _repository.SysUser.Update(user);
+            await _repository.SaveAsync();
+
+            return Ok("Save changes success");
+        }
+        #endregion
     }
 }

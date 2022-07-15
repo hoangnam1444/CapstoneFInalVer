@@ -22,7 +22,6 @@ namespace Repositories.Repositories
         {
             var questions = await FindByCondition(x => x.TestId == 1, false).OrderBy(x => x.OrderIndex).ToListAsync();
             var result = questions.Select(x => x.QuestionId).ToList();
-            result.Sort();
             return result;
         }
 
@@ -40,18 +39,6 @@ namespace Repositories.Repositories
                 PageSize = param.PageSize,
                 PageNumber = param.PageNumber
             };   
-        }
-
-        public async Task<QuestionOfTest> GetDetail(int question_id)
-        {
-            var question = await FindByCondition(x => x.QuestionId == question_id, false).FirstOrDefaultAsync();
-
-            return new QuestionOfTest
-            {
-                QuestionId = question.QuestionId,
-                OrderIndex = question.OrderIndex,
-                QuestionContent = question.QuestionContent
-            };
         }
 
         public async Task<List<int>> GetForSavingAnswer(int test_id)

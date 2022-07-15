@@ -14,5 +14,6 @@ namespace Contracts.Repositories
         Task<TestPersonalityGroups> GetById(int id);
         Task<List<PerGroup>> GetName(List<PerGroup> pGroupPoint);
         Task<PGroupDetail> GetDetailById(int id);
+        Task<List<PGroupStatistic>> GetInfo(List<PGroupStatistic> result);
     }
 }

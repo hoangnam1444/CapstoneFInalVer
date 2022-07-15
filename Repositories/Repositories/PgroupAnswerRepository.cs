@@ -29,5 +29,17 @@ namespace Repositories.Repositories
 
             return answer;
         }
+
+        public async Task<List<PGroupStatistic>> GetStatistic(List<int> answerIds)
+        {
+            var answer = await FindByCondition(x => answerIds.Contains(x.AnswerId), false).Include(x => x.PGroup).GroupBy(x => x.PGroupId)
+                .Select(x => new PGroupStatistic
+                {
+                    AvgPoint = x.Average(y => y.Point),
+                    GroupId = x.Key
+                }).ToListAsync();
+
+            return answer;
+        }
     }
 }
