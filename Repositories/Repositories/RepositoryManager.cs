@@ -21,6 +21,9 @@ namespace Repositories.Repositories
         private IPersonalityGroupRepository _pGroup;
         private IMajorPGroupRepository _pGroupMajor;
         private IPgroupAnswerRepository _pGroupAnswer;
+        private ISubjectGroupMajorRepository _subGroup;
+        private SubjectGroupSubjectRepository _subGroupSub;
+        private IUserSubjectGroupRepository _userSub; 
         private readonly DataContext _context;
 
         public ISysUserRepository SysUser
@@ -140,6 +143,42 @@ namespace Repositories.Repositories
                     _pGroupAnswer = new PgroupAnswerRepository(_context);
                 }
                 return _pGroupAnswer;
+            }
+        }
+
+        public ISubjectGroupMajorRepository SubjectGroupMajor
+        {
+            get
+            {
+                if(_subGroup == null)
+                {
+                    _subGroup = new SubjectGroupMajorRepository(_context);
+                }
+                return _subGroup;
+            }
+        }
+
+        public ISubjectGroupSubjectRepository SubjectGroupSubject
+        {
+            get
+            {
+                if(_subGroupSub == null)
+                {
+                    _subGroupSub = new SubjectGroupSubjectRepository(_context);
+                }
+                return _subGroupSub;
+            }
+        }
+
+        public IUserSubjectGroupRepository UserSubjectGroup
+        {
+            get
+            {
+                if (_userSub == null)
+                {
+                    _userSub = new UserSubjectGroupRepository(_context);
+                }
+                return _userSub;
             }
         }
 

@@ -35,5 +35,19 @@ namespace MajorTestOrientation.Controllers
 
             return Ok(result);
         }
+
+        /// <summary>
+        /// Role: Student (Get subject group after have result major)
+        /// </summary>
+        /// <param name="major_id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("{major_id}/subject_group")]
+        public async Task<IActionResult> GetSubjectGroup(int major_id)
+        {
+            var result = await _repository.SubjectGroupMajor.GetByMajor(major_id);
+
+            return Ok(result);
+        }
     }
 }
