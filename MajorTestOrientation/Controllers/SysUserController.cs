@@ -199,6 +199,55 @@ namespace MajorTestOrientation.Controllers
             return Ok("Save changes success");
         }
 
+        /// <summary>
+        /// Role: Student (update their profile)
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("profile")]
+        public async Task<IActionResult> UpdateProfile(UpdateProfileInfo info)
+        {
+            var userId = _userAccessor.GetAccountId();
+
+            var account = await _repository.SysUser.GetById(userId);
+
+            if(account != null)
+            {
+                if(info.FullName != string.Empty)
+                {
+                    account.FullName = info.FullName;
+                }
+                if(info.BirthDay != null)
+                {
+                    account.BirthDay = info.BirthDay;
+                }
+                if (info.Gender != null)
+                {
+                    account.Gender = info.Gender;
+                }
+                if (info.Grade != null)
+                {
+                    account.Grade = info.Grade;
+                }
+                if (info.ImagePath != null)
+                {
+                    account.ImagePath = info.ImagePath;
+                }
+                if (info.PhoneNumber != null)
+                {
+                    account.PhoneNumber = info.PhoneNumber;
+                }
+                if (info.UserName != null)
+                {
+                    account.UserName = info.UserName;
+                }
+                _repository.SysUser.Update(account);
+                await _repository.SaveAsync();
+            }
+            return Ok("Save change success");
+        }
+
         #region Get all sys user
         /// <summary>
         /// Role: Admin (get all sys_user)
