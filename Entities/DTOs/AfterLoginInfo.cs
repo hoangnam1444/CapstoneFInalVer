@@ -8,6 +8,7 @@
         public string Avatar { get; set; }
         public string Token { get; set; }
         public bool HasGrade { get; set; }
+        public bool? IsActive { get; set; }
         public int RoleId { get; set; }
     }
 }

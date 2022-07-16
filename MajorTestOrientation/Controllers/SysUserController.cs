@@ -174,15 +174,30 @@ namespace MajorTestOrientation.Controllers
             var accountId = _userAccessor.GetAccountId();
             var c_account = await _repository.SysUser.GetToUpdateGrade(accountId);
             c_account.Grade = grade;
-            c_account.Gpa10 = info.GPA10;
-            c_account.Gpa11 = info.GPA11;
-            c_account.Gpa12 = info.GPA12;
             _repository.SysUser.Update(c_account);
 
             await _repository.SaveAsync();
             return Ok("Save changes success");
         }
         #endregion
+
+        /// <summary>
+        /// Role: Student (save user select subject group)
+        /// </summary>
+        /// <param name="group_id"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("select_subject_group/{group_id}")]
+        public async Task<IActionResult> SelectSubjectGroup(int group_id)
+        {
+            _repository.UserSubjectGroup.Create(new UserSubjectGroup
+            {
+                SubjectGroupId = group_id,
+                UserId = _userAccessor.GetAccountId()
+            });
+            await _repository.SaveAsync();
+            return Ok("Save changes success");
+        }
 
         #region Get all sys user
         /// <summary>

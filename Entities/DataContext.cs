@@ -300,12 +300,6 @@ namespace Entities
                 entity.Property(e => e.Gender)
                     .HasDefaultValueSql("('0')");
 
-                entity.Property(e => e.Gpa10).HasColumnName("GPA10");
-
-                entity.Property(e => e.Gpa11).HasColumnName("GPA11");
-
-                entity.Property(e => e.Gpa12).HasColumnName("GPA12");
-
                 entity.Property(e => e.ImagePath)
                     .HasMaxLength(400)
                     .IsUnicode(false);

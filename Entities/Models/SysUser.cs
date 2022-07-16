@@ -29,9 +29,6 @@ namespace Entities.Models
         public string ImagePath { get; set; }
         public bool? IsLocked { get; set; }
         public int? Grade { get; set; }
-        public float? Gpa10 { get; set; }
-        public float? Gpa11 { get; set; }
-        public float? Gpa12 { get; set; }
         public int? AdminIdUpdate { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }

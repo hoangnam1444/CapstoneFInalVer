@@ -34,7 +34,8 @@ namespace Repositories.Repositories
                 Id = account.UserId,
                 HasGrade = account.Grade != null,
                 Username = account.UserName,
-                RoleId = account.RoleId
+                RoleId = account.RoleId,
+                IsActive = account.IsLocked
             };
         }
 
@@ -89,9 +90,6 @@ namespace Repositories.Repositories
                     Email = user.Email,
                     FullName = user.FullName,
                     Gender = user.Gender,
-                    Gpa10 = user.Gpa10,
-                    Gpa11 = user.Gpa11,
-                    Gpa12 = user.Gpa12,
                     Grade = user.Grade,
                     ImagePath = user.ImagePath,
                     IsLocked = user.IsLocked,

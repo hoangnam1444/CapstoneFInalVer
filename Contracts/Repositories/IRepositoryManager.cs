@@ -14,6 +14,9 @@ namespace Contracts.Repositories
         IPersonalityGroupRepository PersonalityGroup { get; }
         IMajorPGroupRepository MajorPgroup { get; }
         IPgroupAnswerRepository AnswerPGroup { get; }
+        ISubjectGroupMajorRepository SubjectGroupMajor { get; }
+        ISubjectGroupSubjectRepository SubjectGroupSubject { get; }
+        IUserSubjectGroupRepository UserSubjectGroup { get; }
         Task SaveAsync();
     }
 }
