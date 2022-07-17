@@ -13,10 +13,12 @@ namespace Contracts.Repositories
         ITestTypeRepository TestType { get; }
         IPersonalityGroupRepository PersonalityGroup { get; }
         IMajorPGroupRepository MajorPgroup { get; }
+        IMajorCollegesRepository MajorColleges { get; }
         IPgroupAnswerRepository AnswerPGroup { get; }
         ISubjectGroupMajorRepository SubjectGroupMajor { get; }
         ISubjectGroupSubjectRepository SubjectGroupSubject { get; }
         IUserSubjectGroupRepository UserSubjectGroup { get; }
+        IUserSubjectRepository UserSubject { get; }
         Task SaveAsync();
     }
 }

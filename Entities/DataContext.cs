@@ -20,8 +20,8 @@ namespace Entities
 
         public virtual DbSet<CollegeRefMajor> CollegeRefMajor { get; set; }
         public virtual DbSet<Colleges> Colleges { get; set; }
-        public virtual DbSet<LearningPathDetails> LearningPathDetails { get; set; }
-        public virtual DbSet<LearningPaths> LearningPaths { get; set; }
+        public virtual DbSet<LessionDetails> LessionDetails { get; set; }
+        public virtual DbSet<RecommentLession> Lessions { get; set; }
         public virtual DbSet<MajorRefPersonality> MajorRefPersonality { get; set; }
         public virtual DbSet<Majors> Majors { get; set; }
         public virtual DbSet<SysUser> SysUser { get; set; }
@@ -34,7 +34,7 @@ namespace Entities
         public virtual DbSet<TestQuestions> TestQuestions { get; set; }
         public virtual DbSet<TestResults> TestResults { get; set; }
         public virtual DbSet<TestTypes> TestTypes { get; set; }
-        public virtual DbSet<UserLearningPath> UserLearningPath { get; set; }
+        public virtual DbSet<UserLession> UserLession { get; set; }
         public virtual DbSet<VcGuidance> VcGuidance { get; set; }
 
         public virtual DbSet<MajorSubjectGroup> MajorSubjectGroup { get; set; }
@@ -169,48 +169,46 @@ namespace Entities
                     .IsRequired()
                     .HasMaxLength(50);
 
-                entity.Property(e => e.CollegeTypeId).HasColumnName("CollegeTypeID");
-
                 entity.Property(e => e.IsDeleted)
                     .IsRequired()
                     .HasDefaultValueSql("('0')");
 
             });
 
-            modelBuilder.Entity<LearningPathDetails>(entity =>
+            modelBuilder.Entity<LessionDetails>(entity =>
             {
-                entity.HasKey(e => e.LearningPathDetailId)
+                entity.HasKey(e => e.LessionDetailId)
                     .HasName("PK__Learning__40D9D999F16AA74B");
 
-                entity.Property(e => e.LearningPathDetailId).HasColumnName("LearningPathDetailID");
+                entity.Property(e => e.LessionDetailId).HasColumnName("LessionDetailID");
 
                 entity.Property(e => e.IsDeleted)
                     .IsRequired()
                     .HasDefaultValueSql("('0')");
 
-                entity.Property(e => e.LearningPathDetailContent)
+                entity.Property(e => e.LessionDetailContent)
                     .IsRequired()
                     .HasMaxLength(500);
 
-                entity.Property(e => e.LearningPathId).HasColumnName("LearningPathID");
+                entity.Property(e => e.LessionId).HasColumnName("LessionID");
 
                 entity.Property(e => e.OrderIndex).HasDefaultValueSql("((1))");
 
-                entity.HasOne(d => d.LearningPath)
-                    .WithMany(p => p.LearningPathDetails)
-                    .HasForeignKey(d => d.LearningPathId)
+                entity.HasOne(d => d.Lession)
+                    .WithMany(p => p.LessionDetails)
+                    .HasForeignKey(d => d.LessionId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKLearningPa175463");
             });
 
-            modelBuilder.Entity<LearningPaths>(entity =>
+            modelBuilder.Entity<RecommentLession>(entity =>
             {
-                entity.HasKey(e => e.LearningPathId)
+                entity.HasKey(e => e.LessionId)
                     .HasName("PK__Learning__20DCAEA1FA5B114D");
 
                 entity.ToTable("Learning_Paths");
 
-                entity.Property(e => e.LearningPathId).HasColumnName("LearningPathID");
+                entity.Property(e => e.LessionId).HasColumnName("LessionID");
 
                 entity.Property(e => e.Description).HasMaxLength(50);
 
@@ -221,7 +219,7 @@ namespace Entities
                 entity.Property(e => e.MajorId).HasColumnName("MajorID");
 
                 entity.HasOne(d => d.Major)
-                    .WithMany(p => p.LearningPaths)
+                    .WithMany(p => p.Lessions)
                     .HasForeignKey(d => d.MajorId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKLearning_P92098");
@@ -539,25 +537,25 @@ namespace Entities
                     .HasMaxLength(50);
             });
 
-            modelBuilder.Entity<UserLearningPath>(entity =>
+            modelBuilder.Entity<UserLession>(entity =>
             {
-                entity.HasKey(e => new { e.UserId, e.LearningPathId })
+                entity.HasKey(e => new { e.UserId, e.LessionId })
                     .HasName("PK__User_Lea__15850646891BC882");
 
-                entity.ToTable("User_LearningPath");
+                entity.ToTable("User_Lession");
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");
 
-                entity.Property(e => e.LearningPathId).HasColumnName("LearningPathID");
+                entity.Property(e => e.LessionId).HasColumnName("LessionID");
 
-                entity.HasOne(d => d.LearningPath)
-                    .WithMany(p => p.UserLearningPath)
-                    .HasForeignKey(d => d.LearningPathId)
+                entity.HasOne(d => d.Lession)
+                    .WithMany(p => p.UserLession)
+                    .HasForeignKey(d => d.LessionId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKUser_Learn182352");
 
                 entity.HasOne(d => d.User)
-                    .WithMany(p => p.UserLearningPath)
+                    .WithMany(p => p.UserLession)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKUser_Learn707353");

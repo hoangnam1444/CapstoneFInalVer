@@ -49,5 +49,19 @@ namespace MajorTestOrientation.Controllers
 
             return Ok(result);
         }
+
+        /// <summary>
+        /// Role: Student (get colleges by major id return in result)
+        /// </summary>
+        /// <param name="major_id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("{major_id}/Colleges")]
+        public async Task<IActionResult> GetColleges(int major_id)
+        {
+            var result = await _repository.MajorColleges.GetColleges(major_id);
+
+            return Ok(result);
+        }
     }
 }

@@ -23,7 +23,9 @@ namespace Repositories.Repositories
         private IPgroupAnswerRepository _pGroupAnswer;
         private ISubjectGroupMajorRepository _subGroup;
         private SubjectGroupSubjectRepository _subGroupSub;
-        private IUserSubjectGroupRepository _userSub; 
+        private IUserSubjectGroupRepository _userSubGroups;
+        private IUserSubjectRepository _userSubs;
+        private IMajorCollegesRepository _majorCol;
         private readonly DataContext _context;
 
         public ISysUserRepository SysUser
@@ -174,11 +176,35 @@ namespace Repositories.Repositories
         {
             get
             {
-                if (_userSub == null)
+                if (_userSubGroups == null)
                 {
-                    _userSub = new UserSubjectGroupRepository(_context);
+                    _userSubGroups = new UserSubjectGroupRepository(_context);
                 }
-                return _userSub;
+                return _userSubGroups;
+            }
+        }
+
+        public IUserSubjectRepository UserSubject
+        {
+            get
+            {
+                if(_userSubs == null)
+                {
+                    _userSubs = new UserSubjectRepository(_context);
+                }
+                return _userSubs;
+            }
+        }
+
+        public IMajorCollegesRepository MajorColleges
+        {
+            get
+            {
+                if(_majorCol == null)
+                {
+                    _majorCol = new MajorCollegesRepository(_context);
+                }
+                return _majorCol;
             }
         }
 

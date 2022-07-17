@@ -7,21 +7,21 @@ using System.Collections.Generic;
 
 namespace Entities.Models
 {
-    public partial class LearningPaths
+    public partial class RecommentLession
     {
-        public LearningPaths()
+        public RecommentLession()
         {
-            LearningPathDetails = new HashSet<LearningPathDetails>();
-            UserLearningPath = new HashSet<UserLearningPath>();
+            LessionDetails = new HashSet<LessionDetails>();
+            UserLession = new HashSet<UserLession>();
         }
 
-        public int LearningPathId { get; set; }
+        public int LessionId { get; set; }
         public int MajorId { get; set; }
         public string Description { get; set; }
         public bool? IsDeleted { get; set; }
 
         public virtual Majors Major { get; set; }
-        public virtual ICollection<LearningPathDetails> LearningPathDetails { get; set; }
-        public virtual ICollection<UserLearningPath> UserLearningPath { get; set; }
+        public virtual ICollection<LessionDetails> LessionDetails { get; set; }
+        public virtual ICollection<UserLession> UserLession { get; set; }
     }
 }

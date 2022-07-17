@@ -76,20 +76,25 @@ namespace Entities.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("CollegeName")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<int>("CollegeTypeId")
-                        .HasColumnName("CollegeTypeID")
-                        .HasColumnType("int");
+                    b.Property<string>("ImagePath")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("IsDeleted")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValueSql("('0')");
+
+                    b.Property<string>("ReferenceLink")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CollegeId")
                         .HasName("PK__Colleges__29409519E55EE24B");
@@ -97,11 +102,11 @@ namespace Entities.Migrations
                     b.ToTable("Colleges");
                 });
 
-            modelBuilder.Entity("Entities.Models.LearningPathDetails", b =>
+            modelBuilder.Entity("Entities.Models.LessionDetails", b =>
                 {
-                    b.Property<int>("LearningPathDetailId")
+                    b.Property<int>("LessionDetailId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("LearningPathDetailID")
+                        .HasColumnName("LessionDetailID")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -111,13 +116,13 @@ namespace Entities.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValueSql("('0')");
 
-                    b.Property<string>("LearningPathDetailContent")
+                    b.Property<string>("LessionDetailContent")
                         .IsRequired()
                         .HasColumnType("nvarchar(500)")
                         .HasMaxLength(500);
 
-                    b.Property<int>("LearningPathId")
-                        .HasColumnName("LearningPathID")
+                    b.Property<int>("LessionId")
+                        .HasColumnName("LessionID")
                         .HasColumnType("int");
 
                     b.Property<int>("OrderIndex")
@@ -125,42 +130,12 @@ namespace Entities.Migrations
                         .HasColumnType("int")
                         .HasDefaultValueSql("((1))");
 
-                    b.HasKey("LearningPathDetailId")
+                    b.HasKey("LessionDetailId")
                         .HasName("PK__Learning__40D9D999F16AA74B");
 
-                    b.HasIndex("LearningPathId");
+                    b.HasIndex("LessionId");
 
-                    b.ToTable("LearningPathDetails");
-                });
-
-            modelBuilder.Entity("Entities.Models.LearningPaths", b =>
-                {
-                    b.Property<int>("LearningPathId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("LearningPathID")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<bool?>("IsDeleted")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValueSql("('0')");
-
-                    b.Property<int>("MajorId")
-                        .HasColumnName("MajorID")
-                        .HasColumnType("int");
-
-                    b.HasKey("LearningPathId")
-                        .HasName("PK__Learning__20DCAEA1FA5B114D");
-
-                    b.HasIndex("MajorId");
-
-                    b.ToTable("Learning_Paths");
+                    b.ToTable("LessionDetails");
                 });
 
             modelBuilder.Entity("Entities.Models.MajorRefPersonality", b =>
@@ -228,6 +203,36 @@ namespace Entities.Migrations
                         .HasName("PK__Majors__D5B8BFB1FFCDC09F");
 
                     b.ToTable("Majors");
+                });
+
+            modelBuilder.Entity("Entities.Models.RecommentLession", b =>
+                {
+                    b.Property<int>("LessionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("LessionID")
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<bool?>("IsDeleted")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("('0')");
+
+                    b.Property<int>("MajorId")
+                        .HasColumnName("MajorID")
+                        .HasColumnType("int");
+
+                    b.HasKey("LessionId")
+                        .HasName("PK__Learning__20DCAEA1FA5B114D");
+
+                    b.HasIndex("MajorId");
+
+                    b.ToTable("Learning_Paths");
                 });
 
             modelBuilder.Entity("Entities.Models.SecurityCode", b =>
@@ -335,18 +340,6 @@ namespace Entities.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValueSql("('0')");
-
-                    b.Property<float?>("Gpa10")
-                        .HasColumnName("GPA10")
-                        .HasColumnType("real");
-
-                    b.Property<float?>("Gpa11")
-                        .HasColumnName("GPA11")
-                        .HasColumnType("real");
-
-                    b.Property<float?>("Gpa12")
-                        .HasColumnName("GPA12")
-                        .HasColumnType("real");
 
                     b.Property<int?>("Grade")
                         .HasColumnType("int");
@@ -639,22 +632,22 @@ namespace Entities.Migrations
                     b.ToTable("Test_Types");
                 });
 
-            modelBuilder.Entity("Entities.Models.UserLearningPath", b =>
+            modelBuilder.Entity("Entities.Models.UserLession", b =>
                 {
                     b.Property<int>("UserId")
                         .HasColumnName("UserID")
                         .HasColumnType("int");
 
-                    b.Property<int>("LearningPathId")
-                        .HasColumnName("LearningPathID")
+                    b.Property<int>("LessionId")
+                        .HasColumnName("LessionID")
                         .HasColumnType("int");
 
-                    b.HasKey("UserId", "LearningPathId")
+                    b.HasKey("UserId", "LessionId")
                         .HasName("PK__User_Lea__15850646891BC882");
 
-                    b.HasIndex("LearningPathId");
+                    b.HasIndex("LessionId");
 
-                    b.ToTable("User_LearningPath");
+                    b.ToTable("User_Lession");
                 });
 
             modelBuilder.Entity("Entities.Models.UserSubject", b =>
@@ -746,21 +739,12 @@ namespace Entities.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Entities.Models.LearningPathDetails", b =>
+            modelBuilder.Entity("Entities.Models.LessionDetails", b =>
                 {
-                    b.HasOne("Entities.Models.LearningPaths", "LearningPath")
-                        .WithMany("LearningPathDetails")
-                        .HasForeignKey("LearningPathId")
+                    b.HasOne("Entities.Models.RecommentLession", "Lession")
+                        .WithMany("LessionDetails")
+                        .HasForeignKey("LessionId")
                         .HasConstraintName("FKLearningPa175463")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Entities.Models.LearningPaths", b =>
-                {
-                    b.HasOne("Entities.Models.Majors", "Major")
-                        .WithMany("LearningPaths")
-                        .HasForeignKey("MajorId")
-                        .HasConstraintName("FKLearning_P92098")
                         .IsRequired();
                 });
 
@@ -791,6 +775,15 @@ namespace Entities.Migrations
                         .WithMany("Majors")
                         .HasForeignKey("SubjectGroupId")
                         .HasConstraintName("FKMajor_SubjectGroup_SubjectGroup")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Entities.Models.RecommentLession", b =>
+                {
+                    b.HasOne("Entities.Models.Majors", "Major")
+                        .WithMany("Lessions")
+                        .HasForeignKey("MajorId")
+                        .HasConstraintName("FKLearning_P92098")
                         .IsRequired();
                 });
 
@@ -898,16 +891,16 @@ namespace Entities.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Entities.Models.UserLearningPath", b =>
+            modelBuilder.Entity("Entities.Models.UserLession", b =>
                 {
-                    b.HasOne("Entities.Models.LearningPaths", "LearningPath")
-                        .WithMany("UserLearningPath")
-                        .HasForeignKey("LearningPathId")
+                    b.HasOne("Entities.Models.RecommentLession", "Lession")
+                        .WithMany("UserLession")
+                        .HasForeignKey("LessionId")
                         .HasConstraintName("FKUser_Learn182352")
                         .IsRequired();
 
                     b.HasOne("Entities.Models.SysUser", "User")
-                        .WithMany("UserLearningPath")
+                        .WithMany("UserLession")
                         .HasForeignKey("UserId")
                         .HasConstraintName("FKUser_Learn707353")
                         .IsRequired();
