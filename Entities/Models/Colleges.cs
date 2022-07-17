@@ -17,8 +17,10 @@ namespace Entities.Models
 
         public int CollegeId { get; set; }
         public string CollegeName { get; set; }
+        public string ReferenceLink { get; set; }
+        public string Address { get; set; }
+        public string ImagePath { get; set; }
         public bool? IsDeleted { get; set; }
-        public int CollegeTypeId { get; set; }
 
         public virtual ICollection<CollegeRefMajor> CollegeRefMajor { get; set; }
         public virtual ICollection<VcGuidance> VcGuidance { get; set; }

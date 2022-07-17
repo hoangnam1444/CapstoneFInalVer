@@ -12,7 +12,7 @@ namespace Entities.Models
         public SysUser()
         {
             TestResults = new HashSet<TestResults>();
-            UserLearningPath = new HashSet<UserLearningPath>();
+            UserLession = new HashSet<UserLession>();
             VcGuidance = new HashSet<VcGuidance>();
             SubjectGroups = new HashSet<UserSubjectGroup>();
             Subjects = new HashSet<UserSubject>();
@@ -39,7 +39,7 @@ namespace Entities.Models
         public virtual SysUser UpdateAdmin { get; set; }
         public virtual SysUserRole Role { get; set; }
         public virtual ICollection<TestResults> TestResults { get; set; }
-        public virtual ICollection<UserLearningPath> UserLearningPath { get; set; }
+        public virtual ICollection<UserLession> UserLession { get; set; }
         public virtual ICollection<VcGuidance> VcGuidance { get; set; }
         public virtual ICollection<UserSubjectGroup> SubjectGroups { get; set; }
         public virtual ICollection<UserSubject> Subjects { get; set; }

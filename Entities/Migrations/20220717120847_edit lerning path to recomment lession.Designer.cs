@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Entities.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220618043258_edit role and sysuser table")]
-    partial class editroleandsysusertable
+    [Migration("20220717120847_edit lerning path to recomment lession")]
+    partial class editlerningpathtorecommentlession
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,31 @@ namespace Entities.Migrations
                 .HasAnnotation("ProductVersion", "3.1.26")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("Entities.Models.AnswersPGroups", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AnswerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PGroupId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Point")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AnswerId");
+
+                    b.HasIndex("PGroupId");
+
+                    b.ToTable("AnswersPerGroups");
+                });
 
             modelBuilder.Entity("Entities.Models.CollegeRefMajor", b =>
                 {
@@ -62,19 +87,11 @@ namespace Entities.Migrations
                         .HasColumnName("CollegeTypeID")
                         .HasColumnType("int");
 
-                    b.Property<float>("FromGpa")
-                        .HasColumnName("FromGPA")
-                        .HasColumnType("real");
-
                     b.Property<bool?>("IsDeleted")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValueSql("('0')");
-
-                    b.Property<float>("ToGpa")
-                        .HasColumnName("ToGPA")
-                        .HasColumnType("real");
 
                     b.HasKey("CollegeId")
                         .HasName("PK__Colleges__29409519E55EE24B");
@@ -118,7 +135,74 @@ namespace Entities.Migrations
                     b.ToTable("LessionDetails");
                 });
 
-            modelBuilder.Entity("Entities.Models.Lessions", b =>
+            modelBuilder.Entity("Entities.Models.MajorRefPersonality", b =>
+                {
+                    b.Property<int>("PersonalityGroupId")
+                        .HasColumnName("PersonalityGroupID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MajorId")
+                        .HasColumnName("MajorID")
+                        .HasColumnType("int");
+
+                    b.Property<bool?>("IsDeleted")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("('0')");
+
+                    b.HasKey("PersonalityGroupId", "MajorId")
+                        .HasName("PK__Major_Re__E28E6459D09867C3");
+
+                    b.HasIndex("MajorId");
+
+                    b.ToTable("Major_Ref_Personality");
+                });
+
+            modelBuilder.Entity("Entities.Models.MajorSubjectGroup", b =>
+                {
+                    b.Property<int>("MajorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SubjectGroupId")
+                        .HasColumnType("int");
+
+                    b.HasKey("MajorId", "SubjectGroupId");
+
+                    b.HasIndex("SubjectGroupId");
+
+                    b.ToTable("Major_SubjectGroup");
+                });
+
+            modelBuilder.Entity("Entities.Models.Majors", b =>
+                {
+                    b.Property<int>("MajorId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("MajorID")
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool?>("IsDeleted")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("('0')");
+
+                    b.Property<string>("MajorDetail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MajorName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.HasKey("MajorId")
+                        .HasName("PK__Majors__D5B8BFB1FFCDC09F");
+
+                    b.ToTable("Majors");
+                });
+
+            modelBuilder.Entity("Entities.Models.RecommentLession", b =>
                 {
                     b.Property<int>("LessionId")
                         .ValueGeneratedOnAdd()
@@ -148,53 +232,72 @@ namespace Entities.Migrations
                     b.ToTable("Learning_Paths");
                 });
 
-            modelBuilder.Entity("Entities.Models.MajorRefPersonality", b =>
+            modelBuilder.Entity("Entities.Models.SecurityCode", b =>
                 {
-                    b.Property<int>("PersonalityGroupId")
-                        .HasColumnName("PersonalityGroupID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MajorId")
-                        .HasColumnName("MajorID")
-                        .HasColumnType("int");
-
-                    b.Property<bool?>("IsDeleted")
-                        .IsRequired()
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValueSql("('0')");
-
-                    b.HasKey("PersonalityGroupId", "MajorId")
-                        .HasName("PK__Major_Re__E28E6459D09867C3");
-
-                    b.HasIndex("MajorId");
-
-                    b.ToTable("Major_Ref_Personality");
-                });
-
-            modelBuilder.Entity("Entities.Models.Majors", b =>
-                {
-                    b.Property<int>("MajorId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("MajorID")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool?>("IsDeleted")
-                        .IsRequired()
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("SECURITY_CODE");
+                });
+
+            modelBuilder.Entity("Entities.Models.Subject", b =>
+                {
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValueSql("('0')");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("MajorName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("MajorId")
-                        .HasName("PK__Majors__D5B8BFB1FFCDC09F");
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("Majors");
+                    b.HasKey("Id");
+
+                    b.ToTable("Subject");
+                });
+
+            modelBuilder.Entity("Entities.Models.SubjectGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SubjectGroup");
+                });
+
+            modelBuilder.Entity("Entities.Models.SubjectGroupSubject", b =>
+                {
+                    b.Property<int>("GroupSubjectId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SubjectId")
+                        .HasColumnType("int");
+
+                    b.HasKey("GroupSubjectId", "SubjectId");
+
+                    b.HasIndex("SubjectId");
+
+                    b.ToTable("Subject_SubjectGroup");
                 });
 
             modelBuilder.Entity("Entities.Models.SysUser", b =>
@@ -231,22 +334,9 @@ namespace Entities.Migrations
                         .HasMaxLength(200);
 
                     b.Property<bool?>("Gender")
-                        .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValueSql("('0')");
-
-                    b.Property<float>("Gpa10")
-                        .HasColumnName("GPA10")
-                        .HasColumnType("real");
-
-                    b.Property<float>("Gpa11")
-                        .HasColumnName("GPA11")
-                        .HasColumnType("real");
-
-                    b.Property<float>("Gpa12")
-                        .HasColumnName("GPA12")
-                        .HasColumnType("real");
 
                     b.Property<int?>("Grade")
                         .HasColumnType("int");
@@ -267,6 +357,9 @@ namespace Entities.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValueSql("('0')");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("varchar(50)")
@@ -305,7 +398,7 @@ namespace Entities.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("RoleNane")
+                    b.Property<string>("RoleName")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
@@ -338,11 +431,7 @@ namespace Entities.Migrations
                     b.Property<int>("OrderIndex")
                         .HasColumnType("int");
 
-                    b.Property<int>("PersonalityGroupId")
-                        .HasColumnName("PersonalityGroupID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Point")
+                    b.Property<int?>("PersonalityGroupId")
                         .HasColumnType("int");
 
                     b.Property<int>("QuestionId")
@@ -371,12 +460,6 @@ namespace Entities.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("date")
                         .HasDefaultValueSql("(getdate())");
-
-                    b.Property<string>("CreatedUser")
-                        .IsRequired()
-                        .HasColumnType("varchar(50)")
-                        .HasMaxLength(50)
-                        .IsUnicode(false);
 
                     b.Property<bool?>("IsActive")
                         .IsRequired()
@@ -413,6 +496,9 @@ namespace Entities.Migrations
                         .HasColumnName("PersonalityGroupID")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("IsDeleted")
                         .IsRequired()
@@ -561,6 +647,39 @@ namespace Entities.Migrations
                     b.ToTable("User_Lession");
                 });
 
+            modelBuilder.Entity("Entities.Models.UserSubject", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SubjectId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Point")
+                        .HasColumnType("float");
+
+                    b.HasKey("UserId", "SubjectId");
+
+                    b.HasIndex("SubjectId");
+
+                    b.ToTable("Subject_User");
+                });
+
+            modelBuilder.Entity("Entities.Models.UserSubjectGroup", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SubjectGroupId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "SubjectGroupId");
+
+                    b.HasIndex("SubjectGroupId");
+
+                    b.ToTable("SubjectGroup_User");
+                });
+
             modelBuilder.Entity("Entities.Models.VcGuidance", b =>
                 {
                     b.Property<int>("UserId")
@@ -585,6 +704,23 @@ namespace Entities.Migrations
                     b.ToTable("VC_Guidance");
                 });
 
+            modelBuilder.Entity("Entities.Models.AnswersPGroups", b =>
+                {
+                    b.HasOne("Entities.Models.TestAnswers", "Answer")
+                        .WithMany("AnswerPGroups")
+                        .HasForeignKey("AnswerId")
+                        .HasConstraintName("FKAnswer_PGroup")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.TestPersonalityGroups", "PGroup")
+                        .WithMany("PGroupAnswers")
+                        .HasForeignKey("PGroupId")
+                        .HasConstraintName("FKPGroup_Answer")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Entities.Models.CollegeRefMajor", b =>
                 {
                     b.HasOne("Entities.Models.Colleges", "College")
@@ -602,19 +738,10 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("Entities.Models.LessionDetails", b =>
                 {
-                    b.HasOne("Entities.Models.Lessions", "Lession")
+                    b.HasOne("Entities.Models.RecommentLession", "Lession")
                         .WithMany("LessionDetails")
                         .HasForeignKey("LessionId")
                         .HasConstraintName("FKLearningPa175463")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Entities.Models.Lessions", b =>
-                {
-                    b.HasOne("Entities.Models.Majors", "Major")
-                        .WithMany("Lessions")
-                        .HasForeignKey("MajorId")
-                        .HasConstraintName("FKLearning_P92098")
                         .IsRequired();
                 });
 
@@ -630,6 +757,54 @@ namespace Entities.Migrations
                         .WithMany("MajorRefPersonality")
                         .HasForeignKey("PersonalityGroupId")
                         .HasConstraintName("FKMajor_Ref_93769")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Entities.Models.MajorSubjectGroup", b =>
+                {
+                    b.HasOne("Entities.Models.Majors", "Major")
+                        .WithMany("SubjectGroups")
+                        .HasForeignKey("MajorId")
+                        .HasConstraintName("FKMajor_SubjectGroup_Major")
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.SubjectGroup", "SubjectGroup")
+                        .WithMany("Majors")
+                        .HasForeignKey("SubjectGroupId")
+                        .HasConstraintName("FKMajor_SubjectGroup_SubjectGroup")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Entities.Models.RecommentLession", b =>
+                {
+                    b.HasOne("Entities.Models.Majors", "Major")
+                        .WithMany("Lessions")
+                        .HasForeignKey("MajorId")
+                        .HasConstraintName("FKLearning_P92098")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Entities.Models.SecurityCode", b =>
+                {
+                    b.HasOne("Entities.Models.SysUser", "user")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Entities.Models.SubjectGroupSubject", b =>
+                {
+                    b.HasOne("Entities.Models.SubjectGroup", "SubjectGroup")
+                        .WithMany("Subjects")
+                        .HasForeignKey("GroupSubjectId")
+                        .HasConstraintName("FKSubject_SubjectGroup_SubjectGroup")
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.Subject", "Subject")
+                        .WithMany("SubjectGroups")
+                        .HasForeignKey("SubjectId")
+                        .HasConstraintName("FKSubject_SubjectGroup_Subject")
                         .IsRequired();
                 });
 
@@ -649,10 +824,8 @@ namespace Entities.Migrations
             modelBuilder.Entity("Entities.Models.TestAnswers", b =>
                 {
                     b.HasOne("Entities.Models.TestPersonalityGroups", "PersonalityGroup")
-                        .WithMany("TestAnswers")
-                        .HasForeignKey("PersonalityGroupId")
-                        .HasConstraintName("FKTest_Answe19835")
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("PersonalityGroupId");
 
                     b.HasOne("Entities.Models.TestQuestions", "Question")
                         .WithMany("TestAnswers")
@@ -717,7 +890,7 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("Entities.Models.UserLession", b =>
                 {
-                    b.HasOne("Entities.Models.Lessions", "Lession")
+                    b.HasOne("Entities.Models.RecommentLession", "Lession")
                         .WithMany("UserLession")
                         .HasForeignKey("LessionId")
                         .HasConstraintName("FKUser_Learn182352")
@@ -727,6 +900,36 @@ namespace Entities.Migrations
                         .WithMany("UserLession")
                         .HasForeignKey("UserId")
                         .HasConstraintName("FKUser_Learn707353")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Entities.Models.UserSubject", b =>
+                {
+                    b.HasOne("Entities.Models.Subject", "Subject")
+                        .WithMany("Users")
+                        .HasForeignKey("SubjectId")
+                        .HasConstraintName("FKSubject_User_Subject")
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.SysUser", "User")
+                        .WithMany("Subjects")
+                        .HasForeignKey("UserId")
+                        .HasConstraintName("FKSubject_User_User")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Entities.Models.UserSubjectGroup", b =>
+                {
+                    b.HasOne("Entities.Models.SubjectGroup", "SubjectGroup")
+                        .WithMany("Users")
+                        .HasForeignKey("SubjectGroupId")
+                        .HasConstraintName("FKSubjectGroup_User_Subject")
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.SysUser", "User")
+                        .WithMany("SubjectGroups")
+                        .HasForeignKey("UserId")
+                        .HasConstraintName("FKSubjectGroup_User_User")
                         .IsRequired();
                 });
 

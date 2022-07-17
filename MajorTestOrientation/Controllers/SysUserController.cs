@@ -152,24 +152,6 @@ namespace MajorTestOrientation.Controllers
         {
             var grade = info.Grade;
             if (grade > 12 && grade < 10) throw new ErrorDetails(HttpStatusCode.BadRequest, "Invalid grade");
-            if (info.GPA10 == null)
-            {
-                throw new ErrorDetails(HttpStatusCode.BadRequest, "GPA of grade 10 can't null");
-            }
-            else if (info.GPA11 == null)
-            {
-                if (grade != 10)
-                {
-                    throw new ErrorDetails(HttpStatusCode.BadRequest, "GPA of grade 11 can't null");
-                }
-            }
-            else if (info.GPA12 == null)
-            {
-                if (grade == 12)
-                {
-                    throw new ErrorDetails(HttpStatusCode.BadRequest, "GPA of grade 12 can't null");
-                }
-            }
 
             var accountId = _userAccessor.GetAccountId();
             var c_account = await _repository.SysUser.GetToUpdateGrade(accountId);
@@ -246,6 +228,26 @@ namespace MajorTestOrientation.Controllers
                 await _repository.SaveAsync();
             }
             return Ok("Save change success");
+        }
+
+        /// <summary>
+        /// Role: Student (add point for subject)
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("subject")]
+        public async Task<IActionResult> UpdateSubjectUser(UpdateSubjectPoint info)
+        {
+            _repository.UserSubject.Create(new UserSubject
+            {
+                Point = info.Point,
+                SubjectId = info.SubjectId,
+                UserId = _userAccessor.GetAccountId()
+            });
+            await _repository.SaveAsync();
+
+            return Ok("Save changes success");
         }
 
         #region Get all sys user

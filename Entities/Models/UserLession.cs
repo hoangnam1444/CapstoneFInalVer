@@ -7,12 +7,12 @@ using System.Collections.Generic;
 
 namespace Entities.Models
 {
-    public partial class UserLearningPath
+    public partial class UserLession
     {
         public int UserId { get; set; }
-        public int LearningPathId { get; set; }
+        public int LessionId { get; set; }
 
-        public virtual LearningPaths LearningPath { get; set; }
+        public virtual RecommentLession Lession { get; set; }
         public virtual SysUser User { get; set; }
     }
 }

@@ -4,8 +4,9 @@ using System.Text;
 
 namespace Entities.RequestFeature
 {
-    public class UpdateGradeAndGpa
+    public class UpdateSubjectPoint
     {
-        public int Grade { get; set; }
+        public int SubjectId { get; set; }
+        public double Point { get; set; }
     }
 }

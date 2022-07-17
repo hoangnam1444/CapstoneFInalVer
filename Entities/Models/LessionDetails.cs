@@ -7,14 +7,14 @@ using System.Collections.Generic;
 
 namespace Entities.Models
 {
-    public partial class LearningPathDetails
+    public partial class LessionDetails
     {
-        public int LearningPathDetailId { get; set; }
-        public int LearningPathId { get; set; }
-        public string LearningPathDetailContent { get; set; }
+        public int LessionDetailId { get; set; }
+        public int LessionId { get; set; }
+        public string LessionDetailContent { get; set; }
         public int OrderIndex { get; set; }
         public bool? IsDeleted { get; set; }
 
-        public virtual LearningPaths LearningPath { get; set; }
+        public virtual RecommentLession Lession { get; set; }
     }
 }

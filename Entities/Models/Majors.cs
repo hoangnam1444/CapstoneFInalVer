@@ -12,7 +12,7 @@ namespace Entities.Models
         public Majors()
         {
             CollegeRefMajor = new HashSet<CollegeRefMajor>();
-            LearningPaths = new HashSet<LearningPaths>();
+            Lessions = new HashSet<RecommentLession>();
             MajorRefPersonality = new HashSet<MajorRefPersonality>();
             VcGuidance = new HashSet<VcGuidance>();
             SubjectGroups = new HashSet<MajorSubjectGroup>();
@@ -24,7 +24,7 @@ namespace Entities.Models
         public bool? IsDeleted { get; set; }
 
         public virtual ICollection<CollegeRefMajor> CollegeRefMajor { get; set; }
-        public virtual ICollection<LearningPaths> LearningPaths { get; set; }
+        public virtual ICollection<RecommentLession> Lessions { get; set; }
         public virtual ICollection<MajorRefPersonality> MajorRefPersonality { get; set; }
         public virtual ICollection<VcGuidance> VcGuidance { get; set; }
         public virtual ICollection<MajorSubjectGroup> SubjectGroups { get; set; }
