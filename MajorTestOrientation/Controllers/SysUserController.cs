@@ -238,9 +238,9 @@ namespace MajorTestOrientation.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("subject")]
-        public async Task<IActionResult> UpdateSubjectUser(List<UpdateSubjectPoint> info)
+        public async Task<IActionResult> UpdateSubjectUser(SubjectSelection info)
         {
-            foreach (var item in info)
+            foreach (var item in info.ListSubject)
             {
                 _repository.UserSubject.Create(new UserSubject
                 {
