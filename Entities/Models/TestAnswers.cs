@@ -21,7 +21,6 @@ namespace Entities.Models
         public int OrderIndex { get; set; }
         public bool? IsDeleted { get; set; }
 
-        public virtual TestPersonalityGroups PersonalityGroup { get; set; }
         public virtual TestQuestions Question { get; set; }
         public virtual ICollection<TestResults> TestResults { get; set; }
         public virtual ICollection<AnswersPGroups> AnswerPGroups { get; set; }
