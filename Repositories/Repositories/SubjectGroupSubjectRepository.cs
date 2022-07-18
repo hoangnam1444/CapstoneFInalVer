@@ -27,5 +27,19 @@ namespace Repositories.Repositories
                     Name = X.Subject.Name
                 }).ToListAsync();
         }
+
+        public async Task<List<SubjectGroupReturn>> GetSubjectOfGroup(List<SubjectGroupReturn> info)
+        {
+            var result = new List<SubjectGroupReturn>();
+            foreach(var item in info)
+            {
+                var subjects = await FindByCondition(x => x.GroupSubjectId == item.Id, false)
+                    .Include(x => x.Subject)
+                    .Select(x => new SubjectReturn {Id = x.Subject.Id, Name = x.Subject.Name})
+                    .ToListAsync();
+                result.Add(item);
+            }
+            return result;
+        }
     }
 }

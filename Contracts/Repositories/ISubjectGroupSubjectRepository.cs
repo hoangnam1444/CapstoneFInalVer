@@ -9,5 +9,6 @@ namespace Contracts.Repositories
     public interface ISubjectGroupSubjectRepository
     {
         Task<List<SubjectReturn>> GetSubject(int group_id);
+        Task<List<SubjectGroupReturn>> GetSubjectOfGroup(List<SubjectGroupReturn> result);
     }
 }

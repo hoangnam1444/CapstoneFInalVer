@@ -26,6 +26,7 @@ namespace Repositories.Repositories
         private IUserSubjectGroupRepository _userSubGroups;
         private IUserSubjectRepository _userSubs;
         private IMajorCollegesRepository _majorCol;
+        private IUserMajorRepository _userMajor;
         private readonly DataContext _context;
 
         public ISysUserRepository SysUser
@@ -205,6 +206,18 @@ namespace Repositories.Repositories
                     _majorCol = new MajorCollegesRepository(_context);
                 }
                 return _majorCol;
+            }
+        }
+
+        public IUserMajorRepository MajorUser
+        {
+            get
+            {
+                if (_userMajor == null)
+                {
+                    _userMajor = new UserMajorRepository(_context);
+                }
+                return _userMajor;
             }
         }
 

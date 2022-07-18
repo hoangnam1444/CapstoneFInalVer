@@ -62,6 +62,9 @@ namespace MajorTestOrientation.Controllers
         public async Task<IActionResult> GetAllMbtiQuestionId()
         {
             var result = await _repository.Question.GetAllMbtiId();
+
+            result.Sort();
+
             return Ok(result);
         }
         #endregion
@@ -161,6 +164,11 @@ namespace MajorTestOrientation.Controllers
         }
         #endregion
 
+        /// <summary>
+        /// Get question detail
+        /// </summary>
+        /// <param name="question_id"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("{question_id}/detail")]
         public async Task<IActionResult> GetDetail(int question_id)

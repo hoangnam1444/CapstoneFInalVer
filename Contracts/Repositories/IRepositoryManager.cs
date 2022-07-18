@@ -19,6 +19,7 @@ namespace Contracts.Repositories
         ISubjectGroupSubjectRepository SubjectGroupSubject { get; }
         IUserSubjectGroupRepository UserSubjectGroup { get; }
         IUserSubjectRepository UserSubject { get; }
+        IUserMajorRepository MajorUser { get; }
         Task SaveAsync();
     }
 }
