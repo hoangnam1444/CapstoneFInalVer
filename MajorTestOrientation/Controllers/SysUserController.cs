@@ -5,6 +5,7 @@ using Entities.Models;
 using Entities.RequestFeature;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -237,14 +238,17 @@ namespace MajorTestOrientation.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("subject")]
-        public async Task<IActionResult> UpdateSubjectUser(UpdateSubjectPoint info)
+        public async Task<IActionResult> UpdateSubjectUser(List<UpdateSubjectPoint> info)
         {
-            _repository.UserSubject.Create(new UserSubject
+            foreach (var item in info)
             {
-                Point = info.Point,
-                SubjectId = info.SubjectId,
-                UserId = _userAccessor.GetAccountId()
-            });
+                _repository.UserSubject.Create(new UserSubject
+                {
+                    Point = item.Point,
+                    SubjectId = item.SubjectId,
+                    UserId = _userAccessor.GetAccountId()
+                });
+            }
             await _repository.SaveAsync();
 
             return Ok("Save changes success");
@@ -325,5 +329,12 @@ namespace MajorTestOrientation.Controllers
             return Ok("Save changes success");
         }
         #endregion
+
+        [HttpGet]
+        [Route("colleges")]
+        public async Task<IActionResult> GetCollegesOfStudent()
+        {
+            throw new ErrorDetails(HttpStatusCode.OK, "Chưa làm");
+        }
     }
 }
