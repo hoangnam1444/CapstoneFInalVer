@@ -13,6 +13,7 @@ namespace Entities.Models
         {
             CollegeRefMajor = new HashSet<CollegeRefMajor>();
             VcGuidance = new HashSet<VcGuidance>();
+            SubjectGroups = new HashSet<CollegesSubjectGroup>();
         }
 
         public int CollegeId { get; set; }
@@ -24,5 +25,6 @@ namespace Entities.Models
 
         public virtual ICollection<CollegeRefMajor> CollegeRefMajor { get; set; }
         public virtual ICollection<VcGuidance> VcGuidance { get; set; }
+        public virtual ICollection<CollegesSubjectGroup> SubjectGroups { get; set; }
     }
 }
