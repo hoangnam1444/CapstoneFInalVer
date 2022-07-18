@@ -10,7 +10,7 @@ namespace Entities.RequestFeature
         [Required]
         [MaxLength(200)]
         public string AnswerContent { get; set; }
-        public int PersonalityGroupId { get; set; }
+        public List<int> PersonalityGroupId { get; set; }
         public int Point { get; set; }
         public int OrderIndex { get; set; }
     }

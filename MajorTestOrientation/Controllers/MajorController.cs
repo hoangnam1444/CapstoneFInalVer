@@ -46,7 +46,7 @@ namespace MajorTestOrientation.Controllers
         public async Task<IActionResult> GetSubjectGroup(int major_id)
         {
             var result = await _repository.SubjectGroupMajor.GetByMajor(major_id);
-
+            result = await _repository.SubjectGroupSubject.GetSubjectOfGroup(result);
             return Ok(result);
         }
 

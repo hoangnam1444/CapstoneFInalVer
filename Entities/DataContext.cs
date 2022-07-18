@@ -43,6 +43,7 @@ namespace Entities
         public virtual DbSet<SubjectGroupSubject> SubjectGroupSubject { get; set; }
         public virtual DbSet<UserSubject> UserSubject { get; set; }
         public virtual DbSet<UserSubjectGroup> UserSubjectGroups { get; set; }
+        public virtual DbSet<UserMajor> UserMajors { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -71,6 +72,25 @@ namespace Entities
                     .HasForeignKey(d => d.SubjectGroupId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKMajor_SubjectGroup_SubjectGroup");
+            });
+
+            modelBuilder.Entity<UserMajor>(entity =>
+            {
+                entity.HasKey(e => new { e.MajorId, e.UserId });
+
+                entity.ToTable("User_Major");
+
+                entity.HasOne(d => d.Major)
+                    .WithMany(p => p.Users)
+                    .HasForeignKey(d => d.MajorId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FKUser_Major_Major");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Majors)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FKUser_Major_User");
             });
 
             modelBuilder.Entity<SubjectGroupSubject>(entity =>

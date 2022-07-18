@@ -16,6 +16,7 @@ namespace Entities.Models
             MajorRefPersonality = new HashSet<MajorRefPersonality>();
             VcGuidance = new HashSet<VcGuidance>();
             SubjectGroups = new HashSet<MajorSubjectGroup>();
+            Users = new HashSet<UserMajor>();
         }
 
         public int MajorId { get; set; }
@@ -28,5 +29,6 @@ namespace Entities.Models
         public virtual ICollection<MajorRefPersonality> MajorRefPersonality { get; set; }
         public virtual ICollection<VcGuidance> VcGuidance { get; set; }
         public virtual ICollection<MajorSubjectGroup> SubjectGroups { get; set; }
+        public virtual ICollection<UserMajor> Users { get; set; }
     }
 }

@@ -41,9 +41,12 @@ namespace MajorTestOrientation.Controllers
             }
             var ques = await _repository.Question.GetQuestionById(question_id);
             if (ques == null) throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, "Invalid question");
-            var pers = await _repository.PersonalityGroup.GetById(info.PersonalityGroupId);
-            if (pers == null) throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, "Invalid personality group");
-
+            if (info.PersonalityGroupId.Count == 0) throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, "Answer must have at least one personality group");
+            foreach (var id in info.PersonalityGroupId)
+            {
+                var pers = await _repository.PersonalityGroup.GetById(id);
+                if (pers == null) throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, "Invalid personality group");
+            }
             _repository.Answer.Create(new TestAnswers
             {
                 AnswerContent = info.AnswerContent,
@@ -53,9 +56,12 @@ namespace MajorTestOrientation.Controllers
             });
             await _repository.SaveAsync();
 
-            var newAnswer = await _repository.Answer.GetCreatedAnswer(info, question_id);
-            _repository.AnswerPGroup.Create(new AnswersPGroups { AnswerId = newAnswer.AnswerId, PGroupId = info.PersonalityGroupId, Point = info.Point });
-            await _repository.SaveAsync();
+            foreach (var id in info.PersonalityGroupId)
+            {
+                var newAnswer = await _repository.Answer.GetCreatedAnswer(info, question_id);
+                _repository.AnswerPGroup.Create(new AnswersPGroups { AnswerId = newAnswer.AnswerId, PGroupId = id, Point = info.Point });
+            }
+                await _repository.SaveAsync();
 
             return Ok("Save changes success");
         }

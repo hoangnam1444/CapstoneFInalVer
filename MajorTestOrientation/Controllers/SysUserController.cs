@@ -168,7 +168,7 @@ namespace MajorTestOrientation.Controllers
         /// </summary>
         /// <param name="group_id"></param>
         /// <returns></returns>
-        [HttpPut]
+        [HttpPost]
         [Route("select_subject_group/{group_id}")]
         public async Task<IActionResult> SelectSubjectGroup(int group_id)
         {
@@ -245,6 +245,21 @@ namespace MajorTestOrientation.Controllers
                 SubjectId = info.SubjectId,
                 UserId = _userAccessor.GetAccountId()
             });
+            await _repository.SaveAsync();
+
+            return Ok("Save changes success");
+        }
+
+        /// <summary>
+        /// Role: student (save major of student)
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("major")]
+        public async Task<IActionResult> SaveMajor(AddMajor info)
+        {
+            _repository.MajorUser.Create(new UserMajor { MajorId = info.MajorId, UserId = _userAccessor.GetAccountId() });
             await _repository.SaveAsync();
 
             return Ok("Save changes success");
