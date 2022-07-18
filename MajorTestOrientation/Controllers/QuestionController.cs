@@ -160,5 +160,14 @@ namespace MajorTestOrientation.Controllers
             return Ok("Save changes success");
         }
         #endregion
+
+        [HttpGet]
+        [Route("{question_id}/detail")]
+        public async Task<IActionResult> GetDetail(int question_id)
+        {
+            var result = await _repository.Question.GetDetail(question_id);
+
+            return Ok(result);
+        }
     }
 }

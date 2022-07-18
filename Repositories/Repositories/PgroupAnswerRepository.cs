@@ -16,6 +16,32 @@ namespace Repositories.Repositories
 
         }
 
+        public async Task<AnswerDetail> GetAnswerDetail(int answer_id)
+        {
+            var answerPGroup = await FindByCondition(x => x.AnswerId == answer_id, false).Include(x => x.Answer).Include(x => x.PGroup).ToListAsync();
+
+            if (answerPGroup.Count == 0) return null;
+
+            var pGroupList = answerPGroup.Select(x => new PGroupOfAnswer 
+            {
+                Name = x.PGroup.PersonalityGroupName, 
+                PGroupId = x.PGroupId, 
+                Point = x.Point 
+            }).ToList();
+
+            var answer = new AnswerOfQuestion
+            {
+                AnswerContent = answerPGroup[0].Answer.AnswerContent,
+                AnswerId = answerPGroup[0].AnswerId,
+                OrderIndex = answerPGroup[0].Answer.OrderIndex
+            };
+            return new AnswerDetail
+            {
+                Answer = answer,
+                PeronalityGroups = pGroupList
+            };
+        }
+
         public async Task<List<PerGroup>> GetPGroupResult(List<TestResults> testResult)
         {
             var answersId = testResult.Select(x => x.AnswerId).ToList();

@@ -53,6 +53,10 @@ namespace MajorTestOrientation.Controllers
             });
             await _repository.SaveAsync();
 
+            var newAnswer = await _repository.Answer.GetCreatedAnswer(info, question_id);
+            _repository.AnswerPGroup.Create(new AnswersPGroups { AnswerId = newAnswer.AnswerId, PGroupId = info.PersonalityGroupId, Point = info.Point });
+            await _repository.SaveAsync();
+
             return Ok("Save changes success");
         }
         #endregion
@@ -111,6 +115,26 @@ namespace MajorTestOrientation.Controllers
             return Ok(result);
         }
         #endregion
+
+        /// <summary>
+        /// Role: Admin (get answer detail)
+        /// </summary>
+        /// <param name="answer_id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("{answer_id}/detail")]
+        public async Task<IActionResult> GetAnswerDetail(int answer_id)
+        {
+            var result = await _repository.AnswerPGroup.GetAnswerDetail(answer_id);
+
+            if(result == null)
+            {
+                var answer = await _repository.Answer.GetAnswerById(answer_id);
+                result = new AnswerDetail { Answer = new AnswerOfQuestion { AnswerId = answer.AnswerId, AnswerContent = answer.AnswerContent, OrderIndex = answer.OrderIndex }, PeronalityGroups = null };
+            }
+
+            return Ok(result);
+        }
 
         #region Update answer
         /// <summary>
