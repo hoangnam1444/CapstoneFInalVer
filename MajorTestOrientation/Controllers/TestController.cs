@@ -228,5 +228,33 @@ namespace MajorTestOrientation.Controllers
             return Ok("Save changes success");
         }
         #endregion
+
+        /// <summary>
+        /// Role: Admin (get test detail)
+        /// </summary>
+        /// <param name="test_id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("{test_id}/detail")]
+        public async Task<IActionResult> GetDetail(int test_id)
+        {
+            var testD = await _repository.Test.GetById(test_id);
+
+            var testType = await _repository.TestType.GetById(testD.TestTypeId);
+
+            var result = new TestDetail
+            {
+                CreatedDate = testD.CreatedDate,
+                TestType = new TestType
+                {
+                    TypeId = testType.TestTypeId,
+                    TypeName = testType.TestTypeName
+                },
+                TestDescrip = testD.TestDescrip,
+                TestId = testD.TestId
+            };
+
+            return Ok(result);
+        }
     }
 }

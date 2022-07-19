@@ -20,6 +20,7 @@ namespace Contracts.Repositories
         IUserSubjectGroupRepository UserSubjectGroup { get; }
         IUserSubjectRepository UserSubject { get; }
         IUserMajorRepository MajorUser { get; }
+        IMajorSubjectGroupCollegesRepository MajorSubjectGroupColleges { get; }
         Task SaveAsync();
     }
 }

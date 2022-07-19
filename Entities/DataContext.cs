@@ -111,6 +111,12 @@ namespace Entities
                     .HasForeignKey(d => d.SubjectGroupId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKColleges_SubjectGroup_SubjectGroup");
+                
+                entity.HasOne(d => d.Major)
+                    .WithMany(p => p.Colleges)
+                    .HasForeignKey(d => d.MajorId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FKColleges_SubjectGroup_Major");
             });
 
             modelBuilder.Entity<SubjectGroupSubject>(entity =>
