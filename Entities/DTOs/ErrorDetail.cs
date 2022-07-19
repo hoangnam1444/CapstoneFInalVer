@@ -15,5 +15,11 @@ namespace Entities.DTOs
             Error = error;
             StatusCode = code;
         }
+
+        public class GetCollegesHandle
+        {
+            public int StatusCode { get; set; }
+            public string Message { get; set; }
+        }
     }
 }

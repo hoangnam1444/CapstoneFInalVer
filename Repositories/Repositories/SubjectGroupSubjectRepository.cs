@@ -37,9 +37,18 @@ namespace Repositories.Repositories
                     .Include(x => x.Subject)
                     .Select(x => new SubjectReturn {Id = x.Subject.Id, Name = x.Subject.Name})
                     .ToListAsync();
+                item.Subjects = subjects;
                 result.Add(item);
             }
             return result;
+        }
+
+        public async Task<List<Subject>> GetSubjects(int groupId)
+        {
+            return await FindByCondition(x => x.GroupSubjectId == groupId, false)
+                .Include(x => x.Subject)
+                .Select(x => x.Subject)
+                .ToListAsync();
         }
     }
 }

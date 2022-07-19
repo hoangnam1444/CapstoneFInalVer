@@ -6,8 +6,10 @@ using Entities.RequestFeature;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using static Entities.DTOs.ErrorDetails;
 
 namespace MajorTestOrientation.Controllers
 {
@@ -75,7 +77,7 @@ namespace MajorTestOrientation.Controllers
             }
             account.Token = _jwtServices.CreateToken(account.RoleId, account.Id);
 
-            if (!account.HasGrade)
+            if (!account.IsActive.Value)
             {
                 var newCode = await _repository.SecurityCode.Create(account.Id);
                 await _repository.SaveAsync();
@@ -334,7 +336,69 @@ namespace MajorTestOrientation.Controllers
         [Route("colleges")]
         public async Task<IActionResult> GetCollegesOfStudent()
         {
-            throw new ErrorDetails(HttpStatusCode.OK, "Chưa làm");
+            var userId = _userAccessor.GetAccountId();
+
+            var major = await _repository.MajorUser.GetMajorOfUser(userId);
+
+            if(major.Count == 0) 
+            {
+                throw new ErrorDetails(HttpStatusCode.OK, new GetCollegesHandle { Message = "Student don't have major", StatusCode = 410});
+            }
+
+            var subjectGroup = await _repository.UserSubjectGroup.GetSavedSubjectGroup(userId);
+            var subjectGroupOfMajor = await _repository.SubjectGroupMajor.GetByMajor(major);
+            var subjectGroupNeed = subjectGroup.Where(x => subjectGroupOfMajor.Contains(x.SubjectGroupId)).ToList();
+            if(subjectGroupNeed.Count == 0)
+            {
+                throw new ErrorDetails(HttpStatusCode.OK, new GetCollegesHandle { Message = "Student don't have subject group for major selected", StatusCode = 411 });
+            }
+
+            bool? hasPoint = true;
+            foreach(var group in subjectGroupNeed)
+            {
+                var subjects = await _repository.SubjectGroupSubject.GetSubjects(group.SubjectGroupId);
+                var HasEnoughPoint = await _repository.UserSubject.GetSavedSubject(userId, subjects);
+                if (HasEnoughPoint == null || HasEnoughPoint == false)
+                    hasPoint = HasEnoughPoint;
+                if(HasEnoughPoint == true)
+                {
+                    hasPoint = true;
+                    break;
+                }
+            }
+            if (hasPoint == null)
+            {
+                throw new ErrorDetails(HttpStatusCode.OK, new GetCollegesHandle { Message = "Student don't have subject point of select subject group", StatusCode = 412 });
+            }
+            if (!hasPoint.Value)
+            {
+                throw new ErrorDetails(HttpStatusCode.OK, new GetCollegesHandle { Message = "Student don't have subject enough point of select subject group", StatusCode = 413 });
+            }
+
+            var datas = new List<GetCollegesData>();
+            foreach(var group in subjectGroupNeed)
+            {
+                var subjects = await _repository.SubjectGroupSubject.GetSubjects(group.SubjectGroupId);
+                var item = await _repository.UserSubject.GetSumOfSubjectGroup(subjects, userId);
+                item.SubjectGroupId = group.SubjectGroupId;
+                datas.Add(item);
+            }
+
+            var finalData = new List<AttempData>();
+            List<MajorSubjectGroup> majorSubjectGroup = await _repository.SubjectGroupMajor.GetByMajorIds(major);
+            foreach(var aMajor in majorSubjectGroup)
+            {
+                var item = new AttempData
+                {
+                    MajorId = aMajor.MajorId,
+                    Data = datas.Where(x => x.SubjectGroupId == aMajor.SubjectGroupId).FirstOrDefault()
+                };
+                finalData.Add(item);
+            }
+
+            List<CollegesReturn> result = await _repository.MajorSubjectGroupColleges.GetSuggesionColleges(finalData);
+
+            return Ok(result);
         }
     }
 }
