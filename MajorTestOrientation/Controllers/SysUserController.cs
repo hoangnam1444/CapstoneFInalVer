@@ -5,6 +5,8 @@ using Entities.Models;
 using Entities.RequestFeature;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -180,8 +182,30 @@ namespace MajorTestOrientation.Controllers
                 SubjectGroupId = group_id,
                 UserId = _userAccessor.GetAccountId()
             });
-            await _repository.SaveAsync();
+            try
+            {
+                await _repository.SaveAsync();
+            }
+            catch
+            {
+                throw new ErrorDetails(HttpStatusCode.OK, new GetCollegesHandle { Message = "Subject group " + group_id + " already selected", StatusCode = 415 });
+            }
             return Ok("Save changes success");
+        }
+
+        /// <summary>
+        /// Role: student (get profile for update)
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("profile")]
+        public async Task<IActionResult> GetProfile()
+        {
+            var user_id = _userAccessor.GetAccountId();
+
+            var result = await _repository.SysUser.GetProfile(user_id);
+
+            return Ok(result);
         }
 
         /// <summary>
@@ -211,10 +235,6 @@ namespace MajorTestOrientation.Controllers
                 {
                     account.Gender = info.Gender;
                 }
-                if (info.Grade != null)
-                {
-                    account.Grade = info.Grade;
-                }
                 if (info.ImagePath != null)
                 {
                     account.ImagePath = info.ImagePath;
@@ -222,10 +242,6 @@ namespace MajorTestOrientation.Controllers
                 if (info.PhoneNumber != null)
                 {
                     account.PhoneNumber = info.PhoneNumber;
-                }
-                if (info.UserName != null)
-                {
-                    account.UserName = info.UserName;
                 }
                 _repository.SysUser.Update(account);
                 await _repository.SaveAsync();
@@ -242,6 +258,8 @@ namespace MajorTestOrientation.Controllers
         [Route("subject")]
         public async Task<IActionResult> UpdateSubjectUser(SubjectSelection info)
         {
+            var savedPointSubjects = new List<int>();
+
             foreach (var item in info.ListSubject)
             {
                 _repository.UserSubject.Create(new UserSubject
@@ -250,8 +268,24 @@ namespace MajorTestOrientation.Controllers
                     SubjectId = item.SubjectId,
                     UserId = _userAccessor.GetAccountId()
                 });
+                try
+                {
+                    await _repository.SaveAsync();
+                }catch
+                {
+                    savedPointSubjects.Add(item.SubjectId);
+                }
             }
-            await _repository.SaveAsync();
+
+            if(savedPointSubjects.Count == info.ListSubject.Count)
+            {
+                throw new ErrorDetails(HttpStatusCode.OK, new GetCollegesHandle { Message = "All subject has its point", StatusCode = 416 });
+            }
+            else if (savedPointSubjects.Count > 0)
+            {
+                var subjectsName = await _repository.Subject.GetName(savedPointSubjects);
+                return Ok("Subject: " + subjectsName + " already saved. Save success all remaining subject");
+            }
 
             return Ok("Save changes success");
         }
@@ -265,8 +299,14 @@ namespace MajorTestOrientation.Controllers
         [Route("major")]
         public async Task<IActionResult> SaveMajor(AddMajor info)
         {
-            _repository.MajorUser.Create(new UserMajor { MajorId = info.MajorId, UserId = _userAccessor.GetAccountId() });
-            await _repository.SaveAsync();
+            try
+            {
+                _repository.MajorUser.Create(new UserMajor { MajorId = info.MajorId, UserId = _userAccessor.GetAccountId() });
+                await _repository.SaveAsync();
+            } catch
+            {
+                throw new ErrorDetails(HttpStatusCode.OK, new GetCollegesHandle { Message = "Major "+info.MajorId+" already selected", StatusCode = 414 });
+            }
 
             return Ok("Save changes success");
         }
@@ -332,6 +372,10 @@ namespace MajorTestOrientation.Controllers
         }
         #endregion
 
+        /// <summary>
+        /// Role: Student (Get suggesion colleges)
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("colleges")]
         public async Task<IActionResult> GetCollegesOfStudent()
@@ -399,6 +443,24 @@ namespace MajorTestOrientation.Controllers
             List<CollegesReturn> result = await _repository.MajorSubjectGroupColleges.GetSuggesionColleges(finalData);
 
             return Ok(result);
+        }
+
+        /// <summary>
+        /// Role: Student (Get lession detail)
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("lession")]
+        public async Task<IActionResult> GetLession()
+        {
+            var user_id = _userAccessor.GetAccountId();
+            var selectedMajor = await _repository.MajorUser.GetMajorOfUser(user_id);
+
+            var majorsId = selectedMajor.GroupBy(x => x.MajorId).Select(x => x.Key).ToList();
+
+            var lession = await _repository.LessionMajor.GetLessionbyListMajor(majorsId);
+
+            return Ok(lession);
         }
     }
 }

@@ -11,7 +11,6 @@ namespace Entities.Models
     {
         public RecommentLession()
         {
-            LessionDetails = new HashSet<LessionDetails>();
             UserLession = new HashSet<UserLession>();
         }
 
@@ -19,9 +18,10 @@ namespace Entities.Models
         public int MajorId { get; set; }
         public string Description { get; set; }
         public bool? IsDeleted { get; set; }
+        public int LessionDetailId { get; set; }
 
         public virtual Majors Major { get; set; }
-        public virtual ICollection<LessionDetails> LessionDetails { get; set; }
+        public virtual LessionDetails LessionDetail { get; set; }
         public virtual ICollection<UserLession> UserLession { get; set; }
     }
 }

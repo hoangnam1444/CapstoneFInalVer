@@ -21,6 +21,8 @@ namespace Contracts.Repositories
         IUserSubjectRepository UserSubject { get; }
         IUserMajorRepository MajorUser { get; }
         IMajorSubjectGroupCollegesRepository MajorSubjectGroupColleges { get; }
+        ILessionMajorRepository LessionMajor { get; }
+        ISubjectRepository Subject { get; }
         Task SaveAsync();
     }
 }

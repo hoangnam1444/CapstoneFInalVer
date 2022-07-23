@@ -12,7 +12,7 @@ namespace Entities.Models
         public int LessionDetailId { get; set; }
         public int LessionId { get; set; }
         public string LessionDetailContent { get; set; }
-        public int OrderIndex { get; set; }
+        public string Link { get; set; }
         public bool? IsDeleted { get; set; }
 
         public virtual RecommentLession Lession { get; set; }

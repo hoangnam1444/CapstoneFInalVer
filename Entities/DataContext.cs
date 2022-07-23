@@ -111,7 +111,7 @@ namespace Entities
                     .HasForeignKey(d => d.SubjectGroupId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKColleges_SubjectGroup_SubjectGroup");
-                
+
                 entity.HasOne(d => d.Major)
                     .WithMany(p => p.Colleges)
                     .HasForeignKey(d => d.MajorId)
@@ -236,15 +236,11 @@ namespace Entities
                     .IsRequired()
                     .HasMaxLength(500);
 
-                entity.Property(e => e.LessionId).HasColumnName("LessionID");
-
-                entity.Property(e => e.OrderIndex).HasDefaultValueSql("((1))");
-
                 entity.HasOne(d => d.Lession)
-                    .WithMany(p => p.LessionDetails)
-                    .HasForeignKey(d => d.LessionId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FKLearningPa175463");
+                    .WithOne(p => p.LessionDetail)
+                    .HasForeignKey<LessionDetails>(e => e.LessionId);
+
+                entity.Property(e => e.LessionId).HasColumnName("LessionID");
             });
 
             modelBuilder.Entity<RecommentLession>(entity =>
@@ -263,6 +259,10 @@ namespace Entities
                     .HasDefaultValueSql("('0')");
 
                 entity.Property(e => e.MajorId).HasColumnName("MajorID");
+
+                entity.HasOne(d => d.LessionDetail)
+                .WithOne(p => p.Lession)
+                .HasForeignKey<RecommentLession>(e => e.LessionDetailId);
 
                 entity.HasOne(d => d.Major)
                     .WithMany(p => p.Lessions)
