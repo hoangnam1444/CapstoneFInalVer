@@ -51,6 +51,20 @@ namespace Repositories.Repositories
             return finalResult;
         }
 
+        public async Task<CollegesReturn> GetMajor(CollegesReturn college)
+        {
+            var majors = await FindByCondition(x => x.CollegeId == college.CollegeId, false)
+                .Include(x => x.Major)
+                .Select(x => new Major
+                {
+                    Id = x.Major.MajorId,
+                    Name = x.Major.MajorName
+                }).ToListAsync();
+            college.Major = majors;
+
+            return college;
+        }
+
         public async Task<List<CollegesReturn>> GetSuggesionColleges(List<AttempData> finalData)
         {
             var result = new List<CollegesReturn>();
