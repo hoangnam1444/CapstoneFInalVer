@@ -27,8 +27,6 @@ namespace Repositories.Repositories
                 && x.SubjectGroupId == item.Data.SubjectGroupId
                 && x.Sum >= item.Data.Sum - 2
                 && x.Sum <= item.Data.Sum + 2, false)
-                    .Include(x => x.SubjectGroup)
-                    .Include(x => x.Major)
                     .Include(x => x.College)
                     .Select(x => new CollegesReturn 
                     {
@@ -36,9 +34,7 @@ namespace Repositories.Repositories
                         CollegeId = x.CollegesId,
                         CollegeName = x.College.CollegeName,
                         ImagePath = x.College.ImagePath,
-                        ReferenceLink = x.College.ReferenceLink,
-                        Major = new Major { Id = x.MajorId, Name = x.Major.MajorName},
-                        SubjectGroup = new Entities.DTOs.SubjectGroup { Name = x.SubjectGroup.Name, SumPoint = x.Sum}
+                        ReferenceLink = x.College.ReferenceLink
                     })
                     .ToListAsync();
                 foreach(var college in colleges)
@@ -50,6 +46,62 @@ namespace Repositories.Repositories
                 }
             }
             return result;
+        }
+
+        public async Task<List<CollegesReturn>> GetSumPoint(List<CollegesReturn> result, List<AttempData> dataStudent)
+        {
+            var finalResult = new List<CollegesReturn>();
+
+            foreach(var college in result)
+            {
+                var majors = new List<Major>();
+                foreach(var major in college.Major)
+                {
+                    var subjectGroups = await FindByCondition(x => x.MajorId == major.Id
+                    && x.CollegesId == college.CollegeId
+                    && x.Sum >= (dataStudent.Where(y => y.MajorId == major.Id && y.Data.SubjectGroupId == x.SubjectGroupId).Select(y => y.Data.Sum).FirstOrDefault() - 2)
+                    && x.Sum <= (dataStudent.Where(y => y.MajorId == major.Id && y.Data.SubjectGroupId == x.SubjectGroupId).Select(y => y.Data.Sum).FirstOrDefault() + 2), false)
+                        .Include(x => x.SubjectGroup)
+                        .Select(x => new Entities.DTOs.SubjectGroup
+                        {
+                            Name = x.SubjectGroup.Name,
+                            SumPoint = x.Sum
+                        })
+                        .ToListAsync();
+                    major.SubjectGroup = subjectGroups;
+                    majors.Add(major);
+                }
+                college.Major = majors;
+                finalResult.Add(college);
+            }
+            return finalResult;
+        }
+
+        public async Task<List<CollegesReturn>> GetSumPoint(List<CollegesReturn> result)
+        {
+            var finalResult = new List<CollegesReturn>();
+
+            foreach (var college in result)
+            {
+                var majors = new List<Major>();
+                foreach (var major in college.Major)
+                {
+                    var subjectGroups = await FindByCondition(x => x.MajorId == major.Id
+                    && x.CollegesId == college.CollegeId, false)
+                        .Include(x => x.SubjectGroup)
+                        .Select(x => new Entities.DTOs.SubjectGroup
+                        {
+                            Name = x.SubjectGroup.Name,
+                            SumPoint = x.Sum
+                        })
+                        .ToListAsync();
+                    major.SubjectGroup = subjectGroups;
+                    majors.Add(major);
+                }
+                college.Major = majors;
+                finalResult.Add(college);
+            }
+            return finalResult;
         }
     }
 }

@@ -74,7 +74,11 @@ namespace MajorTestOrientation.Controllers
         [Route("{major_id}/Colleges")]
         public async Task<IActionResult> GetColleges(int major_id)
         {
-            var result = await _repository.MajorColleges.GetColleges(major_id);
+            var result = await _repository.MajorColleges.GetSuggesionColleges(major_id);
+
+            result = await _repository.MajorColleges.GetMajor(result);
+
+            result = await _repository.MajorSubjectGroupColleges.GetSumPoint(result);
 
             return Ok(result);
         }
