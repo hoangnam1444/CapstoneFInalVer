@@ -440,7 +440,11 @@ namespace MajorTestOrientation.Controllers
                 finalData.Add(item);
             }
 
-            List<CollegesReturn> result = await _repository.MajorSubjectGroupColleges.GetSuggesionColleges(finalData);
+            var result = await _repository.MajorColleges.GetSuggesionColleges(finalData);
+
+            result = await _repository.MajorColleges.GetMajor(result);
+
+            result = await _repository.MajorSubjectGroupColleges.GetSumPoint(result, finalData);
 
             return Ok(result);
         }

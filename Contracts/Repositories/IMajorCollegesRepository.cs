@@ -8,6 +8,8 @@ namespace Contracts.Repositories
 {
     public interface IMajorCollegesRepository
     {
-        Task<List<CollegesReturn>> GetColleges(int major_id);
+        Task<List<CollegesReturn>> GetSuggesionColleges(List<AttempData> finalData);
+        Task<List<CollegesReturn>> GetMajor(List<CollegesReturn> result);
+        Task<List<CollegesReturn>> GetSuggesionColleges(int major_id);
     }
 }
