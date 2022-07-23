@@ -23,6 +23,7 @@ namespace Contracts.Repositories
         IMajorSubjectGroupCollegesRepository MajorSubjectGroupColleges { get; }
         ILessionMajorRepository LessionMajor { get; }
         ISubjectRepository Subject { get; }
+        ICollegesRepository Colleges { get; }
         Task SaveAsync();
     }
 }

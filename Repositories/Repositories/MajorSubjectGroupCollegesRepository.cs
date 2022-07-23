@@ -65,7 +65,8 @@ namespace Repositories.Repositories
                         .Select(x => new Entities.DTOs.SubjectGroup
                         {
                             Name = x.SubjectGroup.Name,
-                            SumPoint = x.Sum
+                            SumPoint = x.Sum,
+                            Id = x.SubjectGroupId
                         })
                         .ToListAsync();
                     major.SubjectGroup = subjectGroups;
@@ -92,7 +93,8 @@ namespace Repositories.Repositories
                         .Select(x => new Entities.DTOs.SubjectGroup
                         {
                             Name = x.SubjectGroup.Name,
-                            SumPoint = x.Sum
+                            SumPoint = x.Sum,
+                            Id = x.SubjectGroupId
                         })
                         .ToListAsync();
                     major.SubjectGroup = subjectGroups;
@@ -102,6 +104,29 @@ namespace Repositories.Repositories
                 finalResult.Add(college);
             }
             return finalResult;
+        }
+
+        public async Task<CollegesReturn> GetSumPoint(CollegesReturn college)
+        {
+            var majors = new List<Major>();
+            foreach (var major in college.Major)
+            {
+                var subjectGroups = await FindByCondition(x => x.MajorId == major.Id
+                && x.CollegesId == college.CollegeId, false)
+                    .Include(x => x.SubjectGroup)
+                    .Select(x => new Entities.DTOs.SubjectGroup
+                    {
+                        Name = x.SubjectGroup.Name,
+                        SumPoint = x.Sum,
+                        Id = x.SubjectGroupId
+                    })
+                    .ToListAsync();
+                major.SubjectGroup = subjectGroups;
+                majors.Add(major);
+            }
+            college.Major = majors;
+
+            return college;
         }
     }
 }

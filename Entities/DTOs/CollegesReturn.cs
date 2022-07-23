@@ -21,7 +21,17 @@ namespace Entities.DTOs
     }
     public class SubjectGroup 
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public double SumPoint { get; set; }
+    }
+
+    public class CollegesInList
+    {
+        public int CollegeId { get; set; }
+        public string CollegeName { get; set; }
+        public string ReferenceLink { get; set; }
+        public string Address { get; set; }
+        public string ImagePath { get; set; }
     }
 }
