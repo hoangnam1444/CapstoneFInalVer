@@ -28,6 +28,8 @@ namespace Repositories.Repositories
         private IMajorCollegesRepository _majorCol;
         private IUserMajorRepository _userMajor;
         private IMajorSubjectGroupCollegesRepository _majorSubjectGroupColleges;
+        private ILessionMajorRepository _lession;
+        private ISubjectRepository _subject;
         private readonly DataContext _context;
 
         public ISysUserRepository SysUser
@@ -231,6 +233,30 @@ namespace Repositories.Repositories
                     _majorSubjectGroupColleges = new MajorSubjectGroupCollegesRepository(_context);
                 }
                 return _majorSubjectGroupColleges;
+            }
+        }
+
+        public ILessionMajorRepository LessionMajor
+        {
+            get
+            {
+                if(_lession == null)
+                {
+                    _lession = new LessionMajorRepository(_context);
+                }
+                return _lession;
+            }
+        }
+
+        public ISubjectRepository Subject
+        {
+            get
+            {
+                if(_subject == null)
+                {
+                    _subject = new SubjectRepository(_context);
+                }
+                return _subject;
             }
         }
 

@@ -69,6 +69,20 @@ namespace Repositories.Repositories
             return await FindByCondition(x => x.UserId == userId, false).FirstOrDefaultAsync();
         }
 
+        public async Task<Profile> GetProfile(int user_id)
+        {
+            var result = await FindByCondition(x => x.UserId == user_id, false).Select(x => new Profile
+            {
+                BirthDate = x.BirthDay,
+                FullName = x.FullName,
+                Gender = x.Gender,
+                ImagePath = x.ImagePath,
+                PhoneNumber = x.PhoneNumber
+            }).FirstOrDefaultAsync();
+
+            return result;
+        }
+
         public async Task<SysUser> GetToUpdateGrade(int id)
         {
             return await FindByCondition(x => x.UserId == id, false).FirstOrDefaultAsync();

@@ -17,5 +17,6 @@ namespace Contracts.Repositories
         void Create(SysUser sysUser);
         void Update(SysUser sysUser);
         Task<SysUser> GetById(int userId);
+        Task<Profile> GetProfile(int user_id);
     }
 }

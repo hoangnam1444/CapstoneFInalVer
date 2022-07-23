@@ -1,5 +1,6 @@
 ﻿using Contracts.Repositories;
 using Entities.DTOs;
+using Entities.RequestFeature;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -47,6 +48,20 @@ namespace MajorTestOrientation.Controllers
         {
             var result = await _repository.SubjectGroupMajor.GetByMajor(major_id);
             result = await _repository.SubjectGroupSubject.GetSubjectOfGroup(result);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Role: Student (Get lession by majorsId)
+        /// </summary>
+        /// <param name="majors"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("lession")]
+        public async Task<IActionResult> GetLession(GetLessionByMajors majors)
+        {
+            var result = await _repository.LessionMajor.GetLessionbyListMajor(majors.MajorsId);
+
             return Ok(result);
         }
 
