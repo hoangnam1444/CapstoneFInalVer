@@ -91,7 +91,7 @@ namespace MajorTestOrientation.Controllers
         [HttpGet]
         public async Task<IActionResult> GetListMajors([FromQuery] PagingParameters param)
         {
-            List<MajorResult> majors = await _repository.Major.GetAll(param);
+            var majors = await _repository.Major.GetAll(param);
 
             return Ok(majors);
         }

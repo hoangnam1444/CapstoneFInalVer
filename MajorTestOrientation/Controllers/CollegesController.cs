@@ -39,7 +39,7 @@ namespace MajorTestOrientation.Controllers
                 throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, "Don't have permission");
             }
 
-            List<CollegesInList> result = await _repository.Colleges.GetColleges(param);
+            var result = await _repository.Colleges.GetColleges(param);
 
             return Ok(result);
         }
