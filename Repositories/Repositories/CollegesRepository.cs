@@ -1,5 +1,6 @@
 ﻿using Contracts.Repositories;
 using Entities;
+using Entities.DataTransferObject;
 using Entities.DTOs;
 using Entities.Models;
 using Entities.RequestFeature;
@@ -18,7 +19,7 @@ namespace Repositories.Repositories
         {
         }
 
-        public async Task<List<CollegesInList>> GetColleges(PagingParameters param)
+        public async Task<Pagination<CollegesInList>> GetColleges(PagingParameters param)
         {
             var colleges = await FindByCondition(x => x.IsDeleted == false, false)
                 .Skip((param.PageNumber - 1) * param.PageSize)
@@ -33,7 +34,13 @@ namespace Repositories.Repositories
                 })
                 .ToListAsync();
 
-            return colleges;
+            return new Pagination<CollegesInList>
+            {
+                Data = colleges,
+                Count = await FindByCondition(x => x.IsDeleted == false, false).CountAsync(),
+                PageNumber = param.PageNumber,
+                PageSize = param.PageSize
+            };
         }
 
         public async Task<CollegesReturn> GetDetail(int colleges_id)

@@ -1,5 +1,6 @@
 ﻿using Contracts.Repositories;
 using Entities;
+using Entities.DataTransferObject;
 using Entities.DTOs;
 using Entities.RequestFeature;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +17,7 @@ namespace Repositories.Repositories
 
         }
 
-        public async Task<List<MajorResult>> GetAll(PagingParameters param)
+        public async Task<Pagination<MajorResult>> GetAll(PagingParameters param)
         {
             var major = await FindAll(false).Skip((param.PageNumber - 1) * param.PageSize)
                 .Take(param.PageSize)
@@ -26,7 +27,13 @@ namespace Repositories.Repositories
                     MajorId = x.Id
                 })
                 .ToListAsync();
-            return major;
+            return new Pagination<MajorResult>
+            {
+                PageSize = param.PageSize,
+                PageNumber = param.PageNumber,
+                Count = await FindAll(false).CountAsync(),
+                Data = major
+            };
         }
     }
 }
