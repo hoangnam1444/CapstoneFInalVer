@@ -1,5 +1,6 @@
 ﻿using Entities.DTOs;
 using Entities.Models;
+using Entities.RequestFeature;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,5 +15,7 @@ namespace Contracts.Repositories
         Task<List<CollegesReturn>> GetSumPoint(List<CollegesReturn> result);
         Task<CollegesReturn> GetSumPoint(CollegesReturn college);
         void Create(CollegesSubjectGroup collegesSubjectGroup);
+        Task<CollegesSubjectGroup> GetPoint(PointCollege point);
+        void Update(CollegesSubjectGroup updateInfo);
     }
 }

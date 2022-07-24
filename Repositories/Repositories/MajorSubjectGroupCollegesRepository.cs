@@ -2,6 +2,7 @@
 using Entities;
 using Entities.DTOs;
 using Entities.Models;
+using Entities.RequestFeature;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,14 @@ namespace Repositories.Repositories
         public MajorSubjectGroupCollegesRepository(DataContext context) : base(context)
         {
 
+        }
+
+        public async Task<CollegesSubjectGroup> GetPoint(PointCollege point)
+        {
+            var result = await FindByCondition(x => x.MajorId == point.MajorId && x.SubjectGroupId == point.SubjectGroupId && x.CollegesId == point.CollegesId, false)
+                .FirstOrDefaultAsync();
+
+            return result;
         }
 
         public async Task<List<CollegesReturn>> GetSuggesionColleges(List<AttempData> finalData)

@@ -31,6 +31,7 @@ namespace Repositories.Repositories
         private ILessionMajorRepository _lession;
         private ISubjectRepository _subject;
         private ICollegesRepository _colleges;
+        private IMajorRepository _major;
         private readonly DataContext _context;
 
         public ISysUserRepository SysUser
@@ -268,6 +269,18 @@ namespace Repositories.Repositories
                 if (_colleges == null)
                     _colleges = new CollegesRepository(_context);
                 return _colleges;
+            }
+        }
+
+        public IMajorRepository Major
+        {
+            get
+            {
+                if(_major == null)
+                {
+                    _major = new MajorRepository(_context);
+                }
+                return _major;
             }
         }
 

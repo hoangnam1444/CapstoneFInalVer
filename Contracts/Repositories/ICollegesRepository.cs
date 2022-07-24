@@ -11,5 +11,6 @@ namespace Contracts.Repositories
         Task<List<CollegesInList>> GetColleges(PagingParameters param);
         Task<CollegesReturn> GetDetail(int colleges_id);
         void Create(Colleges colleges);
+        void Update(Colleges colleges);
     }
 }
