@@ -82,5 +82,18 @@ namespace MajorTestOrientation.Controllers
 
             return Ok(result);
         }
+
+        /// <summary>
+        /// Role: Admin (Get list major)
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> GetListMajors([FromQuery] PagingParameters param)
+        {
+            List<MajorResult> majors = await _repository.Major.GetAll(param);
+
+            return Ok(majors);
+        }
     }
 }

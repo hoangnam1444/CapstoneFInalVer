@@ -20,8 +20,8 @@ namespace Repositories.Repositories
 
         public async Task<List<CollegesInList>> GetColleges(PagingParameters param)
         {
-            var colleges = await FindAll(false)
-                .Skip((param.PageNumber - 1) - param.PageSize)
+            var colleges = await FindByCondition(x => x.IsDeleted == false, false)
+                .Skip((param.PageNumber - 1) * param.PageSize)
                 .Take(param.PageSize)
                 .Select(x => new CollegesInList
                 {

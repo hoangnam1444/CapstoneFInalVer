@@ -131,18 +131,49 @@ namespace MajorTestOrientation.Controllers
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPut]
         [Route("Point")]
         public async Task<IActionResult> AddNewPoint(PointCollege point)
         {
-            _repository.MajorSubjectGroupColleges.Create(new CollegesSubjectGroup
+            CollegesSubjectGroup info = await _repository.MajorSubjectGroupColleges.GetPoint(point);
+
+            var updateInfo = new CollegesSubjectGroup
             {
                 MajorId = point.MajorId,
                 SubjectGroupId = point.SubjectGroupId,
                 Sum = point.Sum,
                 CollegesId = point.CollegesId,
+            };
+
+            if (info == null)
+            {
+                _repository.MajorSubjectGroupColleges.Create(updateInfo);
+            } else
+            {
+                _repository.MajorSubjectGroupColleges.Update(updateInfo);
+            }
+            await _repository.SaveAsync();
+            return Ok("Save changes success");
+        }
+
+        /// <summary>
+        /// Role: Admin (Update colleges info)
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        [HttpPut]
+        public async Task<IActionResult> UpdateColleges(UpdateCollege info)
+        {
+            _repository.Colleges.Update(new Colleges
+            {
+                CollegeId = info.CollegeId,
+                Address = info.Address,
+                CollegeName = info.CollegeName,
+                ImagePath = info.ImagePath,
+                ReferenceLink = info.ReferenceLink
             });
             await _repository.SaveAsync();
+
             return Ok("Save changes success");
         }
     }
