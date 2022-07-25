@@ -35,7 +35,7 @@ namespace Repositories.Repositories
                 HasGrade = account.Grade != null,
                 Username = account.UserName,
                 RoleId = account.RoleId,
-                IsActive = account.IsLocked
+                IsActive = !account.IsLocked
             };
         }
 
