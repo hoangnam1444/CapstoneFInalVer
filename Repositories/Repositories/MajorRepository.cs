@@ -7,10 +7,11 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Majors = Entities.Models.Majors;
 
 namespace Repositories.Repositories
 {
-    public class MajorRepository : RepositoryBase<Major>,IMajorRepository
+    public class MajorRepository : RepositoryBase<Majors>, IMajorRepository
     {
         public MajorRepository(DataContext context) : base(context)
         {
@@ -23,8 +24,8 @@ namespace Repositories.Repositories
                 .Take(param.PageSize)
                 .Select(x => new MajorResult
                 {
-                    MajorName = x.Name,
-                    MajorId = x.Id
+                    MajorName = x.MajorName,
+                    MajorId = x.MajorId
                 })
                 .ToListAsync();
             return new Pagination<MajorResult>
@@ -34,6 +35,15 @@ namespace Repositories.Repositories
                 Count = await FindAll(false).CountAsync(),
                 Data = major
             };
+        }
+
+        public async Task<List<MajorForFilter>> GetAll()
+        {
+            return await FindAll(false).Select(x => new MajorForFilter
+            {
+                Id = x.MajorId,
+                Name = x.MajorName
+            }).ToListAsync();
         }
     }
 }
