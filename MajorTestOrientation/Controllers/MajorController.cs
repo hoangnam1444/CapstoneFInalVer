@@ -95,5 +95,18 @@ namespace MajorTestOrientation.Controllers
 
             return Ok(majors);
         }
+
+        /// <summary>
+        /// Role: Admin (get major for filter)
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("ForFiltering")]
+        public async Task<IActionResult> GetMajorForFilter()
+        {
+            List<MajorForFilter> majors = await _repository.Major.GetAll();
+
+            return Ok(majors);
+        }
     }
 }

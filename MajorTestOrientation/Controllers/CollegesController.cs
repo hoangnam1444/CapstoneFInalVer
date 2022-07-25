@@ -142,7 +142,7 @@ namespace MajorTestOrientation.Controllers
                 MajorId = point.MajorId,
                 SubjectGroupId = point.SubjectGroupId,
                 Sum = point.Sum,
-                CollegesId = point.CollegesId,
+                CollegesId = point.CollegesId
             };
 
             if (info == null)
@@ -170,7 +170,8 @@ namespace MajorTestOrientation.Controllers
                 Address = info.Address,
                 CollegeName = info.CollegeName,
                 ImagePath = info.ImagePath,
-                ReferenceLink = info.ReferenceLink
+                ReferenceLink = info.ReferenceLink,
+                IsDeleted = false
             });
             await _repository.SaveAsync();
 
