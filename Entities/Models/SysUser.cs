@@ -17,6 +17,7 @@ namespace Entities.Models
             SubjectGroups = new HashSet<UserSubjectGroup>();
             Subjects = new HashSet<UserSubject>();
             Majors = new HashSet<UserMajor>();
+            Colleges = new HashSet<UserColleges>();
         }
 
         public int UserId { get; set; }
@@ -45,5 +46,6 @@ namespace Entities.Models
         public virtual ICollection<UserSubjectGroup> SubjectGroups { get; set; }
         public virtual ICollection<UserSubject> Subjects { get; set; }
         public virtual ICollection<UserMajor> Majors { get; set; }
+        public virtual ICollection<UserColleges> Colleges { get; set; }
     }
 }

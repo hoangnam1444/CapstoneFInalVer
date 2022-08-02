@@ -21,7 +21,6 @@ namespace Repositories.Repositories
         {
             return await FindByCondition(x => majorsId.Contains(x.MajorId), false)
                 .Include(x => x.Major)
-                .Include(x => x.LessionDetail)
                 .Select(x => new LessionInList
                 {
                     Major = new Entities.DTOs.Majors
@@ -29,14 +28,9 @@ namespace Repositories.Repositories
                         Id = x.Major.MajorId,
                         Name = x.Major.MajorName
                     },
-                    Description = x.Description,
-                    Detail = new Detail
-                    {
-                        Id = x.LessionDetail.LessionDetailId,
-                        DetailContent = x.LessionDetail.LessionDetailContent,
-                        Link = x.LessionDetail.Link
-                    },
-                    LessionId = x.LessionId
+                    Description = x.LessionDetailContent,
+                    LessionId = x.LessionId,
+                    Link = x.Link
                 })
                 .ToListAsync();
         }

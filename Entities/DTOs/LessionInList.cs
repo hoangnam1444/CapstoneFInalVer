@@ -8,10 +8,8 @@ namespace Entities.DTOs
     {
         public int LessionId { get; set; }
         public string Description { get; set; }
-        public bool? IsDeleted { get; set; }
-
         public Majors Major { get; set; }
-        public Detail Detail { get; set; }
+        public string Link { get; set; }
     }
 
     public class Majors
@@ -20,10 +18,4 @@ namespace Entities.DTOs
         public string Name { get; set; }
     }
 
-    public class Detail
-    {
-        public int Id { get; set; }
-        public string DetailContent { get; set; }
-        public string Link { get; set; }
-    }
 }

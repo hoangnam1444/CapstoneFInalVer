@@ -454,7 +454,7 @@ namespace MajorTestOrientation.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Route("lession")]
+        [Route("lesson")]
         public async Task<IActionResult> GetLession()
         {
             var user_id = _userAccessor.GetAccountId();
@@ -465,6 +465,40 @@ namespace MajorTestOrientation.Controllers
             var lession = await _repository.LessionMajor.GetLessionbyListMajor(majorsId);
 
             return Ok(lession);
+        }
+
+        /// <summary>
+        /// Role: Student (save colleges)
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("colleges")]
+        public async Task<IActionResult> SaveColleges(SaveColleges info)
+        {
+            var user_id = _userAccessor.GetAccountId();
+
+            _repository.UserCollege.Create(new UserColleges { CollegeId = info.CollegesId, UserId = user_id });
+            await _repository.SaveAsync();
+
+            return Ok("Save changes success");
+        }
+
+        /// <summary>
+        /// Role: student (get wishlist colleges)
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("colleges/wishlist")]
+        public async Task<IActionResult> GetWishlistColleges()
+        {
+            var result = await _repository.UserCollege.GetWishlist(_userAccessor.GetAccountId());
+
+            result = await _repository.MajorColleges.GetMajor(result);
+
+            result = await _repository.MajorSubjectGroupColleges.GetSumPoint(result);
+
+            return Ok(result);
         }
     }
 }
