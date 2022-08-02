@@ -26,5 +26,6 @@ namespace Entities.Models
         public virtual ICollection<CollegeRefMajor> CollegeRefMajor { get; set; }
         public virtual ICollection<VcGuidance> VcGuidance { get; set; }
         public virtual ICollection<CollegesSubjectGroup> SubjectGroups { get; set; }
+        public virtual ICollection<UserColleges> Users { get; set; }
     }
 }

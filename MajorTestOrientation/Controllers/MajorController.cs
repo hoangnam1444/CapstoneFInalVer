@@ -57,7 +57,7 @@ namespace MajorTestOrientation.Controllers
         /// <param name="majors"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("lession")]
+        [Route("lesson")]
         public async Task<IActionResult> GetLession(GetLessionByMajors majors)
         {
             var result = await _repository.LessionMajor.GetLessionbyListMajor(majors.MajorsId);

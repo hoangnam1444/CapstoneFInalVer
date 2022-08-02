@@ -16,12 +16,11 @@ namespace Entities.Models
 
         public int LessionId { get; set; }
         public int MajorId { get; set; }
-        public string Description { get; set; }
         public bool? IsDeleted { get; set; }
-        public int LessionDetailId { get; set; }
+        public string LessionDetailContent { get; set; }
+        public string Link { get; set; }
 
         public virtual Majors Major { get; set; }
-        public virtual LessionDetails LessionDetail { get; set; }
         public virtual ICollection<UserLession> UserLession { get; set; }
     }
 }

@@ -4,14 +4,16 @@ using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Entities.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220801171514_update lession")]
+    partial class updatelession
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -199,6 +201,10 @@ namespace Entities.Migrations
                         .HasColumnName("LessionID")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<bool?>("IsDeleted")
                         .IsRequired()
@@ -616,21 +622,6 @@ namespace Entities.Migrations
                     b.ToTable("Test_Types");
                 });
 
-            modelBuilder.Entity("Entities.Models.UserColleges", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CollegeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("UserId", "CollegeId");
-
-                    b.HasIndex("CollegeId");
-
-                    b.ToTable("User_College");
-                });
-
             modelBuilder.Entity("Entities.Models.UserLession", b =>
                 {
                     b.Property<int>("UserId")
@@ -910,21 +901,6 @@ namespace Entities.Migrations
                         .WithMany("TestResults")
                         .HasForeignKey("UserId")
                         .HasConstraintName("FKTest_Resul11694")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Entities.Models.UserColleges", b =>
-                {
-                    b.HasOne("Entities.Models.Colleges", "College")
-                        .WithMany("Users")
-                        .HasForeignKey("CollegeId")
-                        .HasConstraintName("FKUser_College_College")
-                        .IsRequired();
-
-                    b.HasOne("Entities.Models.SysUser", "User")
-                        .WithMany("Colleges")
-                        .HasForeignKey("UserId")
-                        .HasConstraintName("FKUser_College_User")
                         .IsRequired();
                 });
 
