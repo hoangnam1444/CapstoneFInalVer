@@ -19,6 +19,7 @@ namespace Entities.Models
         public bool? IsDeleted { get; set; }
         public string LessionDetailContent { get; set; }
         public string Link { get; set; }
+        public string ImageUrl { get; set; }
 
         public virtual Majors Major { get; set; }
         public virtual ICollection<UserLession> UserLession { get; set; }

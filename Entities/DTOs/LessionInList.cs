@@ -10,6 +10,7 @@ namespace Entities.DTOs
         public string Description { get; set; }
         public Majors Major { get; set; }
         public string Link { get; set; }
+        public string ImageUrl { get; set; }
     }
 
     public class Majors
