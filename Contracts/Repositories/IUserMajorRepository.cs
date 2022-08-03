@@ -1,4 +1,7 @@
-﻿using Entities.Models;
+﻿using Entities.DataTransferObject;
+using Entities.DTOs;
+using Entities.Models;
+using Entities.RequestFeature;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,5 +13,6 @@ namespace Contracts.Repositories
     {
         void Create(UserMajor info);
         Task<List<UserMajor>> GetMajorOfUser(int user_id);
+        Task<Pagination<StatisticMajor>> Statistic(PagingParameters param);
     }
 }

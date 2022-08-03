@@ -45,5 +45,16 @@ namespace Repositories.Repositories
                 Name = x.MajorName
             }).ToListAsync();
         }
+
+        public async Task<IEnumerable<StatisticMajor>> GetMajorName(IEnumerable<StatisticMajor> data)
+        {
+            var result = new List<StatisticMajor>();
+            foreach (var major in data)
+            {
+                major.MajorName = await FindByCondition(x => x.MajorId == major.MajorId, false).Select(x => x.MajorName).FirstOrDefaultAsync();
+                result.Add(major);
+            }
+            return result;
+        }
     }
 }

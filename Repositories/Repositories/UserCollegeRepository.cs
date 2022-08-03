@@ -1,7 +1,9 @@
 ﻿using Contracts.Repositories;
 using Entities;
+using Entities.DataTransferObject;
 using Entities.DTOs;
 using Entities.Models;
+using Entities.RequestFeature;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +31,24 @@ namespace Repositories.Repositories
                     ReferenceLink = x.College.ReferenceLink
                 }).ToListAsync();
             return result;
+        }
+
+        public async Task<Pagination<CollegesStatistic>> Statistic(PagingParameters param)
+        {
+            var data = await FindAll(false).GroupBy(x => x.CollegeId)
+                .Select(x => new CollegesStatistic
+                {
+                    CollegeId = x.Key,
+                    NumOfUser = x.Count(y => y.UserId > 0)
+                }).ToListAsync();
+
+            return new Pagination<CollegesStatistic>
+            {
+                Count = data.Count,
+                Data = data.Skip((param.PageNumber - 1) * param.PageSize).Take(param.PageSize),
+                PageSize = param.PageSize,
+                PageNumber = param.PageNumber
+            };
         }
     }
 }

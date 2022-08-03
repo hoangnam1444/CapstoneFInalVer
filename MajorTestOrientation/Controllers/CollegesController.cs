@@ -1,5 +1,6 @@
 ﻿using Contracts.HandleServices;
 using Contracts.Repositories;
+using Entities.DataTransferObject;
 using Entities.DTOs;
 using Entities.Models;
 using Entities.RequestFeature;
@@ -176,6 +177,36 @@ namespace MajorTestOrientation.Controllers
             await _repository.SaveAsync();
 
             return Ok("Save changes success");
+        }
+
+        /// <summary>
+        /// Role: student (get all colleges)
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("Dashboard")]
+        public async Task<IActionResult> GetColleges([FromQuery] PagingParameters param)
+        {
+            Pagination<CollegesReturn> result = await _repository.Colleges.GetAll(param);
+
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Role: Admin (statistic selected colleges)
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("statistic")]
+        public async Task<IActionResult> Statistic([FromQuery]PagingParameters param)
+        {
+            Pagination<CollegesStatistic> colleges = await _repository.UserCollege.Statistic(param);
+
+            colleges.Data = await _repository.Colleges.GetName(colleges.Data);
+
+            return Ok(colleges);
         }
     }
 }
