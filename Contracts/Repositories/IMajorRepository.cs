@@ -10,5 +10,6 @@ namespace Contracts.Repositories
     {
         Task<Pagination<MajorResult>> GetAll(PagingParameters param);
         Task<List<MajorForFilter>> GetAll();
+        Task<IEnumerable<StatisticMajor>> GetMajorName(IEnumerable<StatisticMajor> data);
     }
 }

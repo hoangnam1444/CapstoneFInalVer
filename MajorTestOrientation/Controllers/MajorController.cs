@@ -108,5 +108,21 @@ namespace MajorTestOrientation.Controllers
 
             return Ok(majors);
         }
+
+        /// <summary>
+        /// Role: Admin (Statistic major selected by user)
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("statistic")]
+        public async Task<IActionResult> StatisticMajor([FromQuery] PagingParameters param)
+        {
+            var majors = await _repository.MajorUser.Statistic(param);
+
+            majors.Data = await _repository.Major.GetMajorName(majors.Data);
+
+            return Ok(majors);
+        }
     }
 }
