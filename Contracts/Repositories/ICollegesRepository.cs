@@ -13,5 +13,6 @@ namespace Contracts.Repositories
         Task<CollegesReturn> GetDetail(int colleges_id);
         void Create(Colleges colleges);
         void Update(Colleges colleges);
+        Task<Pagination<CollegesReturn>> GetAll(PagingParameters param);
     }
 }
