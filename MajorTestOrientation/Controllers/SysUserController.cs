@@ -458,13 +458,15 @@ namespace MajorTestOrientation.Controllers
         public async Task<IActionResult> GetLession()
         {
             var user_id = _userAccessor.GetAccountId();
-            var selectedMajor = await _repository.MajorUser.GetMajorOfUser(user_id);
+            //var selectedMajor = await _repository.MajorUser.GetMajorOfUser(user_id);
 
-            var majorsId = selectedMajor.GroupBy(x => x.MajorId).Select(x => x.Key).ToList();
+            //var majorsId = selectedMajor.GroupBy(x => x.MajorId).Select(x => x.Key).ToList();
 
-            var lession = await _repository.LessionMajor.GetLessionbyListMajor(majorsId);
+            //var lession = await _repository.LessionMajor.GetLessionbyListMajor(majorsId);
 
-            return Ok(lession);
+            List<LessionInList> lesson = await _repository.LessionMajor.GetAll();
+
+            return Ok(lesson);
         }
 
         /// <summary>
