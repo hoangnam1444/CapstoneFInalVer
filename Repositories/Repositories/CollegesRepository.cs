@@ -19,6 +19,29 @@ namespace Repositories.Repositories
         {
         }
 
+        public async Task<Pagination<CollegesReturn>> GetAll(PagingParameters param)
+        {
+            var data = await FindByCondition(x => x.IsDeleted == false, false)
+                .Skip((param.PageNumber-1)*param.PageSize)
+                .Take(param.PageSize)
+                .Select(x => new CollegesReturn
+            {
+                Address = x.Address,
+                CollegeId = x.CollegeId,
+                CollegeName = x.CollegeName,
+                ImagePath = x.ImagePath,
+                ReferenceLink = x.ReferenceLink
+            }).ToListAsync();
+
+            return new Pagination<CollegesReturn>
+            {
+                Count = await FindByCondition(x => x.IsDeleted == false, false).CountAsync(),
+                Data = data,
+                PageNumber = param.PageNumber,
+                PageSize = param.PageSize
+            };
+        }
+
         public async Task<Pagination<CollegesInList>> GetColleges(PagingParameters param)
         {
             var colleges = await FindByCondition(x => x.IsDeleted == false, false)
