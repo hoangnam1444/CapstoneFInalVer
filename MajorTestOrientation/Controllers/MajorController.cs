@@ -1,4 +1,5 @@
 ﻿using Contracts.Repositories;
+using Entities.DataTransferObject;
 using Entities.DTOs;
 using Entities.RequestFeature;
 using Microsoft.AspNetCore.Http;
@@ -104,7 +105,23 @@ namespace MajorTestOrientation.Controllers
         [Route("ForFiltering")]
         public async Task<IActionResult> GetMajorForFilter()
         {
-            List<MajorForFilter> majors = await _repository.Major.GetAll();
+            var majors = await _repository.Major.GetAll();
+
+            return Ok(majors);
+        }
+
+        /// <summary>
+        /// Role: Admin (Statistic major selected by user)
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("statistic")]
+        public async Task<IActionResult> StatisticMajor([FromQuery] PagingParameters param)
+        {
+            var majors = await _repository.MajorUser.Statistic(param);
+
+            majors.Data = await _repository.Major.GetMajorName(majors.Data);
 
             return Ok(majors);
         }
