@@ -39,8 +39,13 @@ namespace Repositories.Repositories
                 .Select(x => new CollegesStatistic
                 {
                     CollegeId = x.Key,
-                    NumOfUser = x.Count(y => y.UserId > 0)
+                    NumOfUser = x.Count()
                 }).ToListAsync();
+
+            data.Sort(delegate (CollegesStatistic x, CollegesStatistic y)
+            {
+                return x.NumOfUser > y.NumOfUser ? -1 : x.NumOfUser == y.NumOfUser ? 0 : 1;
+            });
 
             return new Pagination<CollegesStatistic>
             {

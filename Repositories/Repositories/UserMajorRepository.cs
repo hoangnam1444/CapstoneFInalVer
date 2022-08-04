@@ -29,12 +29,17 @@ namespace Repositories.Repositories
 
         public async Task<Pagination<StatisticMajor>> Statistic(PagingParameters param)
         {
-            var majors = await FindAll(false).Include(x => x.Major).GroupBy(x => x.MajorId)
+            var majors = await FindAll(false).GroupBy(x => x.MajorId)
                 .Select(x => new StatisticMajor
                 {
                     MajorId = x.Key,
-                    SelectedUser = x.Count(y => y.UserId > 0)
+                    SelectedUser = x.Count()
                 }).ToListAsync();
+
+            majors.Sort(delegate (StatisticMajor x, StatisticMajor y)
+            {
+                return x.SelectedUser > y.SelectedUser ? -1 : x.SelectedUser == y.SelectedUser ? 0 : 1;
+            });
 
             return new Pagination<StatisticMajor>
             {
