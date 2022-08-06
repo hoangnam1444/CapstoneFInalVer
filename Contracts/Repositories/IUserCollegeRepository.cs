@@ -13,5 +13,7 @@ namespace Contracts.Repositories
         Task<List<CollegesReturn>> GetWishlist(int v);
         Task<Pagination<CollegesStatistic>> Statistic(PagingParameters param);
         Task<List<CollegesReturn>> GetSelectedUser(List<CollegesReturn> result, int v);
+        Task<bool> SelectedColleges(int collegesId, int user_id);
+        void Delete(UserColleges userColleges);
     }
 }

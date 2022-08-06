@@ -23,8 +23,8 @@ namespace Repositories.Repositories
             var returnValue = new List<CollegesReturn>();
             foreach(var college in result)
             {
-                college.IsSelected = await FindByCondition(x => x.CollegeId == college.CollegeId && x.UserId == v, false).FirstOrDefaultAsync() != null;
-                college.NumOfSelected = await FindByCondition(x => x.CollegeId == college.CollegeId, false).CountAsync();
+                college.IsSelected = await FindByCondition(x => x.CollegeId == college.CollegeId && x.UserId == v, true).FirstOrDefaultAsync() != null;
+                college.NumOfSelected = await FindByCondition(x => x.CollegeId == college.CollegeId, true).CountAsync();
                 returnValue.Add(college);
             }
             return returnValue;
@@ -43,6 +43,11 @@ namespace Repositories.Repositories
                     ReferenceLink = x.College.ReferenceLink
                 }).ToListAsync();
             return result;
+        }
+
+        public async Task<bool> SelectedColleges(int collegesId, int user_id)
+        {
+            return await FindByCondition(x => x.CollegeId == collegesId && x.UserId == user_id, false).FirstOrDefaultAsync() != null;
         }
 
         public async Task<Pagination<CollegesStatistic>> Statistic(PagingParameters param)
