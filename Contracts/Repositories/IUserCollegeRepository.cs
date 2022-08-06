@@ -12,5 +12,6 @@ namespace Contracts.Repositories
         void Create(UserColleges info);
         Task<List<CollegesReturn>> GetWishlist(int v);
         Task<Pagination<CollegesStatistic>> Statistic(PagingParameters param);
+        Task<List<CollegesReturn>> GetSelectedUser(List<CollegesReturn> result, int v);
     }
 }

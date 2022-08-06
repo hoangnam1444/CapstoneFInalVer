@@ -11,6 +11,8 @@ namespace Entities.DTOs
         public string ReferenceLink { get; set; }
         public string Address { get; set; }
         public string ImagePath { get; set; }
+        public int NumOfSelected { get; set; }
+        public bool IsSelected { get; set; }
         public List<Major> Major { get; set; }
     }
     public class Major
