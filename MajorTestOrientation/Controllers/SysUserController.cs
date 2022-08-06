@@ -493,7 +493,15 @@ namespace MajorTestOrientation.Controllers
         {
             var user_id = _userAccessor.GetAccountId();
 
-            _repository.UserCollege.Create(new UserColleges { CollegeId = info.CollegesId, UserId = user_id });
+            var savedColleges = await _repository.UserCollege.SelectedColleges(info.CollegesId, user_id);
+            if (savedColleges)
+            {
+                _repository.UserCollege.Delete(new UserColleges { CollegeId = info.CollegesId, UserId = user_id });
+            }
+            else
+            {
+                _repository.UserCollege.Create(new UserColleges { CollegeId = info.CollegesId, UserId = user_id });
+            }
             await _repository.SaveAsync();
 
             return Ok("Save changes success");
