@@ -1,4 +1,5 @@
-﻿using Contracts.Repositories;
+﻿using Contracts.HandleServices;
+using Contracts.Repositories;
 using Entities.DTOs;
 using Entities.RequestFeature;
 using Microsoft.AspNetCore.Http;
@@ -15,10 +16,12 @@ namespace MajorTestOrientation.Controllers
     public class MajorController : ControllerBase
     {
         private readonly IRepositoryManager _repository;
+        private readonly IUserAccessor _userAccessor;
 
-        public MajorController(IRepositoryManager repository)
+        public MajorController(IRepositoryManager repository, IUserAccessor userAccessor)
         {
             _repository = repository;
+            _userAccessor = userAccessor;
         }
 
         /// <summary>
@@ -76,9 +79,12 @@ namespace MajorTestOrientation.Controllers
         {
             var result = await _repository.MajorColleges.GetSuggesionColleges(major_id);
 
+            result = await _repository.UserCollege.GetSelectedUser(result, _userAccessor.GetAccountId());
+
             result = await _repository.MajorColleges.GetMajor(result);
 
             result = await _repository.MajorSubjectGroupColleges.GetSumPoint(result);
+
 
             return Ok(result);
         }

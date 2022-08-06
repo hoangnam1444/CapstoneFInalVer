@@ -18,6 +18,18 @@ namespace Repositories.Repositories
 
         }
 
+        public async Task<List<CollegesReturn>> GetSelectedUser(List<CollegesReturn> result, int v)
+        {
+            var returnValue = new List<CollegesReturn>();
+            foreach(var college in result)
+            {
+                college.IsSelected = await FindByCondition(x => x.CollegeId == college.CollegeId && x.UserId == v, false).FirstOrDefaultAsync() != null;
+                college.NumOfSelected = await FindByCondition(x => x.CollegeId == college.CollegeId, false).CountAsync();
+                returnValue.Add(college);
+            }
+            return returnValue;
+        }
+
         public async Task<List<CollegesReturn>> GetWishlist(int v)
         {
             var result = await FindByCondition(x => x.UserId == v, false)
