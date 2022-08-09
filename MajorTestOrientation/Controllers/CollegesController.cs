@@ -96,6 +96,36 @@ namespace MajorTestOrientation.Controllers
         }
 
         /// <summary>
+        /// Role: Admin (create new colleges)
+        /// </summary>
+        /// <param name="colleges">List colleges get from excel file</param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("import")]
+        public async Task<IActionResult> CreateCollege(List<NewCollege> colleges)
+        {
+            var role = _userAccessor.GetAccountRole();
+            if (role != 2)
+            {
+                throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, "Don't have permission");
+            }
+
+            foreach (var college in colleges)
+            {
+                _repository.Colleges.Create(new Colleges
+                {
+                    Address = college.Address,
+                    CollegeName = college.CollegeName,
+                    ReferenceLink = college.ReferenceLink,
+                    ImagePath = college.ImagePath,
+                    IsDeleted = false
+                });
+            }
+            await _repository.SaveAsync();
+            return Ok("Save changes success");
+        }
+
+        /// <summary>
         /// Role: Admin (add new major of colleges)
         /// </summary>
         /// <param name="majorId"></param>
@@ -188,7 +218,13 @@ namespace MajorTestOrientation.Controllers
         [Route("Dashboard")]
         public async Task<IActionResult> GetColleges([FromQuery] PagingParameters param)
         {
-            Pagination<CollegesReturn> result = await _repository.Colleges.GetAll(param);
+            Pagination<CollegesReturn> colleges = await _repository.Colleges.GetAll(param);
+
+            var result = new DashboardColleges
+            {
+                ViewPointLink = "https://vietnamnet.vn/giao-duc/diem-thi/tra-cuu-diem-chuan-cd-dh-2022",
+                College = colleges
+            };
 
             return Ok(result);
         }
@@ -210,3 +246,4 @@ namespace MajorTestOrientation.Controllers
         }
     }
 }
+

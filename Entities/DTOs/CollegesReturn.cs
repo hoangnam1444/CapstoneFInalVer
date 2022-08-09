@@ -1,9 +1,15 @@
-﻿using System;
+﻿using Entities.DataTransferObject;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Entities.DTOs
 {
+    public class DashboardColleges
+    {
+        public string ViewPointLink { get; set; }
+        public Pagination<CollegesReturn> College { get; set; }
+    }
     public class CollegesReturn
     {
         public int CollegeId { get; set; }
