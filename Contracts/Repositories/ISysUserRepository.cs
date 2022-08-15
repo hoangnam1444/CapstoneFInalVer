@@ -1,4 +1,5 @@
-﻿using Entities.DTOs;
+﻿using Entities.DataTransferObject;
+using Entities.DTOs;
 using Entities.Models;
 using Entities.RequestFeature;
 using System.Collections.Generic;
@@ -18,5 +19,7 @@ namespace Contracts.Repositories
         void Update(SysUser sysUser);
         Task<SysUser> GetById(int userId);
         Task<Profile> GetProfile(int user_id);
+        Task<Pagination<Connector>> GetConnector(int status, PagingParameters param);
+        Task<SysUser> GetConnector(int v);
     }
 }

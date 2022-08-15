@@ -1,5 +1,6 @@
 ﻿using Contracts.Repositories;
 using Entities;
+using Entities.DataTransferObject;
 using Entities.DTOs;
 using Entities.Models;
 using Entities.RequestFeature;
@@ -41,7 +42,12 @@ namespace Repositories.Repositories
 
         public async Task<SysUser> GetAccountByUnPw(AdminLogin info)
         {
-            return await FindByCondition(x => x.Email == info.Email && x.Password == info.Password, false).FirstOrDefaultAsync();
+            var account = await FindByCondition(x => x.Email == info.Email && x.Password == info.Password, false).FirstOrDefaultAsync();
+            if(account == null)
+            {
+                account = await FindByCondition(x => x.UserName == info.Email && x.Password == info.Password, false).FirstOrDefaultAsync();
+            }
+            return account;
         }
 
         public async Task<List<SysUserReturn>> GetAllSysUser()
@@ -67,6 +73,62 @@ namespace Repositories.Repositories
         public async Task<SysUser> GetById(int userId)
         {
             return await FindByCondition(x => x.UserId == userId, false).FirstOrDefaultAsync();
+        }
+
+        public async Task<Pagination<Connector>> GetConnector(int status, PagingParameters param)
+        {
+            var accounts = new List<Connector>();
+            var count = 0;
+            if(status == 0)
+            {
+                accounts = await FindByCondition(x => x.IsDeleted == true, false)
+                    .Skip((param.PageNumber - 1) * param.PageSize).Take(param.PageSize)
+                    .Select(x => new Connector
+                    {
+                        Id = x.UserId,
+                        Fullname = x.FullName,
+                        ImagePath = x.ImagePath,
+                        Status = "Unavalailable"
+                    }).ToListAsync();
+                count = await FindByCondition(x => x.IsDeleted == true, false).CountAsync();
+            }else if(status == 1)
+            {
+                accounts = await FindByCondition(x => x.IsDeleted == false, false)
+                    .Skip((param.PageNumber - 1) * param.PageSize).Take(param.PageSize)
+                    .Select(x => new Connector
+                    {
+                        Id = x.UserId,
+                        Fullname = x.FullName,
+                        ImagePath = x.ImagePath,
+                        Status = "Avalailable"
+                    }).ToListAsync();
+                count = await FindByCondition(x => x.IsDeleted == false, false).CountAsync();
+            }
+            else
+            {
+                accounts = await FindAll(false)
+                    .Skip((param.PageNumber - 1) * param.PageSize).Take(param.PageSize)
+                    .Select(x => new Connector
+                    {
+                        Id = x.UserId,
+                        Fullname = x.FullName,
+                        ImagePath = x.ImagePath,
+                        Status = x.IsDeleted.Value ? "Unavailable" : "Available"
+                    }).ToListAsync();
+                count = await FindAll(false).CountAsync();
+            }
+            return new Pagination<Connector>
+            {
+                Count = count,
+                Data = accounts,
+                PageNumber = param.PageNumber,
+                PageSize = param.PageSize
+            };
+        }
+
+        public async Task<SysUser> GetConnector(int v)
+        {
+            return await FindByCondition(x => x.UserId == v, false).FirstOrDefaultAsync();
         }
 
         public async Task<Profile> GetProfile(int user_id)

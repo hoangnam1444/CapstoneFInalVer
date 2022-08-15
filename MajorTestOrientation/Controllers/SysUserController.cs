@@ -1,5 +1,6 @@
 ﻿using Contracts.HandleServices;
 using Contracts.Repositories;
+using Entities.DataTransferObject;
 using Entities.DTOs;
 using Entities.Models;
 using Entities.RequestFeature;
@@ -373,6 +374,53 @@ namespace MajorTestOrientation.Controllers
         #endregion
 
         /// <summary>
+        /// Role: Admin, User, Connector (Get connector, only ADMIN can get with status ALL and UNAVAILABLE)
+        /// </summary>
+        /// <param name="status">2: All, 1: Available, 0: Unavailable</param>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("connector/{status}")]
+        public async Task<IActionResult> GetConnectorByStatus(int status, [FromQuery] PagingParameters param)
+        {
+            if(status != 1 && _userAccessor.GetAccountRole() != 2)
+            {
+                throw new ErrorDetails(HttpStatusCode.BadRequest, "Don't have permisson");
+            }
+            //IsAvalable of connector = !IsDeleted in SysUser
+            Pagination<Connector> connectors = await _repository.SysUser.GetConnector(status, param);
+            return Ok(connectors);
+        }
+
+        /// <summary>
+        /// Role: Connector (Update their status)
+        /// </summary>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("status")]
+        public async Task<IActionResult> UpdateStatusConnector()
+        {
+            if (_userAccessor.GetAccountRole() != 3)
+            {
+                throw new ErrorDetails(HttpStatusCode.BadRequest, "Don't have permisson");
+            }
+
+            SysUser account = await _repository.SysUser.GetConnector(_userAccessor.GetAccountId());
+            if (account.IsDeleted.Value)
+            {
+                account.IsDeleted = false;
+            }
+            else
+            {
+                account.IsDeleted = true;
+            }
+            _repository.SysUser.Update(account);
+            await _repository.SaveAsync();
+
+            return Ok(new {UpdatedStatus = account.IsDeleted.Value ? "Unavailable" : "Available" });
+        }
+
+        /// <summary>
         /// Role: Student (Get suggesion colleges)
         /// </summary>
         /// <returns></returns>
@@ -504,6 +552,40 @@ namespace MajorTestOrientation.Controllers
             }
             await _repository.SaveAsync();
 
+            return Ok("Save changes success");
+        }
+
+        /// <summary>
+        /// Role: Admin (Create connector)
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("Connector")]
+        public async Task<IActionResult> CreateConnector(NewConnectorInfo info)
+        {
+            if(_userAccessor.GetAccountRole() != 2)
+            {
+                throw new ErrorDetails(HttpStatusCode.BadRequest, "Don't have permission");
+            }
+
+            var hasedPw = _hasing.EncriptSHA256(info.Password);
+
+            _repository.SysUser.Create(new SysUser
+            {
+                FullName = info.FullName,
+                UserName = info.UserName,
+                PhoneNumber = info.PhoneNumber,
+                Password = hasedPw,
+                Gender = info.Gender,
+                AdminIdUpdate = _userAccessor.GetAccountId(),
+                CreatedDate = DateTime.UtcNow,
+                IsDeleted = false,
+                IsLocked = false,
+                RoleId = 3
+            });
+
+            await _repository.SaveAsync();
             return Ok("Save changes success");
         }
 
