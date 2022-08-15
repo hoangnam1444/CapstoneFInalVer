@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using Entities.Models;
+using System.Threading.Tasks;
 
 namespace Contracts.Repositories
 {
