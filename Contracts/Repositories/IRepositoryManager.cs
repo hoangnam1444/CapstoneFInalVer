@@ -27,6 +27,7 @@ namespace Contracts.Repositories
         ICollegesRepository Colleges { get; }
         IMajorRepository Major { get; }
         IUserCollegeRepository UserCollege { get; }
+        IChatRoomRepository ChatRoom { get; }
         Task SaveAsync();
     }
 }

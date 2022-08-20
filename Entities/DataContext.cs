@@ -35,6 +35,7 @@ namespace Entities
         public virtual DbSet<TestTypes> TestTypes { get; set; }
         public virtual DbSet<UserLession> UserLession { get; set; }
         public virtual DbSet<VcGuidance> VcGuidance { get; set; }
+        public virtual DbSet<ChatRoom> ChatRooms { get; set; }
 
         public virtual DbSet<MajorSubjectGroup> MajorSubjectGroup { get; set; }
         public virtual DbSet<Subject> Subject { get; set; }
@@ -92,6 +93,23 @@ namespace Entities
                     .HasForeignKey(d => d.CollegeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKUser_College_College");
+            });
+
+            modelBuilder.Entity<ChatRoom>(entity =>
+            {
+                entity.ToTable("ChatRooms");
+
+                entity.HasOne(d => d.Student)
+                    .WithMany(p => p.Students)
+                    .HasForeignKey(d => d.StudentId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FKUser_Chatroom_Student");
+
+                entity.HasOne(d => d.Connector)
+                    .WithMany(p => p.Connectors)
+                    .HasForeignKey(d => d.ConnectorId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FKUser_Chatroom_Connector");
             });
 
             modelBuilder.Entity<UserMajor>(entity =>

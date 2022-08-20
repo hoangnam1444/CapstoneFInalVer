@@ -15,5 +15,7 @@ namespace Contracts.Repositories
         Task<List<CollegesReturn>> GetSelectedUser(List<CollegesReturn> result, int v);
         Task<bool> SelectedColleges(int collegesId, int user_id);
         void Delete(UserColleges userColleges);
+        Task<List<ChatBoxAccount>> GetConnector(int collegesId);
+        Task<int> GetConColId(int receiverId);
     }
 }

@@ -33,6 +33,7 @@ namespace Repositories.Repositories
         private ICollegesRepository _colleges;
         private IMajorRepository _major;
         private IUserCollegeRepository _userColleges;
+        private IChatRoomRepository _chatRoom;
         private readonly DataContext _context;
 
         public ISysUserRepository SysUser
@@ -294,6 +295,18 @@ namespace Repositories.Repositories
                     _userColleges = new UserCollegeRepository(_context);
                 }
                 return _userColleges;
+            }
+        }
+
+        public IChatRoomRepository ChatRoom
+        {
+            get
+            {
+                if(_chatRoom == null)
+                {
+                    _chatRoom = new ChatRoomRepository(_context);
+                }
+                return _chatRoom;
             }
         }
 

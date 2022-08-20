@@ -47,5 +47,7 @@ namespace Entities.Models
         public virtual ICollection<UserSubject> Subjects { get; set; }
         public virtual ICollection<UserMajor> Majors { get; set; }
         public virtual ICollection<UserColleges> Colleges { get; set; }
+        public virtual ICollection<ChatRoom> Students { get; set; }
+        public virtual ICollection<ChatRoom> Connectors { get; set; }
     }
 }

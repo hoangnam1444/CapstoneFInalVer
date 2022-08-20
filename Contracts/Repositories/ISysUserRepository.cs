@@ -21,5 +21,6 @@ namespace Contracts.Repositories
         Task<Profile> GetProfile(int user_id);
         Task<Pagination<Connector>> GetConnector(int status, PagingParameters param);
         Task<SysUser> GetConnector(int v);
+        Task<List<ChatBoxAccount>> GetAvailableConnector(List<ChatBoxAccount> accounts);
     }
 }
