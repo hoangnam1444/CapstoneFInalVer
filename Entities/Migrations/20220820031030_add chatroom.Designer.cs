@@ -4,14 +4,16 @@ using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Entities.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220820031030_add chatroom")]
+    partial class addchatroom
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,20 +53,10 @@ namespace Entities.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CollegeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ConnectorId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ConnectorId");
-
-                    b.HasIndex("StudentId");
 
                     b.ToTable("ChatRooms");
                 });
@@ -644,6 +636,21 @@ namespace Entities.Migrations
                     b.ToTable("Test_Types");
                 });
 
+            modelBuilder.Entity("Entities.Models.UserChatRoom", b =>
+                {
+                    b.Property<int>("ChatRoomId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ChatRoomId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("User_ChatRoom");
+                });
+
             modelBuilder.Entity("Entities.Models.UserColleges", b =>
                 {
                     b.Property<int>("UserId")
@@ -651,9 +658,6 @@ namespace Entities.Migrations
 
                     b.Property<int>("CollegeId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("IsConnector")
-                        .HasColumnType("bit");
 
                     b.HasKey("UserId", "CollegeId");
 
@@ -766,21 +770,6 @@ namespace Entities.Migrations
                         .HasForeignKey("PGroupId")
                         .HasConstraintName("FKPGroup_Answer")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Entities.Models.ChatRoom", b =>
-                {
-                    b.HasOne("Entities.Models.SysUser", "Connector")
-                        .WithMany("Connectors")
-                        .HasForeignKey("ConnectorId")
-                        .HasConstraintName("FKUser_Chatroom_Connector")
-                        .IsRequired();
-
-                    b.HasOne("Entities.Models.SysUser", "Student")
-                        .WithMany("Students")
-                        .HasForeignKey("StudentId")
-                        .HasConstraintName("FKUser_Chatroom_Student")
                         .IsRequired();
                 });
 
@@ -956,6 +945,21 @@ namespace Entities.Migrations
                         .WithMany("TestResults")
                         .HasForeignKey("UserId")
                         .HasConstraintName("FKTest_Resul11694")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Entities.Models.UserChatRoom", b =>
+                {
+                    b.HasOne("Entities.Models.ChatRoom", "ChatRoom")
+                        .WithMany("Users")
+                        .HasForeignKey("ChatRoomId")
+                        .HasConstraintName("FKUser_ChatRoom_ChatRoom")
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.SysUser", "User")
+                        .WithMany("ChatRooms")
+                        .HasForeignKey("UserId")
+                        .HasConstraintName("FKUser_ChatRoom_User")
                         .IsRequired();
                 });
 

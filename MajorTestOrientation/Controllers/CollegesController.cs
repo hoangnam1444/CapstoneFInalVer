@@ -27,22 +27,32 @@ namespace MajorTestOrientation.Controllers
         }
 
         /// <summary>
-        /// Role: Admin (get all colleges)
+        /// Role: All (get all colleges)
         /// </summary>
         /// <param name="param"></param>
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetAllColleges([FromQuery] PagingParameters param)
         {
-            var role = _userAccessor.GetAccountRole();
-            if(role != 2)
-            {
-                throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, "Don't have permission");
-            }
-
             var result = await _repository.Colleges.GetColleges(param);
 
             return Ok(result);
+        }
+
+        /// <summary>
+        /// Role: Student (Get available connector)
+        /// </summary>
+        /// <param name="collegesId">Get from API get all colleges</param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("{collegesId}/connector")]
+        public async Task<IActionResult> GetConnector(int collegesId)
+        {
+            List<ChatBoxAccount> accounts = await _repository.UserCollege.GetConnector(collegesId);
+
+            accounts = await _repository.SysUser.GetAvailableConnector(accounts);
+
+            return Ok(accounts);
         }
 
         /// <summary>

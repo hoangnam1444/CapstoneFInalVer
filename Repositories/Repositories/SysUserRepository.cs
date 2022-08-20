@@ -70,6 +70,25 @@ namespace Repositories.Repositories
             return result;
         }
 
+        public async Task<List<ChatBoxAccount>> GetAvailableConnector(List<ChatBoxAccount> accounts)
+        {
+            var i = 0;
+            while(i < accounts.Count)
+            {
+                var cAccount = await FindByCondition(x => x.UserId == accounts[i].AccountId, false).FirstOrDefaultAsync();
+                if (cAccount.IsDeleted.Value)
+                {
+                    accounts.RemoveAt(i);
+                }
+                else
+                {
+                    i++;
+                }
+
+            }
+            return accounts;
+        }
+
         public async Task<SysUser> GetById(int userId)
         {
             return await FindByCondition(x => x.UserId == userId, false).FirstOrDefaultAsync();

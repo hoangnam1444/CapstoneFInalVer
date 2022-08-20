@@ -548,7 +548,7 @@ namespace MajorTestOrientation.Controllers
             }
             else
             {
-                _repository.UserCollege.Create(new UserColleges { CollegeId = info.CollegesId, UserId = user_id });
+                _repository.UserCollege.Create(new UserColleges { CollegeId = info.CollegesId, UserId = user_id, IsConnector = false });
             }
             await _repository.SaveAsync();
 
@@ -556,7 +556,7 @@ namespace MajorTestOrientation.Controllers
         }
 
         /// <summary>
-        /// Role: Admin (Create connector)
+        /// Role: Admin (Create connector, Colleges id get from API get all colleges)
         /// </summary>
         /// <param name="info"></param>
         /// <returns></returns>
@@ -571,7 +571,7 @@ namespace MajorTestOrientation.Controllers
 
             var hasedPw = _hasing.EncriptSHA256(info.Password);
 
-            _repository.SysUser.Create(new SysUser
+            var newUser = new SysUser
             {
                 FullName = info.FullName,
                 UserName = info.UserName,
@@ -580,12 +580,25 @@ namespace MajorTestOrientation.Controllers
                 Gender = info.Gender,
                 AdminIdUpdate = _userAccessor.GetAccountId(),
                 CreatedDate = DateTime.UtcNow,
+                Email = info.Email,
                 IsDeleted = false,
                 IsLocked = false,
                 RoleId = 3
+            };
+
+            _repository.SysUser.Create(newUser);
+
+            await _repository.SaveAsync();
+
+            _repository.UserCollege.Create(new UserColleges
+            {
+                CollegeId = info.CollegesId,
+                UserId = newUser.UserId,
+                IsConnector = true
             });
 
             await _repository.SaveAsync();
+
             return Ok("Save changes success");
         }
 
@@ -604,6 +617,59 @@ namespace MajorTestOrientation.Controllers
             result = await _repository.MajorSubjectGroupColleges.GetSumPoint(result);
 
             return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("ChatRoom")]
+        public async Task<IActionResult> GetChatWithStudent(PagingParameters param)
+        {
+            var connectorId = _userAccessor.GetAccountId();
+
+            Pagination<StudentInChat> result = await _repository.ChatRoom.GetChatWithStudent(connectorId, param);
+
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Role: Student (Get room chat with connector)
+        /// </summary>
+        /// <param name="accountId">Connector id</param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("{accountId}/openchat")]
+        public async Task<IActionResult> OpenChat(int accountId)
+        {
+            var senderId = _userAccessor.GetAccountId();
+            var receiverId = accountId;
+            bool isExistRoom = await _repository.ChatRoom.IsExistRoom(senderId, receiverId);
+
+            ChatRoom chatRoom;
+            if (isExistRoom)
+            {
+                chatRoom = await _repository.ChatRoom.GetExistChatRoom(senderId, receiverId);
+            }
+            else
+            {
+                chatRoom = new ChatRoom
+                {
+                    CollegeId = await _repository.UserCollege.GetConColId(receiverId),
+                    ConnectorId = receiverId,
+                    StudentId = senderId
+                };
+                _repository.ChatRoom.Create(chatRoom);
+            }
+
+            var connector = await _repository.SysUser.GetById(chatRoom.ConnectorId);
+
+            var result = new RoomChatReturn
+            {
+                RoomId = chatRoom.Id,
+                CollegeName = _repository.Colleges.GetDetail(chatRoom.CollegeId).Result.CollegeName,
+                ConnectorAvatar = connector.ImagePath,
+                ConnectorName = connector.UserName
+            };
+
+            return Ok(chatRoom);
         }
     }
 }

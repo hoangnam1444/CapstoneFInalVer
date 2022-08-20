@@ -18,13 +18,30 @@ namespace Repositories.Repositories
 
         }
 
+        public async Task<int> GetConColId(int receiverId)
+        {
+            return await FindByCondition(x => x.UserId == receiverId, false).Select(x => x.CollegeId).FirstOrDefaultAsync();
+        }
+
+        public async Task<List<ChatBoxAccount>> GetConnector(int collegesId)
+        {
+            return await FindByCondition(x => x.CollegeId == collegesId && x.IsConnector == true, false)
+                .Include(x => x.User)
+                .Select(x => new ChatBoxAccount
+                {
+                    AccountId = x.User.UserId,
+                    ImagePath = x.User.ImagePath,
+                    Name = x.User.UserName
+                }).ToListAsync();
+        }
+
         public async Task<List<CollegesReturn>> GetSelectedUser(List<CollegesReturn> result, int v)
         {
             var returnValue = new List<CollegesReturn>();
             foreach(var college in result)
             {
                 college.IsSelected = await FindByCondition(x => x.CollegeId == college.CollegeId && x.UserId == v, true).FirstOrDefaultAsync() != null;
-                college.NumOfSelected = await FindByCondition(x => x.CollegeId == college.CollegeId, true).CountAsync();
+                college.NumOfSelected = await FindByCondition(x => x.CollegeId == college.CollegeId && x.IsConnector == false, true).CountAsync();
                 returnValue.Add(college);
             }
             return returnValue;
@@ -52,7 +69,7 @@ namespace Repositories.Repositories
 
         public async Task<Pagination<CollegesStatistic>> Statistic(PagingParameters param)
         {
-            var data = await FindAll(false).GroupBy(x => x.CollegeId)
+            var data = await FindByCondition(x => x.IsConnector == false, false).GroupBy(x => x.CollegeId)
                 .Select(x => new CollegesStatistic
                 {
                     CollegeId = x.Key,
