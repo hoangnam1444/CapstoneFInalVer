@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Entities.DTOs
 {
@@ -11,7 +9,7 @@ namespace Entities.DTOs
         public TestType TestType { get; set; }
         public DateTime CreatedDate { get; set; }
     }
-    public class TestType 
+    public class TestType
     {
         public int TypeId { get; set; }
         public string TypeName { get; set; }

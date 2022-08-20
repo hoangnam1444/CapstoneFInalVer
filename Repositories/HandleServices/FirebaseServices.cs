@@ -1,12 +1,12 @@
 ﻿using Contracts.HandleServices;
 using Entities.DTOs;
-using Microsoft.Extensions.Configuration;
-using System.Threading.Tasks;
 using FirebaseAdmin;
-using Google.Apis.Auth.OAuth2;
 using FirebaseAdmin.Auth;
-using System.Collections.Generic;
+using Google.Apis.Auth.OAuth2;
+using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Repositories.HandleServices
 {
@@ -32,7 +32,7 @@ namespace Repositories.HandleServices
             }
             catch (Exception ex)
             {
-                return new FirebaseInfo { Email = "Get email from token error: "+ex.Message };
+                return new FirebaseInfo { Email = "Get email from token error: " + ex.Message };
             }
         }
 

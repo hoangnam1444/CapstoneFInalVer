@@ -38,13 +38,13 @@ namespace Repositories.Repositories
                 .ToList(),
                 PageSize = param.PageSize,
                 PageNumber = param.PageNumber
-            };   
+            };
         }
 
         public async Task<QuestionOfTest> GetDetail(int question_id)
         {
             var result = await FindByCondition(x => x.QuestionId == question_id, false)
-                .Select(x => new QuestionOfTest 
+                .Select(x => new QuestionOfTest
                 {
                     QuestionId = x.QuestionId,
                     OrderIndex = x.OrderIndex,

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Contracts.HandleServices
+﻿namespace Contracts.HandleServices
 {
     public interface IJwtServices
     {

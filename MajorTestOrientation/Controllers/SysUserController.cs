@@ -6,7 +6,6 @@ using Entities.Models;
 using Entities.RequestFeature;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -222,13 +221,13 @@ namespace MajorTestOrientation.Controllers
 
             var account = await _repository.SysUser.GetById(userId);
 
-            if(account != null)
+            if (account != null)
             {
-                if(info.FullName != string.Empty)
+                if (info.FullName != string.Empty)
                 {
                     account.FullName = info.FullName;
                 }
-                if(info.BirthDay != null)
+                if (info.BirthDay != null)
                 {
                     account.BirthDay = info.BirthDay;
                 }
@@ -272,13 +271,14 @@ namespace MajorTestOrientation.Controllers
                 try
                 {
                     await _repository.SaveAsync();
-                }catch
+                }
+                catch
                 {
                     savedPointSubjects.Add(item.SubjectId);
                 }
             }
 
-            if(savedPointSubjects.Count == info.ListSubject.Count)
+            if (savedPointSubjects.Count == info.ListSubject.Count)
             {
                 throw new ErrorDetails(HttpStatusCode.OK, new GetCollegesHandle { Message = "All subject has its point", StatusCode = 416 });
             }
@@ -304,9 +304,10 @@ namespace MajorTestOrientation.Controllers
             {
                 _repository.MajorUser.Create(new UserMajor { MajorId = info.MajorId, UserId = _userAccessor.GetAccountId() });
                 await _repository.SaveAsync();
-            } catch
+            }
+            catch
             {
-                throw new ErrorDetails(HttpStatusCode.OK, new GetCollegesHandle { Message = "Major "+info.MajorId+" already selected", StatusCode = 414 });
+                throw new ErrorDetails(HttpStatusCode.OK, new GetCollegesHandle { Message = "Major " + info.MajorId + " already selected", StatusCode = 414 });
             }
 
             return Ok("Save changes success");
@@ -383,7 +384,7 @@ namespace MajorTestOrientation.Controllers
         [Route("connector/{status}")]
         public async Task<IActionResult> GetConnectorByStatus(int status, [FromQuery] PagingParameters param)
         {
-            if(status != 1 && _userAccessor.GetAccountRole() != 2)
+            if (status != 1 && _userAccessor.GetAccountRole() != 2)
             {
                 throw new ErrorDetails(HttpStatusCode.BadRequest, "Don't have permisson");
             }
@@ -417,7 +418,7 @@ namespace MajorTestOrientation.Controllers
             _repository.SysUser.Update(account);
             await _repository.SaveAsync();
 
-            return Ok(new {UpdatedStatus = account.IsDeleted.Value ? "Unavailable" : "Available" });
+            return Ok(new { UpdatedStatus = account.IsDeleted.Value ? "Unavailable" : "Available" });
         }
 
         /// <summary>
@@ -432,27 +433,27 @@ namespace MajorTestOrientation.Controllers
 
             var major = await _repository.MajorUser.GetMajorOfUser(userId);
 
-            if(major.Count == 0) 
+            if (major.Count == 0)
             {
-                throw new ErrorDetails(HttpStatusCode.OK, new GetCollegesHandle { Message = "Student don't have major", StatusCode = 410});
+                throw new ErrorDetails(HttpStatusCode.OK, new GetCollegesHandle { Message = "Student don't have major", StatusCode = 410 });
             }
 
             var subjectGroup = await _repository.UserSubjectGroup.GetSavedSubjectGroup(userId);
             var subjectGroupOfMajor = await _repository.SubjectGroupMajor.GetByMajor(major);
             var subjectGroupNeed = subjectGroup.Where(x => subjectGroupOfMajor.Contains(x.SubjectGroupId)).ToList();
-            if(subjectGroupNeed.Count == 0)
+            if (subjectGroupNeed.Count == 0)
             {
                 throw new ErrorDetails(HttpStatusCode.OK, new GetCollegesHandle { Message = "Student don't have subject group for major selected", StatusCode = 411 });
             }
 
             bool? hasPoint = true;
-            foreach(var group in subjectGroupNeed)
+            foreach (var group in subjectGroupNeed)
             {
                 var subjects = await _repository.SubjectGroupSubject.GetSubjects(group.SubjectGroupId);
                 var HasEnoughPoint = await _repository.UserSubject.GetSavedSubject(userId, subjects);
                 if (HasEnoughPoint == null || HasEnoughPoint == false)
                     hasPoint = HasEnoughPoint;
-                if(HasEnoughPoint == true)
+                if (HasEnoughPoint == true)
                 {
                     hasPoint = true;
                     break;
@@ -468,7 +469,7 @@ namespace MajorTestOrientation.Controllers
             }
 
             var datas = new List<GetCollegesData>();
-            foreach(var group in subjectGroupNeed)
+            foreach (var group in subjectGroupNeed)
             {
                 var subjects = await _repository.SubjectGroupSubject.GetSubjects(group.SubjectGroupId);
                 var item = await _repository.UserSubject.GetSumOfSubjectGroup(subjects, userId);
@@ -477,8 +478,8 @@ namespace MajorTestOrientation.Controllers
             }
 
             var finalData = new List<AttempData>();
-            List<MajorSubjectGroup> majorSubjectGroup = await _repository.SubjectGroupMajor.GetByMajorIds(major);
-            foreach(var aMajor in majorSubjectGroup)
+            var majorSubjectGroup = await _repository.SubjectGroupMajor.GetByMajorIds(major);
+            foreach (var aMajor in majorSubjectGroup)
             {
                 var item = new AttempData
                 {
@@ -506,8 +507,8 @@ namespace MajorTestOrientation.Controllers
         public async Task<IActionResult> GetLession()
         {
             var user_id = _userAccessor.GetAccountId();
-           
-            List<LessionInList> lesson = await _repository.LessionMajor.GetAll();
+
+            var lesson = await _repository.LessionMajor.GetAll();
 
             return Ok(lesson);
         }
@@ -564,7 +565,7 @@ namespace MajorTestOrientation.Controllers
         [Route("Connector")]
         public async Task<IActionResult> CreateConnector(NewConnectorInfo info)
         {
-            if(_userAccessor.GetAccountRole() != 2)
+            if (_userAccessor.GetAccountRole() != 2)
             {
                 throw new ErrorDetails(HttpStatusCode.BadRequest, "Don't have permission");
             }
@@ -619,13 +620,18 @@ namespace MajorTestOrientation.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Role: Connector (Get all chat created with student)
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("ChatRoom")]
         public async Task<IActionResult> GetChatWithStudent(PagingParameters param)
         {
             var connectorId = _userAccessor.GetAccountId();
 
-            Pagination<StudentInChat> result = await _repository.ChatRoom.GetChatWithStudent(connectorId, param);
+            var result = await _repository.ChatRoom.GetChatWithStudent(connectorId, param);
 
             return Ok(result);
         }

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Repositories.Repositories
 {
-    public class UserCollegeRepository : RepositoryBase<UserColleges>,IUserCollegeRepository
+    public class UserCollegeRepository : RepositoryBase<UserColleges>, IUserCollegeRepository
     {
         public UserCollegeRepository(DataContext context) : base(context)
         {
@@ -38,7 +38,7 @@ namespace Repositories.Repositories
         public async Task<List<CollegesReturn>> GetSelectedUser(List<CollegesReturn> result, int v)
         {
             var returnValue = new List<CollegesReturn>();
-            foreach(var college in result)
+            foreach (var college in result)
             {
                 college.IsSelected = await FindByCondition(x => x.CollegeId == college.CollegeId && x.UserId == v, true).FirstOrDefaultAsync() != null;
                 college.NumOfSelected = await FindByCondition(x => x.CollegeId == college.CollegeId && x.IsConnector == false, true).CountAsync();

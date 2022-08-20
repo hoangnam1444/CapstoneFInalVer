@@ -11,7 +11,6 @@ namespace Repositories.Repositories
     {
         public SecurityCodeRepository(DataContext context) : base(context)
         {
-
         }
         public async Task<bool> ActivatedCode(string code, int userId)
         {

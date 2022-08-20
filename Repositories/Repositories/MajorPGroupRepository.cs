@@ -3,10 +3,8 @@ using Entities;
 using Entities.DTOs;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Repositories.Repositories
@@ -36,7 +34,7 @@ namespace Repositories.Repositories
         {
             var result = new List<MajorResult>();
             var max = (double)0;
-            foreach(var group in pGroupPoint)
+            foreach (var group in pGroupPoint)
             {
                 if (group.AveragePoint > max)
                 {

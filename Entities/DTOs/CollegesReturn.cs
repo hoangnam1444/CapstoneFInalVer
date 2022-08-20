@@ -1,7 +1,5 @@
 ﻿using Entities.DataTransferObject;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Entities.DTOs
 {
@@ -27,7 +25,7 @@ namespace Entities.DTOs
         public int Id { get; set; }
         public List<SubjectGroup> SubjectGroup { get; set; }
     }
-    public class SubjectGroup 
+    public class SubjectGroup
     {
         public int Id { get; set; }
         public string Name { get; set; }

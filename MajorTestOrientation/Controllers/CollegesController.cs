@@ -1,14 +1,10 @@
 ﻿using Contracts.HandleServices;
 using Contracts.Repositories;
-using Entities.DataTransferObject;
 using Entities.DTOs;
 using Entities.Models;
 using Entities.RequestFeature;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MajorTestOrientation.Controllers
@@ -48,7 +44,7 @@ namespace MajorTestOrientation.Controllers
         [Route("{collegesId}/connector")]
         public async Task<IActionResult> GetConnector(int collegesId)
         {
-            List<ChatBoxAccount> accounts = await _repository.UserCollege.GetConnector(collegesId);
+            var accounts = await _repository.UserCollege.GetConnector(collegesId);
 
             accounts = await _repository.SysUser.GetAvailableConnector(accounts);
 
@@ -176,7 +172,7 @@ namespace MajorTestOrientation.Controllers
         [Route("Point")]
         public async Task<IActionResult> AddNewPoint(PointCollege point)
         {
-            CollegesSubjectGroup info = await _repository.MajorSubjectGroupColleges.GetPoint(point);
+            var info = await _repository.MajorSubjectGroupColleges.GetPoint(point);
 
             var updateInfo = new CollegesSubjectGroup
             {
@@ -189,7 +185,8 @@ namespace MajorTestOrientation.Controllers
             if (info == null)
             {
                 _repository.MajorSubjectGroupColleges.Create(updateInfo);
-            } else
+            }
+            else
             {
                 _repository.MajorSubjectGroupColleges.Update(updateInfo);
             }
@@ -228,7 +225,7 @@ namespace MajorTestOrientation.Controllers
         [Route("Dashboard")]
         public async Task<IActionResult> GetColleges([FromQuery] PagingParameters param)
         {
-            Pagination<CollegesReturn> colleges = await _repository.Colleges.GetAll(param);
+            var colleges = await _repository.Colleges.GetAll(param);
 
             var result = new DashboardColleges
             {
@@ -246,9 +243,9 @@ namespace MajorTestOrientation.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("statistic")]
-        public async Task<IActionResult> Statistic([FromQuery]PagingParameters param)
+        public async Task<IActionResult> Statistic([FromQuery] PagingParameters param)
         {
-            Pagination<CollegesStatistic> colleges = await _repository.UserCollege.Statistic(param);
+            var colleges = await _repository.UserCollege.Statistic(param);
 
             colleges.Data = await _repository.Colleges.GetName(colleges.Data);
 

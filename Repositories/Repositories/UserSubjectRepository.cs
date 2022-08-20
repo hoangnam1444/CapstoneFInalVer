@@ -6,12 +6,11 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Repositories.Repositories
 {
-    public class UserSubjectRepository: RepositoryBase<UserSubject>, IUserSubjectRepository
+    public class UserSubjectRepository : RepositoryBase<UserSubject>, IUserSubjectRepository
     {
         public UserSubjectRepository(DataContext context) : base(context)
         {
@@ -20,7 +19,7 @@ namespace Repositories.Repositories
 
         public async Task<bool?> GetSavedSubject(int user_id, List<Subject> subjects)
         {
-            foreach(var subject in subjects)
+            foreach (var subject in subjects)
             {
                 var savedPoint = await FindByCondition(x => x.UserId == user_id && x.SubjectId == subject.Id, false)
                     .FirstOrDefaultAsync();

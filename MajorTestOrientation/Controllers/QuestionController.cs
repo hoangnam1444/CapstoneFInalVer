@@ -33,7 +33,7 @@ namespace MajorTestOrientation.Controllers
         public async Task<IActionResult> CreateQuestion(CreateQuestion info, int test_id)
         {
             var role = _userAccessor.GetAccountRole();
-            if(role != 2)
+            if (role != 2)
             {
                 throw new ErrorDetails(System.Net.HttpStatusCode.BadRequest, "Don't have permission");
             }
@@ -114,7 +114,7 @@ namespace MajorTestOrientation.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("{test_id}")]
-        public async Task<IActionResult> GetByTestId([FromQuery]PagingParameters param, int test_id)
+        public async Task<IActionResult> GetByTestId([FromQuery] PagingParameters param, int test_id)
         {
             var result = await _repository.Question.GetByTestId(test_id, param);
             return Ok(result);

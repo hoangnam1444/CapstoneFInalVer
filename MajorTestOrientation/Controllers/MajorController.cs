@@ -2,11 +2,7 @@
 using Contracts.Repositories;
 using Entities.DTOs;
 using Entities.RequestFeature;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MajorTestOrientation.Controllers
@@ -110,7 +106,7 @@ namespace MajorTestOrientation.Controllers
         [Route("ForFiltering")]
         public async Task<IActionResult> GetMajorForFilter()
         {
-            List<MajorForFilter> majors = await _repository.Major.GetAll();
+            var majors = await _repository.Major.GetAll();
 
             return Ok(majors);
         }

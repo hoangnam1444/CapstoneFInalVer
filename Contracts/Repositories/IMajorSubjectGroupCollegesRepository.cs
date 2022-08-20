@@ -1,9 +1,7 @@
 ﻿using Entities.DTOs;
 using Entities.Models;
 using Entities.RequestFeature;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Contracts.Repositories

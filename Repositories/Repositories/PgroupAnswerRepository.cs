@@ -22,11 +22,11 @@ namespace Repositories.Repositories
 
             if (answerPGroup.Count == 0) return null;
 
-            var pGroupList = answerPGroup.Select(x => new PGroupOfAnswer 
+            var pGroupList = answerPGroup.Select(x => new PGroupOfAnswer
             {
-                Name = x.PGroup.PersonalityGroupName, 
-                PGroupId = x.PGroupId, 
-                Point = x.Point 
+                Name = x.PGroup.PersonalityGroupName,
+                PGroupId = x.PGroupId,
+                Point = x.Point
             }).ToList();
 
             var answer = new AnswerOfQuestion

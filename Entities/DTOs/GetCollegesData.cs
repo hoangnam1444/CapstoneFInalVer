@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Entities.DTOs
+﻿namespace Entities.DTOs
 {
     public class GetCollegesData
     {
@@ -10,7 +6,7 @@ namespace Entities.DTOs
         public int SubjectGroupId { get; set; }
         public double Sum { get; set; }
     }
-    
+
     public class AttempData
     {
         public int MajorId { get; set; }

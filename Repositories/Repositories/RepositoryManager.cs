@@ -40,7 +40,7 @@ namespace Repositories.Repositories
         {
             get
             {
-                if(_sysUser == null)
+                if (_sysUser == null)
                 {
                     _sysUser = new SysUserRepository(_context);
                 }
@@ -52,7 +52,7 @@ namespace Repositories.Repositories
         {
             get
             {
-                if(_sCode == null)
+                if (_sCode == null)
                 {
                     _sCode = new SecurityCodeRepository(_context);
                 }
@@ -64,7 +64,7 @@ namespace Repositories.Repositories
         {
             get
             {
-                if(_question == null)
+                if (_question == null)
                 {
                     _question = new QuestionRepository(_context);
                 }
@@ -76,7 +76,7 @@ namespace Repositories.Repositories
         {
             get
             {
-                if(_answer == null)
+                if (_answer == null)
                 {
                     _answer = new AnswerRepository(_context);
                 }
@@ -88,7 +88,7 @@ namespace Repositories.Repositories
         {
             get
             {
-                if(_result == null)
+                if (_result == null)
                 {
                     _result = new TestResultRepository(_context);
                 }
@@ -100,7 +100,7 @@ namespace Repositories.Repositories
         {
             get
             {
-                if(_test == null)
+                if (_test == null)
                 {
                     _test = new TestDeclarationRepository(_context);
                 }
@@ -112,7 +112,7 @@ namespace Repositories.Repositories
         {
             get
             {
-                if(_type == null)
+                if (_type == null)
                 {
                     _type = new TestTypeRepository(_context);
                 }
@@ -124,7 +124,7 @@ namespace Repositories.Repositories
         {
             get
             {
-                if(_pGroup == null)
+                if (_pGroup == null)
                 {
                     _pGroup = new PersonalityGroupRepository(_context);
                 }
@@ -136,7 +136,7 @@ namespace Repositories.Repositories
         {
             get
             {
-                if(_pGroupMajor == null)
+                if (_pGroupMajor == null)
                 {
                     _pGroupMajor = new MajorPGroupRepository(_context);
                 }
@@ -148,7 +148,7 @@ namespace Repositories.Repositories
         {
             get
             {
-                if(_pGroupAnswer == null)
+                if (_pGroupAnswer == null)
                 {
                     _pGroupAnswer = new PgroupAnswerRepository(_context);
                 }
@@ -160,7 +160,7 @@ namespace Repositories.Repositories
         {
             get
             {
-                if(_subGroup == null)
+                if (_subGroup == null)
                 {
                     _subGroup = new SubjectGroupMajorRepository(_context);
                 }
@@ -172,7 +172,7 @@ namespace Repositories.Repositories
         {
             get
             {
-                if(_subGroupSub == null)
+                if (_subGroupSub == null)
                 {
                     _subGroupSub = new SubjectGroupSubjectRepository(_context);
                 }
@@ -196,7 +196,7 @@ namespace Repositories.Repositories
         {
             get
             {
-                if(_userSubs == null)
+                if (_userSubs == null)
                 {
                     _userSubs = new UserSubjectRepository(_context);
                 }
@@ -208,7 +208,7 @@ namespace Repositories.Repositories
         {
             get
             {
-                if(_majorCol == null)
+                if (_majorCol == null)
                 {
                     _majorCol = new MajorCollegesRepository(_context);
                 }
@@ -232,7 +232,7 @@ namespace Repositories.Repositories
         {
             get
             {
-                if(_majorSubjectGroupColleges == null)
+                if (_majorSubjectGroupColleges == null)
                 {
                     _majorSubjectGroupColleges = new MajorSubjectGroupCollegesRepository(_context);
                 }
@@ -244,7 +244,7 @@ namespace Repositories.Repositories
         {
             get
             {
-                if(_lession == null)
+                if (_lession == null)
                 {
                     _lession = new LessionMajorRepository(_context);
                 }
@@ -256,7 +256,7 @@ namespace Repositories.Repositories
         {
             get
             {
-                if(_subject == null)
+                if (_subject == null)
                 {
                     _subject = new SubjectRepository(_context);
                 }
@@ -278,7 +278,7 @@ namespace Repositories.Repositories
         {
             get
             {
-                if(_major == null)
+                if (_major == null)
                 {
                     _major = new MajorRepository(_context);
                 }
@@ -290,7 +290,7 @@ namespace Repositories.Repositories
         {
             get
             {
-                if(_userColleges == null)
+                if (_userColleges == null)
                 {
                     _userColleges = new UserCollegeRepository(_context);
                 }
@@ -302,7 +302,7 @@ namespace Repositories.Repositories
         {
             get
             {
-                if(_chatRoom == null)
+                if (_chatRoom == null)
                 {
                     _chatRoom = new ChatRoomRepository(_context);
                 }

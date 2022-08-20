@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Entities.RequestFeature
+﻿namespace Entities.RequestFeature
 {
     public class UpdateCollege
     {

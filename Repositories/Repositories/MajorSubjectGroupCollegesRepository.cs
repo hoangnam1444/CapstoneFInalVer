@@ -4,10 +4,8 @@ using Entities.DTOs;
 using Entities.Models;
 using Entities.RequestFeature;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Repositories.Repositories
@@ -37,7 +35,7 @@ namespace Repositories.Repositories
                 && x.Sum >= item.Data.Sum - 2
                 && x.Sum <= item.Data.Sum + 2, false)
                     .Include(x => x.College)
-                    .Select(x => new CollegesReturn 
+                    .Select(x => new CollegesReturn
                     {
                         Address = x.College.Address,
                         CollegeId = x.CollegesId,
@@ -46,7 +44,7 @@ namespace Repositories.Repositories
                         ReferenceLink = x.College.ReferenceLink
                     })
                     .ToListAsync();
-                foreach(var college in colleges)
+                foreach (var college in colleges)
                 {
                     if (!result.Contains(college))
                     {
@@ -61,10 +59,10 @@ namespace Repositories.Repositories
         {
             var finalResult = new List<CollegesReturn>();
 
-            foreach(var college in result)
+            foreach (var college in result)
             {
                 var majors = new List<Major>();
-                foreach(var major in college.Major)
+                foreach (var major in college.Major)
                 {
                     var subjectGroups = await FindByCondition(x => x.MajorId == major.Id
                     && x.CollegesId == college.CollegeId

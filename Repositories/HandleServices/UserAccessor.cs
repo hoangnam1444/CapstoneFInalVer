@@ -1,11 +1,8 @@
 ﻿using Contracts.HandleServices;
-using FluentEmail.Core;
-using FluentEmail.Smtp;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Threading.Tasks;
 
 namespace Repositories.HandleServices
 {
@@ -52,8 +49,8 @@ namespace Repositories.HandleServices
                 Body = "Hi " + name + "\n Your active code is: " + code + " \n Regard \n MTO Manager"
             };
             Message.To.Add(ToEmail);
-            System.Console.WriteLine("Mail to: "+ToEmail);
-            System.Console.WriteLine("Mail msg: "+Message.Body);
+            System.Console.WriteLine("Mail to: " + ToEmail);
+            System.Console.WriteLine("Mail msg: " + Message.Body);
             client.Send(Message);
         }
     }

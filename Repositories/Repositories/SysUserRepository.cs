@@ -43,7 +43,7 @@ namespace Repositories.Repositories
         public async Task<SysUser> GetAccountByUnPw(AdminLogin info)
         {
             var account = await FindByCondition(x => x.Email == info.Email && x.Password == info.Password, false).FirstOrDefaultAsync();
-            if(account == null)
+            if (account == null)
             {
                 account = await FindByCondition(x => x.UserName == info.Email && x.Password == info.Password, false).FirstOrDefaultAsync();
             }
@@ -73,7 +73,7 @@ namespace Repositories.Repositories
         public async Task<List<ChatBoxAccount>> GetAvailableConnector(List<ChatBoxAccount> accounts)
         {
             var i = 0;
-            while(i < accounts.Count)
+            while (i < accounts.Count)
             {
                 var cAccount = await FindByCondition(x => x.UserId == accounts[i].AccountId, false).FirstOrDefaultAsync();
                 if (cAccount.IsDeleted.Value)
@@ -98,7 +98,7 @@ namespace Repositories.Repositories
         {
             var accounts = new List<Connector>();
             var count = 0;
-            if(status == 0)
+            if (status == 0)
             {
                 accounts = await FindByCondition(x => x.IsDeleted == true, false)
                     .Skip((param.PageNumber - 1) * param.PageSize).Take(param.PageSize)
@@ -110,7 +110,8 @@ namespace Repositories.Repositories
                         Status = "Unavalailable"
                     }).ToListAsync();
                 count = await FindByCondition(x => x.IsDeleted == true, false).CountAsync();
-            }else if(status == 1)
+            }
+            else if (status == 1)
             {
                 accounts = await FindByCondition(x => x.IsDeleted == false, false)
                     .Skip((param.PageNumber - 1) * param.PageSize).Take(param.PageSize)
@@ -176,7 +177,7 @@ namespace Repositories.Repositories
                 .Include(x => x.Role)
                 .FirstOrDefaultAsync();
 
-            if(user != null)
+            if (user != null)
             {
                 return new UserDetail
                 {

@@ -5,17 +5,15 @@ using Entities.DTOs;
 using Entities.Models;
 using Entities.RequestFeature;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Repositories.Repositories
 {
     public class CollegesRepository : RepositoryBase<Colleges>, ICollegesRepository
     {
-        public CollegesRepository(DataContext context) : base (context)
+        public CollegesRepository(DataContext context) : base(context)
         {
         }
 
@@ -86,7 +84,7 @@ namespace Repositories.Repositories
         public async Task<IEnumerable<CollegesStatistic>> GetName(IEnumerable<CollegesStatistic> data)
         {
             var result = new List<CollegesStatistic>();
-            foreach(var college in data)
+            foreach (var college in data)
             {
                 college.CollegeName = await FindByCondition(x => x.CollegeId == college.CollegeId, false).Select(x => x.CollegeName).FirstOrDefaultAsync();
                 result.Add(college);
