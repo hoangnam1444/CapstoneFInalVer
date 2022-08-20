@@ -2,16 +2,14 @@
 using Entities;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Repositories.Repositories
 {
     public class UserSubjectGroupRepository : RepositoryBase<UserSubjectGroup>, IUserSubjectGroupRepository
     {
-        public UserSubjectGroupRepository(DataContext context) : base (context)
+        public UserSubjectGroupRepository(DataContext context) : base(context)
         {
 
         }

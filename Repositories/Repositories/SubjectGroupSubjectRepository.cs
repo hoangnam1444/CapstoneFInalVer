@@ -3,10 +3,8 @@ using Entities;
 using Entities.DTOs;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Repositories.Repositories
@@ -31,11 +29,11 @@ namespace Repositories.Repositories
         public async Task<List<SubjectGroupReturn>> GetSubjectOfGroup(List<SubjectGroupReturn> info)
         {
             var result = new List<SubjectGroupReturn>();
-            foreach(var item in info)
+            foreach (var item in info)
             {
                 var subjects = await FindByCondition(x => x.GroupSubjectId == item.Id, false)
                     .Include(x => x.Subject)
-                    .Select(x => new SubjectReturn {Id = x.Subject.Id, Name = x.Subject.Name})
+                    .Select(x => new SubjectReturn { Id = x.Subject.Id, Name = x.Subject.Name })
                     .ToListAsync();
                 item.Subjects = subjects;
                 result.Add(item);

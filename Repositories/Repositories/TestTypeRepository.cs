@@ -30,7 +30,7 @@ namespace Repositories.Repositories
         public async Task Update(int type_id, UpdateType info)
         {
             var type = await FindByCondition(x => x.TestTypeId == type_id, true).FirstOrDefaultAsync();
-            if(type != null)
+            if (type != null)
             {
                 type.TestTypeName = info.Name;
                 Update(type);

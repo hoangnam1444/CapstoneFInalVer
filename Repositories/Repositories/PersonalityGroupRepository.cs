@@ -62,7 +62,7 @@ namespace Repositories.Repositories
         {
             var result = new List<PGroupStatistic>();
 
-            foreach(var item in input)
+            foreach (var item in input)
             {
                 var pGroup = await FindByCondition(x => x.PersonalityGroupId == item.GroupId, false).FirstOrDefaultAsync();
 

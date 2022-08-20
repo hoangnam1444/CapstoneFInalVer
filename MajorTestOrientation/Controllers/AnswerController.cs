@@ -5,7 +5,6 @@ using Entities.Models;
 using Entities.RequestFeature;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MajorTestOrientation.Controllers
@@ -61,7 +60,7 @@ namespace MajorTestOrientation.Controllers
                 var newAnswer = await _repository.Answer.GetCreatedAnswer(info, question_id);
                 _repository.AnswerPGroup.Create(new AnswersPGroups { AnswerId = newAnswer.AnswerId, PGroupId = id, Point = info.Point });
             }
-                await _repository.SaveAsync();
+            await _repository.SaveAsync();
 
             return Ok("Save changes success");
         }
@@ -81,7 +80,7 @@ namespace MajorTestOrientation.Controllers
             var userId = _userAccessor.GetAccountId();
             var questionsId = await _repository.Question.GetForSavingAnswer(test_id);
 
-            foreach(var ansId in answersId.ListAnswerId)
+            foreach (var ansId in answersId.ListAnswerId)
             {
                 var answer = await _repository.Answer.GetAnswerById(ansId);
                 if (!questionsId.Contains(answer.QuestionId))
@@ -133,7 +132,7 @@ namespace MajorTestOrientation.Controllers
         {
             var result = await _repository.AnswerPGroup.GetAnswerDetail(answer_id);
 
-            if(result == null)
+            if (result == null)
             {
                 var answer = await _repository.Answer.GetAnswerById(answer_id);
                 result = new AnswerDetail { Answer = new AnswerOfQuestion { AnswerId = answer.AnswerId, AnswerContent = answer.AnswerContent, OrderIndex = answer.OrderIndex }, PeronalityGroups = null };

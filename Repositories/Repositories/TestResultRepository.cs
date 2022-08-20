@@ -22,9 +22,9 @@ namespace Repositories.Repositories
             && x.QuestionId == testResults.QuestionId
             && x.UserId == testResults.UserId, true).ToListAsync();
 
-            if(savedResult != null && savedResult.Count > 0)
+            if (savedResult != null && savedResult.Count > 0)
             {
-                foreach(var result in savedResult)
+                foreach (var result in savedResult)
                 {
                     result.IsLast = false;
                     Update(result);

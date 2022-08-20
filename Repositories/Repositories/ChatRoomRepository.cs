@@ -19,11 +19,12 @@ namespace Repositories.Repositories
         public async Task<Pagination<StudentInChat>> GetChatWithStudent(int connectorId, PagingParameters param)
         {
             var data = await FindByCondition(x => x.ConnectorId == connectorId, false)
-                .Skip((param.PageNumber-1)*param.PageSize)
+                .Skip((param.PageNumber - 1) * param.PageSize)
                 .Take(param.PageSize)
                 .Include(x => x.Student)
                 .Select(x => new StudentInChat
                 {
+                    RoomId = x.Id,
                     ImagePath = x.Student.ImagePath,
                     Name = x.Student.UserName,
                     StudentId = x.StudentId

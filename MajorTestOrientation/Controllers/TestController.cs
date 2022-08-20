@@ -63,7 +63,7 @@ namespace MajorTestOrientation.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("All")]
-        public async Task<IActionResult> GetTestToUpdateQuestion([FromQuery]PagingParameters param)
+        public async Task<IActionResult> GetTestToUpdateQuestion([FromQuery] PagingParameters param)
         {
             var role = _userAccessor.GetAccountRole();
             if (role != 2)
@@ -136,7 +136,7 @@ namespace MajorTestOrientation.Controllers
         {
             var testResult = await _repository.TestResult.GetForPGroupResult(test_id, _userAccessor.GetAccountId());
 
-            if(testResult.Count == 0 || testResult == null)
+            if (testResult.Count == 0 || testResult == null)
             {
                 throw new ErrorDetails(System.Net.HttpStatusCode.NotFound, "Don't have any result");
             }
@@ -194,7 +194,7 @@ namespace MajorTestOrientation.Controllers
 
             result = await _repository.PersonalityGroup.GetInfo(result);
 
-            result.Sort(delegate(PGroupStatistic x, PGroupStatistic y) 
+            result.Sort(delegate (PGroupStatistic x, PGroupStatistic y)
             {
                 return x.AvgPoint > y.AvgPoint ? -1 : x.AvgPoint == y.AvgPoint ? 0 : 1;
             });

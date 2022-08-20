@@ -3,10 +3,8 @@ using Entities;
 using Entities.DTOs;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Repositories.Repositories
@@ -36,7 +34,7 @@ namespace Repositories.Repositories
         public async Task<List<CollegesReturn>> GetMajor(List<CollegesReturn> result)
         {
             var finalResult = new List<CollegesReturn>();
-            foreach(var college in result)
+            foreach (var college in result)
             {
                 var majors = await FindByCondition(x => x.CollegeId == college.CollegeId, false)
                     .Include(x => x.Major)
