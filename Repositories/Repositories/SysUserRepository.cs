@@ -151,6 +151,11 @@ namespace Repositories.Repositories
             return await FindByCondition(x => x.UserId == v, false).FirstOrDefaultAsync();
         }
 
+        public async Task<SysUser> GetCreatedAccount(string email, string userName)
+        {
+            return await FindByCondition(x => x.Email.Equals(email) || x.UserName.Equals(userName), false).FirstOrDefaultAsync();
+        }
+
         public async Task<Profile> GetProfile(int user_id)
         {
             var result = await FindByCondition(x => x.UserId == user_id, false).Select(x => new Profile

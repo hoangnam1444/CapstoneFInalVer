@@ -17,5 +17,6 @@ namespace Contracts.Repositories
         void Delete(UserColleges userColleges);
         Task<List<ChatBoxAccount>> GetConnector(int collegesId);
         Task<int> GetConColId(int receiverId);
+        void Update(UserColleges userColleges);
     }
 }

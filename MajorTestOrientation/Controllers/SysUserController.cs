@@ -572,31 +572,63 @@ namespace MajorTestOrientation.Controllers
 
             var hasedPw = _hasing.EncriptSHA256(info.Password);
 
-            var newUser = new SysUser
+            var newUser = await _repository.SysUser.GetCreatedAccount(info.Email, info.UserName);
+
+            if (newUser == null)
             {
-                FullName = info.FullName,
-                UserName = info.UserName,
-                PhoneNumber = info.PhoneNumber,
-                Password = hasedPw,
-                Gender = info.Gender,
-                AdminIdUpdate = _userAccessor.GetAccountId(),
-                CreatedDate = DateTime.UtcNow,
-                Email = info.Email,
-                IsDeleted = false,
-                IsLocked = false,
-                RoleId = 3
-            };
+                newUser = new SysUser
+                {
+                    FullName = info.FullName,
+                    UserName = info.UserName,
+                    PhoneNumber = info.PhoneNumber,
+                    Password = hasedPw,
+                    Gender = info.Gender,
+                    AdminIdUpdate = _userAccessor.GetAccountId(),
+                    CreatedDate = DateTime.UtcNow,
+                    Email = info.Email,
+                    IsDeleted = false,
+                    IsLocked = false,
+                    RoleId = 3
+                };
 
-            _repository.SysUser.Create(newUser);
+                _repository.SysUser.Create(newUser);
+            }
+            else
+            {
+                newUser.FullName = info.FullName;
+                newUser.UserName = info.UserName;
+                newUser.PhoneNumber = info.PhoneNumber;
+                newUser.Password = hasedPw;
+                newUser.Gender = info.Gender;
+                newUser.AdminIdUpdate = _userAccessor.GetAccountId();
+                newUser.CreatedDate = DateTime.UtcNow;
+                newUser.Email = info.Email;
+                newUser.IsDeleted = false;
+                newUser.IsLocked = false;
+                newUser.RoleId = 3;
 
+                _repository.SysUser.Update(newUser);
+            }
             await _repository.SaveAsync();
 
-            _repository.UserCollege.Create(new UserColleges
+            try
             {
-                CollegeId = info.CollegesId,
-                UserId = newUser.UserId,
-                IsConnector = true
-            });
+                _repository.UserCollege.Create(new UserColleges
+                {
+                    CollegeId = info.CollegesId,
+                    UserId = newUser.UserId,
+                    IsConnector = true
+                });
+            }
+            catch (Exception)
+            {
+                _repository.UserCollege.Update(new UserColleges
+                {
+                    CollegeId = info.CollegesId,
+                    UserId = newUser.UserId,
+                    IsConnector = true
+                });
+            }
 
             await _repository.SaveAsync();
 
@@ -663,6 +695,8 @@ namespace MajorTestOrientation.Controllers
                     StudentId = senderId
                 };
                 _repository.ChatRoom.Create(chatRoom);
+
+                await _repository.SaveAsync();
             }
 
             var connector = await _repository.SysUser.GetById(chatRoom.ConnectorId);
