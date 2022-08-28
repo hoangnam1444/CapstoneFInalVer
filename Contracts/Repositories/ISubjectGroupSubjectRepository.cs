@@ -10,5 +10,6 @@ namespace Contracts.Repositories
         Task<List<SubjectReturn>> GetSubject(int group_id);
         Task<List<SubjectGroupReturn>> GetSubjectOfGroup(List<SubjectGroupReturn> result);
         Task<List<Subject>> GetSubjects(int group_id);
+        void Create(SubjectGroupSubject subjectGroupSubject);
     }
 }

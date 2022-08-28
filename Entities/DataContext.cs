@@ -36,6 +36,7 @@ namespace Entities
         public virtual DbSet<UserLession> UserLession { get; set; }
         public virtual DbSet<VcGuidance> VcGuidance { get; set; }
         public virtual DbSet<ChatRoom> ChatRooms { get; set; }
+        public virtual DbSet<SavedSchedule> Schedules { get; set; }
 
         public virtual DbSet<MajorSubjectGroup> MajorSubjectGroup { get; set; }
         public virtual DbSet<Subject> Subject { get; set; }
@@ -129,6 +130,11 @@ namespace Entities
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKUser_Major_User");
+            });
+
+            modelBuilder.Entity<SavedSchedule>(entity =>
+            {
+                entity.HasKey(e => new { e.ScheduleId });
             });
 
             modelBuilder.Entity<CollegesSubjectGroup>(entity =>

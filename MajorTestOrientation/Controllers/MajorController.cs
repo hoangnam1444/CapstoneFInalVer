@@ -1,6 +1,7 @@
 ﻿using Contracts.HandleServices;
 using Contracts.Repositories;
 using Entities.DTOs;
+using Entities.Models;
 using Entities.RequestFeature;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -126,5 +127,33 @@ namespace MajorTestOrientation.Controllers
 
             return Ok(majors);
         }
+
+        /// <summary>
+        /// Role: Admin (New major)
+        /// </summary>
+        /// <param name="major"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> CreateMajor(NewMajor major)
+        {
+            var newMajor = new Entities.Models.Majors
+            {
+                MajorName = major.Name
+            };
+            _repository.Major.Create(newMajor);
+            await _repository.SaveAsync();
+            foreach(var subjectId in major.SubjectGroupIds)
+            {
+                _repository.SubjectGroupMajor.Create(new MajorSubjectGroup
+                {
+                    MajorId = newMajor.MajorId,
+                    SubjectGroupId = subjectId
+                });
+            }
+            await _repository.SaveAsync();
+
+            return Ok("Save change success");
+        }
+
     }
 }

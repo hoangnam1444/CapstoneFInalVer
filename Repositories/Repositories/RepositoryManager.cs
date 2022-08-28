@@ -34,6 +34,7 @@ namespace Repositories.Repositories
         private IMajorRepository _major;
         private IUserCollegeRepository _userColleges;
         private IChatRoomRepository _chatRoom;
+        private ISaveScheduleRepository _saveSchedule;
         private readonly DataContext _context;
 
         public ISysUserRepository SysUser
@@ -307,6 +308,18 @@ namespace Repositories.Repositories
                     _chatRoom = new ChatRoomRepository(_context);
                 }
                 return _chatRoom;
+            }
+        }
+
+        public ISaveScheduleRepository SaveSchedule
+        {
+            get
+            {
+                if(_saveSchedule == null)
+                {
+                    _saveSchedule = new SaveScheduleRepository(_context);
+                }
+                return _saveSchedule;
             }
         }
 

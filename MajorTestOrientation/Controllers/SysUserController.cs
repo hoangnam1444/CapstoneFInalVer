@@ -4,6 +4,7 @@ using Entities.DataTransferObject;
 using Entities.DTOs;
 using Entities.Models;
 using Entities.RequestFeature;
+using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -71,11 +72,19 @@ namespace MajorTestOrientation.Controllers
                     IsLocked = true,
                     IsDeleted = false,
                     FullName = firebaseProfile.UserName,
+                    LastLoginDate = DateTime.UtcNow
                 };
                 _repository.SysUser.Create(new_account);
                 await _repository.SaveAsync();
                 //get account return
                 account = await _repository.SysUser.GetAccountByGmail(firebaseProfile.Email);
+            }
+            else
+            {
+                var savedAccount = await _repository.SysUser.GetById(account.Id);
+                savedAccount.LastLoginDate = DateTime.UtcNow;
+                _repository.SysUser.Update(savedAccount);
+                await _repository.SaveAsync();
             }
             account.Token = _jwtServices.CreateToken(account.RoleId, account.Id);
 
@@ -247,6 +256,41 @@ namespace MajorTestOrientation.Controllers
                 await _repository.SaveAsync();
             }
             return Ok("Save change success");
+        }
+
+        /// <summary>
+        /// Role: System handler (lock unused account, schedule for the next day)
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("disable_unsued_users")]
+        public async Task<IActionResult> DisableUnuseAccount()
+        {
+            var disabledAccount = 0;
+            List<SysUser> lockAccount = await _repository.SysUser.GetLockAccount();
+            foreach(var account in lockAccount)
+            {
+                if(account.LastLoginDate < DateTime.UtcNow.AddDays(-30))
+                {
+                    account.IsLocked = true;
+                    _repository.SysUser.Update(account);
+                    disabledAccount++;
+                }
+            }
+            if(disabledAccount > 0)
+            {
+                await _repository.SaveAsync();
+            }
+            
+            SavedSchedule scheduledEvt = await _repository.SaveSchedule.GetByDay(DateTime.UtcNow.AddDays(1).Day);
+            if(scheduledEvt == null)
+            {
+                var timeShedule = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.AddDays(1).Day, 7, 0, 0, DateTimeKind.Local);
+                var jobId = BackgroundJob.Schedule(() => DisableUnuseAccount(), timeShedule);
+                _repository.SaveSchedule.Create(new SavedSchedule { Day = timeShedule.Day, ScheduleId = jobId });
+                await _repository.SaveAsync();
+            }
+            return Ok("Save changes success");
         }
 
         /// <summary>

@@ -49,8 +49,6 @@ namespace Repositories.HandleServices
                 Body = "Hi " + name + "\n Your active code is: " + code + " \n Regard \n MTO Manager"
             };
             Message.To.Add(ToEmail);
-            System.Console.WriteLine("Mail to: " + ToEmail);
-            System.Console.WriteLine("Mail msg: " + Message.Body);
             client.Send(Message);
         }
     }
