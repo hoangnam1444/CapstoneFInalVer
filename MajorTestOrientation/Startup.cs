@@ -1,6 +1,7 @@
 using Contracts.HandleServices;
 using Contracts.Repositories;
 using Entities;
+using Hangfire;
 using MajorTestOrientation.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -129,6 +130,10 @@ namespace MajorTestOrientation
                 c.IncludeXmlComments(path);
             });
 
+            //Hangfire
+            services.AddHangfire(x => x.UseSqlServerStorage(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddHangfireServer();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -143,6 +148,15 @@ namespace MajorTestOrientation
 
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ToyWorldSystem v1"));
+
+            app.UseHangfireDashboard("/hangfire_schedule", new DashboardOptions
+            {
+                DashboardTitle = "Contest schedule jobs",
+                Authorization = new[]
+                {
+                    new HangfireAuthorizationFilter("admin")
+                }
+            });
 
             app.UseHttpsRedirection();
             app.UseCors("CorsPolicy");

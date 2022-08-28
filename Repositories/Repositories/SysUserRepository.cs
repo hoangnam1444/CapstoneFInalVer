@@ -156,6 +156,11 @@ namespace Repositories.Repositories
             return await FindByCondition(x => x.Email.Equals(email) || x.UserName.Equals(userName), false).FirstOrDefaultAsync();
         }
 
+        public async Task<List<SysUser>> GetLockAccount()
+        {
+            return await FindByCondition(x => x.LastLoginDate.Value.Date < System.DateTime.UtcNow.AddDays(-30).Date, false).ToListAsync();
+        }
+
         public async Task<Profile> GetProfile(int user_id)
         {
             var result = await FindByCondition(x => x.UserId == user_id, false).Select(x => new Profile

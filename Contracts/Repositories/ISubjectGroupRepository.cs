@@ -10,5 +10,6 @@ namespace Contracts.Repositories
         Task<List<SubjectGroupReturn>> GetByMajor(int major_id);
         Task<List<int>> GetByMajor(List<UserMajor> majors);
         Task<List<MajorSubjectGroup>> GetByMajorIds(List<UserMajor> major);
+        void Create(MajorSubjectGroup majorSubjectGroup);
     }
 }
