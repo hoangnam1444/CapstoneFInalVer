@@ -147,11 +147,11 @@ namespace MajorTestOrientation
             }
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ToyWorldSystem v1"));
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MajorTestOrientation v1"));
 
             app.UseHangfireDashboard("/hangfire_schedule", new DashboardOptions
             {
-                DashboardTitle = "Contest schedule jobs",
+                DashboardTitle = "Disable account schedule jobs",
                 Authorization = new[]
                 {
                     new HangfireAuthorizationFilter("admin")
