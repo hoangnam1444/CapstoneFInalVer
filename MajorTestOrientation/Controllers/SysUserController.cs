@@ -703,13 +703,44 @@ namespace MajorTestOrientation.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("ChatRoom")]
-        public async Task<IActionResult> GetChatWithStudent(PagingParameters param)
+        public async Task<IActionResult> GetChatWithStudent([FromQuery]PagingParameters param)
         {
             var connectorId = _userAccessor.GetAccountId();
 
             var result = await _repository.ChatRoom.GetChatWithStudent(connectorId, param);
 
             return Ok(result);
+        }
+
+        /// <summary>
+        /// Role: Admin (update role of user)
+        /// </summary>
+        /// <param name="account_id">account will update</param>
+        /// <param name="role_id">1: student, 3: connector</param>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("{account_id}/role/{role_id}")]
+        public async Task<IActionResult> UpdateRole(int account_id, int role_id)
+        {
+            var cRequestRole = _userAccessor.GetAccountRole();
+            if(cRequestRole != 2)
+            {
+                throw new ErrorDetails(HttpStatusCode.BadRequest, "Don't have permission");
+            }
+            if(role_id == 2)
+            {
+                throw new ErrorDetails(HttpStatusCode.BadRequest, "Not accept for update user to admin");
+            }
+            var user = await _repository.SysUser.GetById(account_id);
+            if(user.RoleId == 2)
+            {
+                throw new ErrorDetails(HttpStatusCode.BadRequest, "Not accept to update admin to another role");
+            }
+
+            user.RoleId = role_id;
+            _repository.SysUser.Update(user);
+            await _repository.SaveAsync();
+            return Ok("Save change success");
         }
 
         /// <summary>
