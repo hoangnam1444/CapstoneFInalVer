@@ -88,7 +88,7 @@ namespace MajorTestOrientation.Controllers
             }
             account.Token = _jwtServices.CreateToken(account.RoleId, account.Id);
 
-            if (!account.IsActive.Value)
+            if (!account.IsActive.Value && account.RoleId == 1)
             {
                 var newCode = await _repository.SecurityCode.Create(account.Id);
                 await _repository.SaveAsync();
