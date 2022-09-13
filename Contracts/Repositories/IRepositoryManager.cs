@@ -29,6 +29,7 @@ namespace Contracts.Repositories
         IUserCollegeRepository UserCollege { get; }
         IChatRoomRepository ChatRoom { get; }
         ISaveScheduleRepository SaveSchedule { get; }
+        ISubjectGroupRepository SubjectGroup { get; }
         Task SaveAsync();
     }
 }

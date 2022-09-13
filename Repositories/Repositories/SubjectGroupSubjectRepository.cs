@@ -48,5 +48,23 @@ namespace Repositories.Repositories
                 .Select(x => x.Subject)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<SubjectGroupReturn>> GetSubjects(IEnumerable<SubjectGroupReturn> data)
+        {
+            var result = new List<SubjectGroupReturn>();
+            foreach(var item in data)
+            {
+                var subjects = await FindByCondition(x => x.GroupSubjectId == item.Id, true)
+                    .Include(x => x.Subject)
+                    .Select(x => new SubjectReturn
+                    {
+                        Id = x.SubjectId,
+                        Name = x.Subject.Name
+                    }).ToListAsync();
+                item.Subjects = subjects;
+                result.Add(item);
+            }
+            return result;
+        }
     }
 }
