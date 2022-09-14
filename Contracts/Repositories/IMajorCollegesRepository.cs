@@ -13,5 +13,6 @@ namespace Contracts.Repositories
         Task<CollegesReturn> GetMajor(CollegesReturn college);
         void Create(CollegeRefMajor collegeRefMajor);
         void Delete(CollegeRefMajor collegeRefMajor);
+        Task<List<MajorCD>> GetByColleges(int college_id);
     }
 }

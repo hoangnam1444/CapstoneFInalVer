@@ -17,6 +17,48 @@ namespace Repositories.Repositories
 
         }
 
+        public async Task<List<MajorCD>> GetcDetail(List<MajorCD> majors)
+        {
+            var result = new List<MajorCD>();
+
+            foreach(var major in majors)
+            {
+                major.SubjectGroups = await FindByCondition(x => x.MajorId == major.MajorId, true)
+                    .Include(x => x.SubjectGroup)
+                    .Select(x => new Entities.DTOs.SubjectGroup { Id = x.SubjectGroupId, Name = x.SubjectGroup.Name, SumPoint = x.Sum })
+                    .ToListAsync();
+                result.Add(major);
+            }
+
+            return result;
+        }
+
+        public async Task<List<ListColleges>> GetCollegesDash(List<MajorForFilter> majors)
+        {
+            var result = new List<ListColleges>();
+            foreach(var major in majors)
+            {
+                var college = await FindByCondition(x => x.MajorId == major.Id, false)
+                    .Include(x => x.College)
+                    .Include(x => x.Major)
+                    .Include(x => x.SubjectGroup)
+                    .MaxAsync();
+
+                var data = new ListColleges
+                {
+                    CollegesId = college.CollegesId,
+                    Image = college.College.ImagePath,
+                    MajorName = college.Major.MajorName,
+                    Name = college.College.CollegeName,
+                    RefLink = college.College.ReferenceLink,
+                    SubjectGroup = college.SubjectGroup.Name,
+                    Sum = college.Sum
+                };
+                result.Add(data);
+            }
+            return result;
+        }
+
         public async Task<CollegesSubjectGroup> GetPoint(PointCollege point)
         {
             var result = await FindByCondition(x => x.MajorId == point.MajorId && x.SubjectGroupId == point.SubjectGroupId && x.CollegesId == point.CollegesId, false)
