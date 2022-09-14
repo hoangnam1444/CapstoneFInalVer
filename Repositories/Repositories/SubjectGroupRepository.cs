@@ -1,56 +1,40 @@
 ﻿using Contracts.Repositories;
 using Entities;
+using Entities.DataTransferObject;
 using Entities.DTOs;
 using Entities.Models;
+using Entities.RequestFeature;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Repositories.Repositories
 {
-    public class SubjectGroupMajorRepository : RepositoryBase<MajorSubjectGroup>, ISubjectGroupMajorRepository
+    public class SubjectGroupRepository : RepositoryBase<Entities.Models.SubjectGroup>, ISubjectGroupRepository
     {
-        public SubjectGroupMajorRepository(DataContext context) : base(context)
+        public SubjectGroupRepository(DataContext context) : base(context)
         {
 
         }
 
-        public async Task<List<SubjectGroupReturn>> GetByMajor(int major_id)
+        public async Task<Pagination<Entities.DTOs.SubjectGroupReturn>> GetAll(PagingParameters param)
         {
-            var list = await FindByCondition(x => x.MajorId == major_id, false)
-                .Include(x => x.SubjectGroup)
+            var result = await FindAll(true)
+                .Skip((param.PageNumber - 1) * param.PageSize)
+                .Take(param.PageSize)
                 .Select(x => new SubjectGroupReturn
                 {
-                    Id = x.SubjectGroup.Id,
-                    Name = x.SubjectGroup.Name
+                    Id = x.Id,
+                    Name = x.Name
                 }).ToListAsync();
 
-            return list;
-        }
-
-        public async Task<List<int>> GetByMajor(List<UserMajor> majors)
-        {
-            var result = new List<int>();
-            foreach (var major in majors)
+            return new Pagination<SubjectGroupReturn>
             {
-                var subjectGIds = await FindByCondition(x => x.MajorId == major.MajorId, false).Select(x => x.SubjectGroupId).ToListAsync();
-                foreach (var id in subjectGIds)
-                {
-                    if (!result.Contains(id))
-                    {
-                        result.Add(id);
-                    }
-                }
-            }
-            return result;
-        }
-
-        public async Task<List<MajorSubjectGroup>> GetByMajorIds(List<UserMajor> major)
-        {
-            var majorIds = major.Select(x => x.MajorId).ToList();
-            var result = await FindByCondition(x => majorIds.Contains(x.MajorId), false).ToListAsync();
-            return result;
+                Count = await FindAll(true).CountAsync(),
+                Data = result,
+                PageNumber = param.PageNumber,
+                PageSize = param.PageSize
+            };
         }
     }
 }

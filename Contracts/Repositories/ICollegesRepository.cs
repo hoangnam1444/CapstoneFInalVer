@@ -15,5 +15,6 @@ namespace Contracts.Repositories
         void Update(Colleges colleges);
         Task<Pagination<CollegesReturn>> GetAll(PagingParameters param);
         Task<IEnumerable<CollegesStatistic>> GetName(IEnumerable<CollegesStatistic> data);
+        Task<CollegesDetail> GetDetailDashboard(int college_id);
     }
 }

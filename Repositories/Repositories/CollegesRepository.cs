@@ -91,5 +91,20 @@ namespace Repositories.Repositories
             }
             return result;
         }
+
+        public async Task<CollegesDetail> GetDetailDashboard(int college_id)
+        {
+            var colleges = await FindByCondition(x => x.CollegeId == college_id, false)
+                .Select(x => new CollegesDetail 
+                    {
+                        CollegesId = x.CollegeId,
+                        Image = x.ImagePath,
+                        Name = x.CollegeName,
+                        RefLink = x.ReferenceLink
+                    })
+                .FirstOrDefaultAsync();
+
+            return colleges;
+        }
     }
 }

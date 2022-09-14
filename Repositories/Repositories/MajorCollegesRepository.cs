@@ -15,6 +15,17 @@ namespace Repositories.Repositories
         {
         }
 
+        public async Task<List<MajorCD>> GetByColleges(int college_id)
+        {
+            return await FindByCondition(x => x.CollegeId == college_id, true)
+                .Include(x => x.Major)
+                .Select(x => new MajorCD
+                {
+                    MajorId = x.MajorId,
+                    Name = x.Major.MajorName
+                }).ToListAsync();
+        }
+
         public async Task<List<CollegesReturn>> GetColleges(int major_id)
         {
             var result = await FindByCondition(x => x.MajorId == major_id, false)

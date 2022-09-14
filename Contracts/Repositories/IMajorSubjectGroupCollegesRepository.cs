@@ -15,5 +15,7 @@ namespace Contracts.Repositories
         void Create(CollegesSubjectGroup collegesSubjectGroup);
         Task<CollegesSubjectGroup> GetPoint(PointCollege point);
         void Update(CollegesSubjectGroup updateInfo);
+        Task<List<ListColleges>> GetCollegesDash(List<MajorForFilter> majors);
+        Task<List<MajorCD>> GetcDetail(List<MajorCD> majors);
     }
 }

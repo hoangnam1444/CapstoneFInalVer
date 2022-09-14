@@ -237,6 +237,34 @@ namespace MajorTestOrientation.Controllers
         }
 
         /// <summary>
+        /// Role: Student (get colleges for dasboard by sum)
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("SuggestedSum")]
+        public async Task<IActionResult> GetBySum()
+        {
+            var majors = await _repository.Major.GetAll();
+            var colleges = await _repository.MajorSubjectGroupColleges.GetCollegesDash(majors);
+            return Ok(colleges);
+        }
+
+        /// <summary>
+        /// Role: Student (get school detail)
+        /// </summary>
+        /// <param name="college_id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("{college_id}/details")]
+        public async Task<IActionResult> GetDetail(int college_id)
+        {
+            var collegesDetail = await _repository.Colleges.GetDetailDashboard(college_id);
+            collegesDetail.Majors = await _repository.MajorColleges.GetByColleges(college_id);
+            collegesDetail.Majors = await _repository.MajorSubjectGroupColleges.GetcDetail(collegesDetail.Majors);
+            return Ok(collegesDetail);
+        }
+
+        /// <summary>
         /// Role: Admin (statistic selected colleges)
         /// </summary>
         /// <param name="param"></param>

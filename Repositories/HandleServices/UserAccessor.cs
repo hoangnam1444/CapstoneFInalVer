@@ -29,18 +29,14 @@ namespace Repositories.HandleServices
         {
             var client = new SmtpClient()
             {
+                EnableSsl = true,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential("madmadmadmad9999@gmail.com", "28778ba80b1aba6157f98d96ccd31207e103feef5d0a29f4a316ef89981876de"),
                 Host = "smtp.gmail.com",
                 Port = 587,
-                EnableSsl = true,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential()
-                {
-                    UserName = "mtossender@gmail.com",
-                    Password = "kfuycufzpgblqdcs"
-                }
+                DeliveryMethod = SmtpDeliveryMethod.Network
             };
-            MailAddress FromEmail = new MailAddress("mtossender@gmail.com", "Mto-Manager");
+            MailAddress FromEmail = new MailAddress("madmadmadmad9999@gmail.com", "Mto-Manager");
             MailAddress ToEmail = new MailAddress(toEmail, "Mtp-New account");
             MailMessage Message = new MailMessage
             {

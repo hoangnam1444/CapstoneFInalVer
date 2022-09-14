@@ -46,7 +46,8 @@ namespace Repositories.Repositories
         {
             var answersId = testResult.Select(x => x.AnswerId).ToList();
 
-            var answer = await FindByCondition(x => answersId.Contains(x.AnswerId), false).GroupBy(x => x.PGroupId)
+            var answer = await FindByCondition(x => answersId.Contains(x.AnswerId), false).GroupBy
+                (x => x.PGroupId)
                 .Select(x => new PerGroup
                 {
                     AveragePoint = x.Average(y => y.Point),
