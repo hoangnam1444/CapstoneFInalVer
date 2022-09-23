@@ -139,7 +139,7 @@ namespace Entities
 
             modelBuilder.Entity<CollegesSubjectGroup>(entity =>
             {
-                entity.HasKey(e => new { e.CollegesId, e.SubjectGroupId });
+                entity.HasKey(e => new { e.CollegesId, e.SubjectGroupId, e.MajorId });
 
                 entity.ToTable("Colleges_SubjectGroup");
 
