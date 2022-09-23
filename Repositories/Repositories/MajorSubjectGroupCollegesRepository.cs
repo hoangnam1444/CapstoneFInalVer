@@ -4,6 +4,7 @@ using Entities.DTOs;
 using Entities.Models;
 using Entities.RequestFeature;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,7 +22,7 @@ namespace Repositories.Repositories
         {
             var result = new List<MajorCD>();
 
-            foreach(var major in majors)
+            foreach (var major in majors)
             {
                 major.SubjectGroups = await FindByCondition(x => x.MajorId == major.MajorId, true)
                     .Include(x => x.SubjectGroup)
@@ -36,26 +37,41 @@ namespace Repositories.Repositories
         public async Task<List<ListColleges>> GetCollegesDash(List<MajorForFilter> majors)
         {
             var result = new List<ListColleges>();
-            foreach(var major in majors)
+            foreach (var major in majors)
             {
-                var college = await FindByCondition(x => x.MajorId == major.Id, false)
-                    .Include(x => x.College)
-                    .Include(x => x.Major)
-                    .Include(x => x.SubjectGroup)
-                    .MaxAsync();
-
-                var data = new ListColleges
+                var maxSum = 0.0;
+                try
                 {
-                    CollegesId = college.CollegesId,
-                    Image = college.College.ImagePath,
-                    MajorName = college.Major.MajorName,
-                    Name = college.College.CollegeName,
-                    RefLink = college.College.ReferenceLink,
-                    SubjectGroup = college.SubjectGroup.Name,
-                    Sum = college.Sum
-                };
-                result.Add(data);
+                    maxSum =  FindByCondition(x => x.MajorId == major.Id, true)
+                    .Max(x => x.Sum);
+                }
+                catch (InvalidOperationException)
+                {
+                    maxSum = 0;
+                }
+
+                if (maxSum > 0)
+                {
+                    var college = await FindByCondition(x => x.Sum == maxSum, true)
+                        .Include(x => x.College)
+                        .Include(x => x.Major)
+                        .Include(x => x.SubjectGroup)
+                        .FirstOrDefaultAsync();
+
+                    var data = new ListColleges
+                    {
+                        CollegesId = college.CollegesId,
+                        Image = college.College.ImagePath,
+                        MajorName = college.Major.MajorName,
+                        Name = college.College.CollegeName,
+                        RefLink = college.College.ReferenceLink,
+                        SubjectGroup = college.SubjectGroup.Name,
+                        Sum = college.Sum
+                    };
+                    result.Add(data);
+                }
             }
+
             return result;
         }
 
