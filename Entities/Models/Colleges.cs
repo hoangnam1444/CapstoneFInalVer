@@ -19,6 +19,7 @@ namespace Entities.Models
         public string CollegeName { get; set; }
         public string ReferenceLink { get; set; }
         public string Address { get; set; }
+        public string Detail { get; set; }
         public string ImagePath { get; set; }
         public bool? IsDeleted { get; set; }
 
