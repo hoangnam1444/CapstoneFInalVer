@@ -64,7 +64,9 @@ namespace MajorTestOrientation.Controllers
             var result = await _repository.Question.GetAllMbtiId();
 
             result.Sort();
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
 
+            await _repository.SaveAsync();
             return Ok(result);
         }
         #endregion
@@ -86,6 +88,9 @@ namespace MajorTestOrientation.Controllers
             result.Index = question.OrderIndex;
             var answer = await _repository.Answer.GetMbtiAnswer(question.QuestionId);
             result.Answer = answer;
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
+
+            await _repository.SaveAsync();
             return Ok(result);
         }
         #endregion
@@ -101,6 +106,9 @@ namespace MajorTestOrientation.Controllers
         {
             var result = await _repository.Question.GetHollandTest();
             result = await _repository.Answer.GetAnswerById(result);
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
+
+            await _repository.SaveAsync();
             return Ok(result);
         }
         #endregion
@@ -174,7 +182,9 @@ namespace MajorTestOrientation.Controllers
         public async Task<IActionResult> GetDetail(int question_id)
         {
             var result = await _repository.Question.GetDetail(question_id);
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
 
+            await _repository.SaveAsync();
             return Ok(result);
         }
     }

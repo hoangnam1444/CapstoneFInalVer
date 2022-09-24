@@ -4,6 +4,7 @@ using Entities.DTOs;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Repositories.Repositories
@@ -12,6 +13,21 @@ namespace Repositories.Repositories
     {
         public CommentRepository(DataContext context) : base(context)
         {
+        }
+
+        public async Task<List<CommentReturn>> GetAllComment(int blog_id)
+        {
+            return await FindByCondition(x => x.BlogId == blog_id, true)
+                .Include(x => x.User)
+                .Select(x => new CommentReturn
+            {
+                CreatedDate = x.CreatedDate,
+                Id = x.Id,
+                OwnerAvatar = x.User.ImagePath,
+                OwnerId = x.UserId,
+                OwnerName = x.User.UserName,
+                Content = x.Content,
+            }).ToListAsync();
         }
 
         public async Task<List<BlogInList>> GetNumOfComment(List<BlogInList> blogs)

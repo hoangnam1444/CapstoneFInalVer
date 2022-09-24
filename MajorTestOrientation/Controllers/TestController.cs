@@ -119,7 +119,10 @@ namespace MajorTestOrientation.Controllers
         [Route("type/{type_id}")]
         public async Task<IActionResult> GetByTypeOfTest(int type_id)
         {
-            var result = await _repository.Test.GetByType(type_id);
+            var result = await _repository.Test.GetByType(type_id); 
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
+
+            await _repository.SaveAsync();
             return Ok(result);
         }
         #endregion
@@ -144,7 +147,9 @@ namespace MajorTestOrientation.Controllers
             var pGroupPoint = await _repository.AnswerPGroup.GetPGroupResult(testResult);
 
             pGroupPoint = await _repository.PersonalityGroup.GetName(pGroupPoint);
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
 
+            await _repository.SaveAsync();
             return Ok(pGroupPoint);
         }
         #endregion
@@ -171,7 +176,9 @@ namespace MajorTestOrientation.Controllers
             var pGroupPoint = await _repository.AnswerPGroup.GetPGroupResult(testResult);
 
             var result = (List<MajorResult>)await _repository.MajorPgroup.GetMajorResult(pGroupPoint);
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
 
+            await _repository.SaveAsync();
             return Ok(result);
         }
         #endregion

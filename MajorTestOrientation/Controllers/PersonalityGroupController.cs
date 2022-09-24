@@ -73,7 +73,9 @@ namespace MajorTestOrientation.Controllers
             var result = await _repository.PersonalityGroup.GetDetailById(pgroup_id);
 
             if (result == null) throw new ErrorDetails(System.Net.HttpStatusCode.NotFound, "Invalid Id or this group is deleted");
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
 
+            await _repository.SaveAsync();
             return Ok(result);
         }
         #endregion

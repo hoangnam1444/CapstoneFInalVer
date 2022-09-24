@@ -33,7 +33,9 @@ namespace MajorTestOrientation.Controllers
             var result = await _repository.MajorPgroup.GetByGroupId(group_id);
 
             if (result == null) throw new ErrorDetails(System.Net.HttpStatusCode.NotFound, "No major matches with this group");
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
 
+            await _repository.SaveAsync();
             return Ok(result);
         }
 
@@ -48,6 +50,9 @@ namespace MajorTestOrientation.Controllers
         {
             var result = await _repository.SubjectGroupMajor.GetByMajor(major_id);
             result = await _repository.SubjectGroupSubject.GetSubjectOfGroup(result);
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
+
+            await _repository.SaveAsync();
             return Ok(result);
         }
 
@@ -61,7 +66,9 @@ namespace MajorTestOrientation.Controllers
         public async Task<IActionResult> GetLession(GetLessionByMajors majors)
         {
             var result = await _repository.LessionMajor.GetLessionbyListMajor(majors.MajorsId);
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
 
+            await _repository.SaveAsync();
             return Ok(result);
         }
 
@@ -81,8 +88,9 @@ namespace MajorTestOrientation.Controllers
             result = await _repository.MajorColleges.GetMajor(result);
 
             result = await _repository.MajorSubjectGroupColleges.GetSumPoint(result);
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
 
-
+            await _repository.SaveAsync();
             return Ok(result);
         }
 
