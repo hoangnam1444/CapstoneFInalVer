@@ -10,5 +10,6 @@ namespace Contracts.Repositories
         void Create(Comment comment);
         Task<List<BlogInList>> GetNumOfComment(List<BlogInList> blogs);
         Task<BlogDetail> GetNumOfComment(BlogDetail blog);
+        Task<List<CommentReturn>> GetAllComment(int blog_id);
     }
 }

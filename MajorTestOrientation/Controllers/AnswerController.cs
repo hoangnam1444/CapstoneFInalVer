@@ -100,6 +100,8 @@ namespace MajorTestOrientation.Controllers
                     });
                 }
             }
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
+
             await _repository.SaveAsync();
 
             return Ok("Save changes success");
@@ -117,6 +119,11 @@ namespace MajorTestOrientation.Controllers
         public async Task<IActionResult> GetByQuestionId(int question_id)
         {
             var result = await _repository.Answer.GetByQuestionId(question_id);
+
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
+
+            await _repository.SaveAsync();
+
             return Ok(result);
         }
         #endregion

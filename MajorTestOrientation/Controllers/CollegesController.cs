@@ -31,7 +31,9 @@ namespace MajorTestOrientation.Controllers
         public async Task<IActionResult> GetAllColleges([FromQuery] PagingParameters param)
         {
             var result = await _repository.Colleges.GetColleges(param);
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
 
+            await _repository.SaveAsync();
             return Ok(result);
         }
 
@@ -47,7 +49,9 @@ namespace MajorTestOrientation.Controllers
             var accounts = await _repository.UserCollege.GetConnector(collegesId);
 
             accounts = await _repository.SysUser.GetAvailableConnector(accounts);
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
 
+            await _repository.SaveAsync();
             return Ok(accounts);
         }
 
@@ -71,7 +75,6 @@ namespace MajorTestOrientation.Controllers
             college = await _repository.MajorColleges.GetMajor(college);
 
             college = await _repository.MajorSubjectGroupColleges.GetSumPoint(college);
-
             return Ok(college);
         }
 
@@ -232,7 +235,9 @@ namespace MajorTestOrientation.Controllers
                 ViewPointLink = "https://vietnamnet.vn/giao-duc/diem-thi/tra-cuu-diem-chuan-cd-dh-2022",
                 College = colleges
             };
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
 
+            await _repository.SaveAsync();
             return Ok(result);
         }
 
@@ -246,6 +251,9 @@ namespace MajorTestOrientation.Controllers
         {
             var majors = await _repository.Major.GetAll();
             var colleges = await _repository.MajorSubjectGroupColleges.GetCollegesDash(majors);
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
+
+            await _repository.SaveAsync();
             return Ok(colleges);
         }
 
@@ -261,6 +269,9 @@ namespace MajorTestOrientation.Controllers
             var collegesDetail = await _repository.Colleges.GetDetailDashboard(college_id);
             collegesDetail.Majors = await _repository.MajorColleges.GetByColleges(college_id);
             collegesDetail.Majors = await _repository.MajorSubjectGroupColleges.GetcDetail(collegesDetail.Majors);
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
+
+            await _repository.SaveAsync();
             return Ok(collegesDetail);
         }
 

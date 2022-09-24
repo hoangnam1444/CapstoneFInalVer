@@ -1,4 +1,5 @@
-﻿using Contracts.Repositories;
+﻿using Contracts.HandleServices;
+using Contracts.Repositories;
 using Entities.RequestFeature;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -10,10 +11,12 @@ namespace MajorTestOrientation.Controllers
     public class SubjectGroupsController : ControllerBase
     {
         private readonly IRepositoryManager _repository;
+        private readonly IUserAccessor _userAccessor;
 
-        public SubjectGroupsController(IRepositoryManager repository)
+        public SubjectGroupsController(IRepositoryManager repository, IUserAccessor userAccessor)
         {
             _repository = repository;
+            _userAccessor = userAccessor;
         }
 
         /// <summary>
@@ -26,7 +29,9 @@ namespace MajorTestOrientation.Controllers
         public async Task<IActionResult> GetSubject(int group_id)
         {
             var result = await _repository.SubjectGroupSubject.GetSubject(group_id);
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
 
+            await _repository.SaveAsync();
             return Ok(result);
         }
 

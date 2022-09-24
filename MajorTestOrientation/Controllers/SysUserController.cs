@@ -171,6 +171,7 @@ namespace MajorTestOrientation.Controllers
             var c_account = await _repository.SysUser.GetToUpdateGrade(accountId);
             c_account.Grade = grade;
             _repository.SysUser.Update(c_account);
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
 
             await _repository.SaveAsync();
             return Ok("Save changes success");
@@ -199,6 +200,9 @@ namespace MajorTestOrientation.Controllers
             {
                 throw new ErrorDetails(HttpStatusCode.OK, new GetCollegesHandle { Message = "Subject group " + group_id + " already selected", StatusCode = 415 });
             }
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
+
+            await _repository.SaveAsync();
             return Ok("Save changes success");
         }
 
@@ -213,7 +217,9 @@ namespace MajorTestOrientation.Controllers
             var user_id = _userAccessor.GetAccountId();
 
             var result = await _repository.SysUser.GetProfile(user_id);
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
 
+            await _repository.SaveAsync();
             return Ok(result);
         }
 
@@ -253,8 +259,10 @@ namespace MajorTestOrientation.Controllers
                     account.PhoneNumber = info.PhoneNumber;
                 }
                 _repository.SysUser.Update(account);
-                await _repository.SaveAsync();
             }
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
+
+            await _repository.SaveAsync();
             return Ok("Save change success");
         }
 
@@ -263,6 +271,7 @@ namespace MajorTestOrientation.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
+        [AllowAnonymous]
         [Route("disable_unsued_users")]
         public async Task<IActionResult> DisableUnuseAccount()
         {
@@ -331,7 +340,9 @@ namespace MajorTestOrientation.Controllers
                 var subjectsName = await _repository.Subject.GetName(savedPointSubjects);
                 return Ok("Subject: " + subjectsName + " already saved. Save success all remaining subject");
             }
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
 
+            await _repository.SaveAsync();
             return Ok("Save changes success");
         }
 
@@ -353,7 +364,9 @@ namespace MajorTestOrientation.Controllers
             {
                 throw new ErrorDetails(HttpStatusCode.OK, new GetCollegesHandle { Message = "Major " + info.MajorId + " already selected", StatusCode = 414 });
             }
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
 
+            await _repository.SaveAsync();
             return Ok("Save changes success");
         }
 
@@ -434,6 +447,9 @@ namespace MajorTestOrientation.Controllers
             }
             //IsAvalable of connector = !IsDeleted in SysUser
             Pagination<Connector> connectors = await _repository.SysUser.GetConnector(status, param);
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
+
+            await _repository.SaveAsync();
             return Ok(connectors);
         }
 
@@ -460,6 +476,8 @@ namespace MajorTestOrientation.Controllers
                 account.IsDeleted = true;
             }
             _repository.SysUser.Update(account);
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
+
             await _repository.SaveAsync();
 
             return Ok(new { UpdatedStatus = account.IsDeleted.Value ? "Unavailable" : "Available" });
@@ -538,7 +556,9 @@ namespace MajorTestOrientation.Controllers
             result = await _repository.MajorColleges.GetMajor(result);
 
             result = await _repository.MajorSubjectGroupColleges.GetSumPoint(result, finalData);
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
 
+            await _repository.SaveAsync();
             return Ok(result);
         }
 
@@ -553,7 +573,9 @@ namespace MajorTestOrientation.Controllers
             var user_id = _userAccessor.GetAccountId();
 
             var lesson = await _repository.LessionMajor.GetAll();
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
 
+            await _repository.SaveAsync();
             return Ok(lesson);
         }
 
@@ -571,7 +593,9 @@ namespace MajorTestOrientation.Controllers
             var majorsId = selectedMajor.GroupBy(x => x.MajorId).Select(x => x.Key).ToList();
 
             var lesson = await _repository.LessionMajor.GetLessionbyListMajor(majorsId);
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
 
+            await _repository.SaveAsync();
             return Ok(lesson);
         }
 
@@ -595,6 +619,8 @@ namespace MajorTestOrientation.Controllers
             {
                 _repository.UserCollege.Create(new UserColleges { CollegeId = info.CollegesId, UserId = user_id, IsConnector = false });
             }
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
+
             await _repository.SaveAsync();
 
             return Ok("Save changes success");
@@ -692,7 +718,9 @@ namespace MajorTestOrientation.Controllers
             result = await _repository.MajorColleges.GetMajor(result);
 
             result = await _repository.MajorSubjectGroupColleges.GetSumPoint(result);
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
 
+            await _repository.SaveAsync();
             return Ok(result);
         }
 
@@ -708,7 +736,9 @@ namespace MajorTestOrientation.Controllers
             var connectorId = _userAccessor.GetAccountId();
 
             var result = await _repository.ChatRoom.GetChatWithStudent(connectorId, param);
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
 
+            await _repository.SaveAsync();
             return Ok(result);
         }
 
@@ -783,8 +813,17 @@ namespace MajorTestOrientation.Controllers
                 ConnectorAvatar = connector.ImagePath,
                 ConnectorName = connector.UserName
             };
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
 
+            await _repository.SaveAsync();
             return Ok(chatRoom);
         }
+
+        //[HttpGet]
+        //[Route("{user_id}/chat_info")]
+        //public async Task<IActionResult> GetChatInfo(int user_id)
+        //{
+        //    var user = await _repository.SysUser.GetChatInfo(user_id);
+        //}
     }
 }

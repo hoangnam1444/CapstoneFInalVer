@@ -54,6 +54,8 @@ namespace MajorTestOrientation.Controllers
                 UserId = _userAccessor.GetAccountId()
             });
 
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
+
             await _repository.SaveAsync();
             return Ok("Save changes success");
         }
@@ -68,6 +70,10 @@ namespace MajorTestOrientation.Controllers
             var blogs = await _repository.Blog.GetList();
             blogs = await _repository.UserBlog.GetReacted(blogs, _userAccessor.GetAccountId());
             blogs = await _repository.Comment.GetNumOfComment(blogs);
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
+
+            await _repository.SaveAsync();
+
             return Ok(blogs);
         }
 
@@ -83,7 +89,27 @@ namespace MajorTestOrientation.Controllers
             blog = await _repository.UserBlog.GetReacted(blog, _userAccessor.GetAccountId());
             blog = await _repository.Comment.GetNumOfComment(blog);
             blog = await _repository.UserBlog.GetUserForBlog(blog);
+
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
+
+            await _repository.SaveAsync();
             return Ok(blog);
+        }
+
+        /// <summary>
+        /// Role: All (Get comments of blog)
+        /// </summary>
+        /// <param name="blog_id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("{blog_id}/comments")]
+        public async Task<IActionResult> GetComment(int blog_id)
+        {
+            var comments = await _repository.Comment.GetAllComment(blog_id);
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
+
+            await _repository.SaveAsync();
+            return Ok(comments);
         }
 
         /// <summary>
@@ -119,6 +145,7 @@ namespace MajorTestOrientation.Controllers
                 }
                 _repository.UserBlog.Update(blog);
             }
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
 
             await _repository.SaveAsync();
 
@@ -142,6 +169,7 @@ namespace MajorTestOrientation.Controllers
                 UserId = _userAccessor.GetAccountId(),
                 CreatedDate = DateTime.UtcNow
             });
+            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
 
             await _repository.SaveAsync();
             return Ok("Save change success");

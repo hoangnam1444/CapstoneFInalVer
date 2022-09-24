@@ -5,6 +5,7 @@ using Entities.DTOs;
 using Entities.Models;
 using Entities.RequestFeature;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,6 +17,8 @@ namespace Repositories.Repositories
         public SysUserRepository(DataContext context) : base(context)
         {
         }
+
+        public Task Find { get; private set; }
 
         public async Task AvtivateAccount(int userId)
         {
@@ -92,6 +95,18 @@ namespace Repositories.Repositories
         public async Task<SysUser> GetById(int userId)
         {
             return await FindByCondition(x => x.UserId == userId, false).FirstOrDefaultAsync();
+        }
+
+        public async Task<ChatInfo> GetChatInfo(int user_id)
+        {
+            var user = await FindByCondition(x => x.UserId == user_id, true).Select(x => new ChatInfo
+            {
+                UserId = x.UserId,
+                Image = x.ImagePath,
+                IsActive = DateTime.UtcNow.AddMinutes(-30) < x.LastLoginDate,
+                Name = x.UserName
+            }).FirstOrDefaultAsync();
+            return user;
         }
 
         public async Task<Pagination<Connector>> GetConnector(int status, PagingParameters param)
@@ -213,6 +228,15 @@ namespace Repositories.Repositories
                 };
             }
             return null;
+        }
+
+        public async Task UpdateActiveTime(int userId)
+        {
+            var user = await FindByCondition(x => x.UserId == userId, true).FirstOrDefaultAsync();
+
+            user.LastLoginDate = System.DateTime.UtcNow;
+
+            Update(user);
         }
     }
 }

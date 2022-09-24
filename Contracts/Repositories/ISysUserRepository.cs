@@ -24,5 +24,7 @@ namespace Contracts.Repositories
         Task<List<ChatBoxAccount>> GetAvailableConnector(List<ChatBoxAccount> accounts);
         Task<SysUser> GetCreatedAccount(string email, string userName);
         Task<List<SysUser>> GetLockAccount();
+        Task UpdateActiveTime(int userId);
+        Task<ChatInfo> GetChatInfo(int user_id);
     }
 }
