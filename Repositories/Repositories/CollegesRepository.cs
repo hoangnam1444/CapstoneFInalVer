@@ -100,7 +100,9 @@ namespace Repositories.Repositories
                         CollegesId = x.CollegeId,
                         Image = x.ImagePath,
                         Name = x.CollegeName,
-                        RefLink = x.ReferenceLink
+                        RefLink = x.ReferenceLink,
+                        Address = x.Address,
+                        Detail = x.Detail
                     })
                 .FirstOrDefaultAsync();
 

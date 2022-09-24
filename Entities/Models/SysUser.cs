@@ -18,6 +18,8 @@ namespace Entities.Models
             Subjects = new HashSet<UserSubject>();
             Majors = new HashSet<UserMajor>();
             Colleges = new HashSet<UserColleges>();
+            Blogs = new HashSet<User_Blog>();
+            Comments = new HashSet<Comment>();
         }
 
         public int UserId { get; set; }
@@ -50,5 +52,7 @@ namespace Entities.Models
         public virtual ICollection<UserColleges> Colleges { get; set; }
         public virtual ICollection<ChatRoom> Students { get; set; }
         public virtual ICollection<ChatRoom> Connectors { get; set; }
+        public virtual ICollection<User_Blog > Blogs { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }

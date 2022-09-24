@@ -36,6 +36,9 @@ namespace Repositories.Repositories
         private IChatRoomRepository _chatRoom;
         private ISaveScheduleRepository _saveSchedule;
         private ISubjectGroupRepository _subjectGroup;
+        private IBLogRepository _blog;
+        private IUserBLogRepository _user_blog;
+        private ICommentRepository _comment;
         private readonly DataContext _context;
 
         public ISysUserRepository SysUser
@@ -316,7 +319,7 @@ namespace Repositories.Repositories
         {
             get
             {
-                if(_saveSchedule == null)
+                if (_saveSchedule == null)
                 {
                     _saveSchedule = new SaveScheduleRepository(_context);
                 }
@@ -328,11 +331,47 @@ namespace Repositories.Repositories
         {
             get
             {
-                if(_subjectGroup == null)
+                if (_subjectGroup == null)
                 {
                     _subjectGroup = new SubjectGroupRepository(_context);
                 }
                 return _subjectGroup;
+            }
+        }
+
+        public IBLogRepository Blog
+        {
+            get
+            {
+                if(_blog == null)
+                {
+                    _blog = new BlogRepository(_context);
+                }
+                return _blog;
+            }
+        }
+
+        public IUserBLogRepository UserBlog 
+        {
+            get
+            {
+                if(_user_blog == null)
+                {
+                    _user_blog = new UserBLogRepository(_context);
+                }
+                return _user_blog;
+            }
+        }
+
+        public ICommentRepository Comment
+        {
+            get
+            {
+                if(_comment == null)
+                {
+                    _comment = new CommentRepository(_context);
+                }
+                return _comment;
             }
         }
 

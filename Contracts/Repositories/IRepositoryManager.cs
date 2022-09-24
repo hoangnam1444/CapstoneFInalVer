@@ -30,6 +30,9 @@ namespace Contracts.Repositories
         IChatRoomRepository ChatRoom { get; }
         ISaveScheduleRepository SaveSchedule { get; }
         ISubjectGroupRepository SubjectGroup { get; }
+        IBLogRepository Blog { get; }
+        IUserBLogRepository UserBlog { get; }
+        ICommentRepository Comment { get; }
         Task SaveAsync();
     }
 }

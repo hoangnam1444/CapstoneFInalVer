@@ -37,6 +37,7 @@ namespace Entities
         public virtual DbSet<VcGuidance> VcGuidance { get; set; }
         public virtual DbSet<ChatRoom> ChatRooms { get; set; }
         public virtual DbSet<SavedSchedule> Schedules { get; set; }
+        public virtual DbSet<Blog> Blogs { get; set; }
 
         public virtual DbSet<MajorSubjectGroup> MajorSubjectGroup { get; set; }
         public virtual DbSet<Subject> Subject { get; set; }
@@ -47,6 +48,8 @@ namespace Entities
         public virtual DbSet<UserMajor> UserMajors { get; set; }
         public virtual DbSet<CollegesSubjectGroup> CollegesSubjectGroups { get; set; }
         public virtual DbSet<UserColleges> CollegesUsers { get; set; }
+        public virtual DbSet<User_Blog> BlogsUsers { get; set; }
+        public virtual DbSet<Comment> Comments { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -94,6 +97,42 @@ namespace Entities
                     .HasForeignKey(d => d.CollegeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKUser_College_College");
+            });
+
+            modelBuilder.Entity<User_Blog>(entity =>
+            {
+                entity.HasKey(e => new { e.UserId, e.BlogId });
+
+                entity.ToTable("User_Blog");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Blogs)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FKUser_Blogs_User");
+
+                entity.HasOne(d => d.Blog)
+                    .WithMany(p => p.Users)
+                    .HasForeignKey(d => d.BlogId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FKUser_Blogs_Blogs");
+            });
+
+            modelBuilder.Entity<Comment>(entity =>
+            {
+                entity.ToTable("Comments");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Comments)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FKUser_Comments_User");
+
+                entity.HasOne(d => d.Blog)
+                    .WithMany(p => p.Comments)
+                    .HasForeignKey(d => d.BlogId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FKUser_Comment_Blogs");
             });
 
             modelBuilder.Entity<ChatRoom>(entity =>
