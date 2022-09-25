@@ -42,7 +42,7 @@ namespace Repositories.Repositories
             };
         }
 
-        public async Task<List<PerGroup>> GetHollandResult(List<TestResults> testResult)
+        public async Task<List<PerGroup>> GetMbtiResult(List<TestResults> testResult)
         {
             var finalGroup = "";
             var answersId = testResult.Select(x => x.AnswerId).ToList();
@@ -94,7 +94,7 @@ namespace Repositories.Repositories
             return new List<PerGroup> { new PerGroup { AveragePoint = 1, Name = finalGroup } };
         }
 
-        public async Task<List<PerGroup>> GetMbtiResult(List<TestResults> testResult)
+        public async Task<List<PerGroup>> GetHollandResult(List<TestResults> testResult)
         {
             var answersId = testResult.Select(x => x.AnswerId).ToList();
 

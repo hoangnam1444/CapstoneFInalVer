@@ -147,12 +147,12 @@ namespace MajorTestOrientation.Controllers
             if(testType == 1)
             {
                 groupReturn = await _repository.AnswerPGroup.GetMbtiResult(testResult);
-                groupReturn = await _repository.PersonalityGroup.GetName(groupReturn);
+                groupReturn = await _repository.PersonalityGroup.GetMbtiGroup(groupReturn);
             }
             else
             {
                 groupReturn = await _repository.AnswerPGroup.GetHollandResult(testResult);
-                groupReturn = await _repository.PersonalityGroup.GetHollandGroup(groupReturn);
+                groupReturn = await _repository.PersonalityGroup.GetName(groupReturn);
             }
             
             await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
@@ -184,12 +184,12 @@ namespace MajorTestOrientation.Controllers
             if (testType == 1)
             {
                 pGroupPoint = await _repository.AnswerPGroup.GetMbtiResult(testResult);
-                pGroupPoint = await _repository.PersonalityGroup.GetName(pGroupPoint);
+                pGroupPoint = await _repository.PersonalityGroup.GetMbtiGroup(pGroupPoint);
             }
             else
             {
                 pGroupPoint = await _repository.AnswerPGroup.GetHollandResult(testResult);
-                pGroupPoint = await _repository.PersonalityGroup.GetHollandGroup(pGroupPoint);
+                pGroupPoint = await _repository.PersonalityGroup.GetName(pGroupPoint);
             }
 
             var result = (List<MajorResult>)await _repository.MajorPgroup.GetMajorResult(pGroupPoint);
