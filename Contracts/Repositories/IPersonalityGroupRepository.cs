@@ -15,5 +15,6 @@ namespace Contracts.Repositories
         Task<List<PerGroup>> GetName(List<PerGroup> pGroupPoint);
         Task<PGroupDetail> GetDetailById(int id);
         Task<List<PGroupStatistic>> GetInfo(List<PGroupStatistic> result);
+        Task<List<PerGroup>> GetHollandGroup(List<PerGroup> groupReturn);
     }
 }

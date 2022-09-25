@@ -58,6 +58,19 @@ namespace Repositories.Repositories
             };
         }
 
+        public async Task<List<PerGroup>> GetHollandGroup(List<PerGroup> groupReturn)
+        {
+            var group = await FindByCondition(x => x.PersonalityGroupName.Contains(groupReturn[0].Name), false).Select(x => new PerGroup
+            {
+                Name = x.PersonalityGroupName,
+                AveragePoint = groupReturn[0].AveragePoint,
+                Description = x.Description,
+                Id = x.PersonalityGroupId
+            }).FirstOrDefaultAsync();
+
+            return new List<PerGroup> { group };
+        }
+
         public async Task<List<PGroupStatistic>> GetInfo(List<PGroupStatistic> input)
         {
             var result = new List<PGroupStatistic>();

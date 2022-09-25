@@ -14,5 +14,6 @@ namespace Contracts.Repositories
         Task<List<TestToUpdateQuestion>> GetByType(int type_id);
         Task Update(int test_id, UpdateTest info);
         void Create(TestDeclarations test);
+        Task<int> GetTestType(int test_id);
     }
 }
