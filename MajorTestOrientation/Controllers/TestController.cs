@@ -138,19 +138,27 @@ namespace MajorTestOrientation.Controllers
         public async Task<IActionResult> GetPersonalityGroupResult(int test_id)
         {
             var testResult = await _repository.TestResult.GetForPGroupResult(test_id, _userAccessor.GetAccountId());
-
+            var groupReturn = new List<PerGroup>();
             if (testResult.Count == 0 || testResult == null)
             {
                 throw new ErrorDetails(System.Net.HttpStatusCode.NotFound, "Don't have any result");
             }
-
-            var pGroupPoint = await _repository.AnswerPGroup.GetPGroupResult(testResult);
-
-            pGroupPoint = await _repository.PersonalityGroup.GetName(pGroupPoint);
+            var testType = await _repository.Test.GetTestType(test_id);
+            if(testType == 1)
+            {
+                groupReturn = await _repository.AnswerPGroup.GetMbtiResult(testResult);
+                groupReturn = await _repository.PersonalityGroup.GetName(groupReturn);
+            }
+            else
+            {
+                groupReturn = await _repository.AnswerPGroup.GetHollandResult(testResult);
+                groupReturn = await _repository.PersonalityGroup.GetHollandGroup(groupReturn);
+            }
+            
             await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
 
             await _repository.SaveAsync();
-            return Ok(pGroupPoint);
+            return Ok(groupReturn);
         }
         #endregion
 
@@ -167,13 +175,22 @@ namespace MajorTestOrientation.Controllers
             var userId = _userAccessor.GetAccountId();
 
             var testResult = await _repository.TestResult.GetForPGroupResult(test_id, _userAccessor.GetAccountId());
-
+            var pGroupPoint = new List<PerGroup>();
             if (testResult.Count == 0 || testResult == null)
             {
                 throw new ErrorDetails(System.Net.HttpStatusCode.NotFound, "Don't have any result");
             }
-
-            var pGroupPoint = await _repository.AnswerPGroup.GetPGroupResult(testResult);
+            var testType = await _repository.Test.GetTestType(test_id);
+            if (testType == 1)
+            {
+                pGroupPoint = await _repository.AnswerPGroup.GetMbtiResult(testResult);
+                pGroupPoint = await _repository.PersonalityGroup.GetName(pGroupPoint);
+            }
+            else
+            {
+                pGroupPoint = await _repository.AnswerPGroup.GetHollandResult(testResult);
+                pGroupPoint = await _repository.PersonalityGroup.GetHollandGroup(pGroupPoint);
+            }
 
             var result = (List<MajorResult>)await _repository.MajorPgroup.GetMajorResult(pGroupPoint);
             await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());

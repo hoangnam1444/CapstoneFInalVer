@@ -11,5 +11,7 @@ namespace Contracts.Repositories
         Task<List<PGroupStatistic>> GetStatistic(List<int> answerIds);
         Task<AnswerDetail> GetAnswerDetail(int answer_id);
         void Create(AnswersPGroups answersPGroups);
+        Task<List<PerGroup>> GetMbtiResult(List<TestResults> testResult);
+        Task<List<PerGroup>> GetHollandResult(List<TestResults> testResult);
     }
 }

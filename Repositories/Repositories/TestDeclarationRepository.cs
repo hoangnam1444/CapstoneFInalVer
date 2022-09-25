@@ -44,6 +44,11 @@ namespace Repositories.Repositories
             return test.Select(x => new TestToUpdateQuestion { Id = x.TestId, TestDescript = x.TestDescrip }).ToList();
         }
 
+        public async Task<int> GetTestType(int test_id)
+        {
+            return await FindByCondition(x => x.TestId == test_id, false).Select(x => x.TestTypeId).FirstOrDefaultAsync();
+        }
+
         public async Task Update(int test_id, UpdateTest info)
         {
             var test = await FindByCondition(x => x.TestId == test_id, true).FirstOrDefaultAsync();

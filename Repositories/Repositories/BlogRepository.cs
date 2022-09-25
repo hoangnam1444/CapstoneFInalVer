@@ -40,6 +40,10 @@ namespace Repositories.Repositories
             {
                 count = count - (count - 100);
             }
+            else
+            {
+                count = 0;
+            }
             var result = await FindAll(true).Skip(count).Select(x => new BlogInList
             {
                 Description = x.Description,
