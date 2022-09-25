@@ -58,7 +58,7 @@ namespace Repositories.Repositories
             };
         }
 
-        public async Task<List<PerGroup>> GetHollandGroup(List<PerGroup> groupReturn)
+        public async Task<List<PerGroup>> GetMbtiGroup(List<PerGroup> groupReturn)
         {
             var group = await FindByCondition(x => x.PersonalityGroupName.Contains(groupReturn[0].Name), false).Select(x => new PerGroup
             {
