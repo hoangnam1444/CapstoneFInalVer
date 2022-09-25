@@ -60,13 +60,13 @@ namespace Repositories.Repositories
 
             var answerGroupS = await FindByCondition(x => answersId.Contains(x.AnswerId) && x.PGroup.PersonalityGroupName == "S", true).CountAsync();
             var answerGroupN = await FindByCondition(x => answersId.Contains(x.AnswerId) && x.PGroup.PersonalityGroupName == "N", true).CountAsync();
-            if (answerGroupE > answerGroupI)
+            if (answerGroupS > answerGroupN)
             {
-                finalGroup += "E";
+                finalGroup += "S";
             }
             else
             {
-                finalGroup += "I";
+                finalGroup += "N";
             }
 
             var answerGroupT = await FindByCondition(x => answersId.Contains(x.AnswerId) && x.PGroup.PersonalityGroupName == "T", true).CountAsync();
