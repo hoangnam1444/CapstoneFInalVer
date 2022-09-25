@@ -17,7 +17,12 @@ namespace Entities.DTOs
         public string ImagePath { get; set; }
         public int NumOfSelected { get; set; }
         public bool IsSelected { get; set; }
-        public List<Major> Major { get; set; }
+        public List<MajorsReturn> Major { get; set; }
+    }
+    public class MajorsReturn
+    {
+        public string Name { get; set; }
+        public int Id { get; set; }
     }
     public class Major
     {

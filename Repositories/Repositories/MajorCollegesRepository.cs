@@ -49,7 +49,7 @@ namespace Repositories.Repositories
             {
                 var majors = await FindByCondition(x => x.CollegeId == college.CollegeId, false)
                     .Include(x => x.Major)
-                    .Select(x => new Major
+                    .Select(x => new MajorsReturn
                     {
                         Id = x.Major.MajorId,
                         Name = x.Major.MajorName
@@ -64,7 +64,7 @@ namespace Repositories.Repositories
         {
             var majors = await FindByCondition(x => x.CollegeId == college.CollegeId, false)
                 .Include(x => x.Major)
-                .Select(x => new Major
+                .Select(x => new MajorsReturn
                 {
                     Id = x.Major.MajorId,
                     Name = x.Major.MajorName

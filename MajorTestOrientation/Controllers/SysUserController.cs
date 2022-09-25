@@ -69,7 +69,7 @@ namespace MajorTestOrientation.Controllers
                     RoleId = 1,
                     CreatedDate = System.DateTime.UtcNow,
                     UpdatedDate = System.DateTime.UtcNow,
-                    IsLocked = true,
+                    IsLocked = false,
                     IsDeleted = false,
                     FullName = firebaseProfile.UserName,
                     LastLoginDate = DateTime.UtcNow
@@ -87,13 +87,6 @@ namespace MajorTestOrientation.Controllers
                 await _repository.SaveAsync();
             }
             account.Token = _jwtServices.CreateToken(account.RoleId, account.Id);
-
-            if (!account.IsActive.Value && account.RoleId == 1)
-            {
-                var newCode = await _repository.SecurityCode.Create(account.Id);
-                await _repository.SaveAsync();
-                _userAccessor.SendEmail(account.Fullname, firebaseProfile.Email, newCode.Code);
-            }
 
             return Ok(account);
         }
@@ -819,11 +812,18 @@ namespace MajorTestOrientation.Controllers
             return Ok(chatRoom);
         }
 
-        //[HttpGet]
-        //[Route("{user_id}/chat_info")]
-        //public async Task<IActionResult> GetChatInfo(int user_id)
-        //{
-        //    var user = await _repository.SysUser.GetChatInfo(user_id);
-        //}
+        /// <summary>
+        /// Role: Connector, Student (Get active status)
+        /// </summary>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("{user_id}/chat_info")]
+        public async Task<IActionResult> GetChatInfo(int user_id)
+        {
+            var user = await _repository.SysUser.GetChatInfo(user_id);
+
+            return Ok(user);
+        }
     }
 }

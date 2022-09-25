@@ -119,7 +119,7 @@ namespace Repositories.Repositories
 
             foreach (var college in result)
             {
-                var majors = new List<Major>();
+                var majors = new List<MajorsReturn>();
                 foreach (var major in college.Major)
                 {
                     var subjectGroups = await FindByCondition(x => x.MajorId == major.Id
@@ -134,7 +134,6 @@ namespace Repositories.Repositories
                             Id = x.SubjectGroupId
                         })
                         .ToListAsync();
-                    major.SubjectGroup = subjectGroups;
                     majors.Add(major);
                 }
                 college.Major = majors;
@@ -149,7 +148,7 @@ namespace Repositories.Repositories
 
             foreach (var college in result)
             {
-                var majors = new List<Major>();
+                var majors = new List<MajorsReturn>();
                 foreach (var major in college.Major)
                 {
                     var subjectGroups = await FindByCondition(x => x.MajorId == major.Id
@@ -162,7 +161,6 @@ namespace Repositories.Repositories
                             Id = x.SubjectGroupId
                         })
                         .ToListAsync();
-                    major.SubjectGroup = subjectGroups;
                     majors.Add(major);
                 }
                 college.Major = majors;
@@ -173,7 +171,7 @@ namespace Repositories.Repositories
 
         public async Task<CollegesReturn> GetSumPoint(CollegesReturn college)
         {
-            var majors = new List<Major>();
+            var majors = new List<MajorsReturn>();
             foreach (var major in college.Major)
             {
                 var subjectGroups = await FindByCondition(x => x.MajorId == major.Id
@@ -186,7 +184,6 @@ namespace Repositories.Repositories
                         Id = x.SubjectGroupId
                     })
                     .ToListAsync();
-                major.SubjectGroup = subjectGroups;
                 majors.Add(major);
             }
             college.Major = majors;
