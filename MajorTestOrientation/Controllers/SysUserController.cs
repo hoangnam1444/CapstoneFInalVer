@@ -740,10 +740,11 @@ namespace MajorTestOrientation.Controllers
         /// </summary>
         /// <param name="account_id">account will update</param>
         /// <param name="role_id">1: student, 3: connector</param>
+        /// <param name="colleges_id">input 0 when update from connector to student</param>
         /// <returns></returns>
         [HttpPut]
-        [Route("{account_id}/role/{role_id}")]
-        public async Task<IActionResult> UpdateRole(int account_id, int role_id)
+        [Route("{account_id}/role/{role_id}/{colleges_id}")]
+        public async Task<IActionResult> UpdateRole(int account_id, int role_id, int colleges_id)
         {
             var cRequestRole = _userAccessor.GetAccountRole();
             if(cRequestRole != 2)
@@ -762,6 +763,12 @@ namespace MajorTestOrientation.Controllers
 
             user.RoleId = role_id;
             _repository.SysUser.Update(user);
+
+            if(role_id == 3)
+            {
+                _repository.UserCollege.Create(new UserColleges { CollegeId = colleges_id, UserId = account_id, IsConnector = true });
+            }
+
             await _repository.SaveAsync();
             return Ok("Save change success");
         }
