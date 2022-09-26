@@ -41,7 +41,7 @@ namespace Repositories.Repositories
 
         public async Task<BlogDetail> GetUserForBlog(BlogDetail blog)
         {
-            var blogOwner = await FindByCondition(X => X.BlogId == blog.BlogId && X.IsOwner == true, false).Include(x => x.UserId).FirstOrDefaultAsync();
+            var blogOwner = await FindByCondition(X => X.BlogId == blog.BlogId && X.IsOwner == true, false).Include(x => x.User).FirstOrDefaultAsync();
 
             blog.OwnerAvatar = blogOwner.User.ImagePath;
             blog.OwnerId = blogOwner.UserId;

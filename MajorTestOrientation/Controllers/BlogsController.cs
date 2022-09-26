@@ -46,17 +46,19 @@ namespace MajorTestOrientation.Controllers
             };
 
             _repository.Blog.Create(newBlogs);
+            await _repository.SaveAsync();
 
-            newBlogs.Users.Add(new User_Blog
+            _repository.UserBlog.Create(new User_Blog
             {
+                BlogId = newBlogs.Id,
+                UserId = _userAccessor.GetAccountId(),
                 IsOwner = true,
-                IsReacted = false,
-                UserId = _userAccessor.GetAccountId()
+                IsReacted = false
             });
 
             await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
-
             await _repository.SaveAsync();
+
             return Ok("Save changes success");
         }
 
