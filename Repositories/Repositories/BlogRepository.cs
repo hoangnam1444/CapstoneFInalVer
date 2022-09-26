@@ -48,7 +48,8 @@ namespace Repositories.Repositories
             {
                 Description = x.Description,
                 Image = x.Image,
-                Title = x.Title
+                Title = x.Title,
+                Id = x.Id
             }).ToListAsync();
 
             return result;
