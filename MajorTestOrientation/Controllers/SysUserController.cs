@@ -724,12 +724,13 @@ namespace MajorTestOrientation.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("ChatRoom")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetChatWithStudent([FromQuery]PagingParameters param)
         {
-            var connectorId = _userAccessor.GetAccountId();
+            var connectorId = 59;
 
             var result = await _repository.ChatRoom.GetChatWithStudent(connectorId, param);
-            await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
+            await _repository.SysUser.UpdateActiveTime(59);
 
             await _repository.SaveAsync();
             return Ok(result);
@@ -808,15 +809,16 @@ namespace MajorTestOrientation.Controllers
 
             var result = new RoomChatReturn
             {
-                RoomId = chatRoom.Id,
+                Id = chatRoom.Id,
                 CollegeName = _repository.Colleges.GetDetail(chatRoom.CollegeId).Result.CollegeName,
                 ConnectorAvatar = connector.ImagePath,
                 ConnectorName = connector.UserName
             };
+
             await _repository.SysUser.UpdateActiveTime(_userAccessor.GetAccountId());
 
             await _repository.SaveAsync();
-            return Ok(chatRoom);
+            return Ok(result);
         }
 
         /// <summary>
