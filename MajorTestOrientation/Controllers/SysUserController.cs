@@ -809,7 +809,7 @@ namespace MajorTestOrientation.Controllers
 
             var result = new RoomChatReturn
             {
-                RoomId = chatRoom.Id,
+                Id = chatRoom.Id,
                 CollegeName = _repository.Colleges.GetDetail(chatRoom.CollegeId).Result.CollegeName,
                 ConnectorAvatar = connector.ImagePath,
                 ConnectorName = connector.UserName
